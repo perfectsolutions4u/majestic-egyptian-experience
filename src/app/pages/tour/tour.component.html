@@ -1,0 +1,362 @@
+<div class="tour-page-container">
+  <div class="container-fluid py-4">
+    <div class="row g-3">
+      <!-- Overlay for mobile sidebar -->
+      <div class="sidebar-overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
+
+      <!-- Left Sidebar - Filters -->
+      <aside class="col-lg-3 filter-sidebar-wrapper" [class.sidebar-open]="sidebarOpen">
+        <div class="filter-sidebar bg-white rounded-3 p-4 shadow-sm">
+          <!-- Filter Header -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="mb-0 h6 fw-bold">Filter</h3>
+            <div class="d-flex align-items-center gap-3">
+              <span
+                (click)="clearAllFilters()"
+                class="textMainColor cPointer fontsm cursor-pointer"
+              >
+                Clear All
+              </span>
+              <i
+                (click)="closeSidebar()"
+                class="fa fa-times text-danger cPointer fs-5 d-lg-none sidebar-close-btn"
+                title="Close"
+              ></i>
+            </div>
+          </div>
+
+          <!-- Destinations Filter -->
+          <div class="filter-section mb-4">
+            <h5
+              class="filter-title flexBetween mb-3 cPointer"
+              (click)="toggleFilterSection('destinations')"
+            >
+              <span>Destinations</span>
+              <div class="d-flex align-items-center gap-2">
+                <i
+                  (click)="removeAllDestinations(); $event.stopPropagation()"
+                  class="fa fa-trash text-danger cPointer fs-6"
+                ></i>
+                <i
+                  class="fa"
+                  [class.fa-chevron-up]="isFilterSectionOpen('destinations')"
+                  [class.fa-chevron-down]="!isFilterSectionOpen('destinations')"
+                ></i>
+              </div>
+            </h5>
+            <div class="filter-options" [class.collapsed]="!isFilterSectionOpen('destinations')">
+              <div class="form-check mb-2">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="destination"
+                  id="dest-all"
+                  value="all"
+                  [checked]="isSelectAllDestinations"
+                  (change)="selectAllDestinations()"
+                />
+                <label class="form-check-label fw-semibold" for="dest-all">
+                  Select All @if (safeDestinations && safeDestinations.length > 0) {
+                  <span class="text-muted">({{ safeDestinations.length }})</span>
+                  }
+                </label>
+              </div>
+              @if (safeDestinations && safeDestinations.length > 0) { @for (destination of
+              safeDestinations; track destination.id) {
+              <div class="form-check mb-2">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="destination"
+                  [id]="'dest-' + destination.id"
+                  [value]="destination.id"
+                  [checked]="selectedDestination === destination.id"
+                  (change)="onRadioChange('selectedDestination', destination.id)"
+                />
+                <label class="form-check-label flexBetween" [for]="'dest-' + destination.id">
+                  <span class="text-capitalize"> {{ destination.title }}</span>
+                  <span class="rounded-circle textMainColor fs-6 p-1"
+                    >({{ destination.tours_count | number : '1.0-0' }})</span
+                  >
+                </label>
+              </div>
+              } }
+            </div>
+          </div>
+
+          <!-- Tour Type Filter (Categories) -->
+          <div class="filter-section mb-4">
+            <h5
+              class="filter-title flexBetween mb-3 cPointer"
+              (click)="toggleFilterSection('categories')"
+            >
+              <span>Tour Type</span>
+              <div class="d-flex align-items-center gap-2">
+                <i
+                  (click)="removeAllCategories(); $event.stopPropagation()"
+                  class="fa fa-trash text-danger cPointer fs-6"
+                ></i>
+                <i
+                  class="fa"
+                  [class.fa-chevron-up]="isFilterSectionOpen('categories')"
+                  [class.fa-chevron-down]="!isFilterSectionOpen('categories')"
+                ></i>
+              </div>
+            </h5>
+            <div class="filter-options" [class.collapsed]="!isFilterSectionOpen('categories')">
+              <div class="form-check mb-2">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="category"
+                  id="cat-all"
+                  value="all"
+                  [checked]="isSelectAllCategories"
+                  (change)="selectAllCategories()"
+                />
+                <label class="form-check-label fw-semibold" for="cat-all">
+                  Select All @if (safeCategories && safeCategories.length > 0) {
+                  <span class="text-muted">({{ safeCategories.length }})</span>
+                  }
+                </label>
+              </div>
+              @if (safeCategories && safeCategories.length > 0) { @for (category of safeCategories;
+              track category.id) {
+              <div class="form-check mb-2">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="category"
+                  [id]="'cat-' + category.id"
+                  [value]="category.id"
+                  [checked]="selectedTripType === category.id"
+                  (change)="onRadioChange('selectedTripType', category.id)"
+                />
+                <label class="form-check-label flexBetween" [for]="'cat-' + category.id">
+                  <span class="text-capitalize"> {{ category.title }}</span>
+                  <span class="rounded-circle textMainColor fs-6 p-1"
+                    >({{ category.tours_count | number : '1.0-0' }})</span
+                  >
+                </label>
+              </div>
+              } }
+            </div>
+          </div>
+
+          <!-- Pricing Filter -->
+          <div class="filter-section mb-4">
+            <h5
+              class="filter-title flexBetween mb-3 cPointer"
+              (click)="toggleFilterSection('pricing')"
+            >
+              <span>Pricing</span>
+              <div class="d-flex align-items-center gap-2">
+                <i
+                  (click)="removeAllPrices(); $event.stopPropagation()"
+                  class="fa fa-trash text-danger cPointer fs-6"
+                ></i>
+                <i
+                  class="fa"
+                  [class.fa-chevron-up]="isFilterSectionOpen('pricing')"
+                  [class.fa-chevron-down]="!isFilterSectionOpen('pricing')"
+                ></i>
+              </div>
+            </h5>
+            <div class="price-range" [class.collapsed]="!isFilterSectionOpen('pricing')">
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">${{ minBudget }}</span>
+                <span class="text-muted">${{ maxBudget }}</span>
+              </div>
+              <div class="range-slider">
+                <input
+                  type="range"
+                  class="form-range"
+                  min="0"
+                  max="5000"
+                  step="10"
+                  [(ngModel)]="minBudget"
+                  (ngModelChange)="onPriceRangeChange()"
+                />
+                <input
+                  type="range"
+                  class="form-range mt-2"
+                  min="0"
+                  max="5000"
+                  step="10"
+                  [(ngModel)]="maxBudget"
+                  (ngModelChange)="onPriceRangeChange()"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Duration Filter -->
+          <div class="filter-section pb-0">
+            <h5
+              class="filter-title flexBetween mb-3 cPointer"
+              (click)="toggleFilterSection('duration')"
+            >
+              <span>Duration</span>
+              <div class="d-flex align-items-center gap-2">
+                <i
+                  (click)="removeAllDurations(); $event.stopPropagation()"
+                  class="fa fa-trash text-danger cPointer fs-6"
+                ></i>
+                <i
+                  class="fa"
+                  [class.fa-chevron-up]="isFilterSectionOpen('duration')"
+                  [class.fa-chevron-down]="!isFilterSectionOpen('duration')"
+                ></i>
+              </div>
+            </h5>
+            <div class="filter-options" [class.collapsed]="!isFilterSectionOpen('duration')">
+              <div class="form-check mb-2">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="duration"
+                  id="dur-all"
+                  value="all"
+                  [checked]="isSelectAllDurations"
+                  (change)="selectAllDurations()"
+                />
+                <label class="form-check-label fw-semibold" for="dur-all">
+                  Select All @if (safeDurations && safeDurations.length > 0) {
+                  <span class="text-muted">({{ safeDurations.length }})</span>
+                  }
+                </label>
+              </div>
+              @if (safeDurations && safeDurations.length > 0) { @for (duration of safeDurations;
+              track duration.id) {
+              <div class="form-check mb-2">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="duration"
+                  [id]="'dur-' + duration.id"
+                  [value]="duration.id"
+                  [checked]="selectedDuration === duration.id"
+                  (change)="onRadioChange('selectedDuration', duration.id)"
+                />
+                <label class="form-check-label flexBetween" [for]="'dur-' + duration.id">
+                  <span class="text-capitalize"> {{ duration.title }}</span>
+                  <span class="rounded-circle textMainColor fs-6 p-1"
+                    >({{ duration.tours_count | number : '1.0-0' }})</span
+                  >
+                </label>
+              </div>
+              } }
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="col-lg-9">
+        <!-- Header with Count and Controls -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-4 col-sm-6">
+            <h2 class="mb-0">
+              <span class="fw-bold textMainColor pe-2 fs-4">{{ totalItems }}</span>
+              <span class="text-muted fontsm text-capitalize fw-bold"
+                >Unforgettable Journey Await!</span
+              >
+            </h2>
+          </div>
+          <div class="col-md-2 col-sm-6">
+            <!-- sort button appear in small screens -->
+            <div class="cPointer border p-2 rounded-3 d-lg-none" (click)="toggleSidebar()">
+              <i class="fa fa-sort me-2 textMainColor"></i>
+              <span class="text-muted fontsm">Filter</span>
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-12">
+            <div class="d-flex align-items-center justify-content-md-end gap-3">
+              <!-- Sort select -->
+              <select
+                name="sortTours"
+                id="sortTours"
+                class="border p-2 rounded-3"
+                (change)="onSortChange($event)"
+              >
+                <option value="" selected>Sort By: Default</option>
+                <option value="bestseller">Best Seller</option>
+                <option value="recent">Recent</option>
+                <option value="price-low-high">Price: Low to High</option>
+                <option value="price-high-low">Price: High to Low</option>
+              </select>
+
+              <!-- Layout Toggle -->
+              <div class="btn-group" role="group">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  [class.active]="layoutType === 'grid'"
+                  (click)="setLayout('grid')"
+                  title="Grid View"
+                >
+                  <i class="fas fa-th"></i>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  [class.active]="layoutType === 'list'"
+                  (click)="setLayout('list')"
+                  title="List View"
+                >
+                  <i class="fas fa-list"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading State -->
+        @if (isLoading) {
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+        }
+
+        <!-- Tours Grid/List -->
+        @if (!isLoading && filteredTours.length > 0) {
+        <div [ngClass]="layoutType === 'grid' ? 'row g-4' : 'row g-3'">
+          @for (tour of filteredTours; track tour.id) {
+          <div [ngClass]="layoutType === 'grid' ? 'col-xl-4  col-sm-6 ' : 'col-12'">
+            <app-tour-cart [tour]="tour" [layoutType]="layoutType"></app-tour-cart>
+          </div>
+          }
+        </div>
+        }
+
+        <!-- Empty State -->
+        @if (!isLoading && filteredTours.length === 0) {
+        <div class="text-center py-5">
+          <i class="fas fa-search fa-3x text-muted mb-3"></i>
+          <h4 class="text-muted">No tours found</h4>
+          <p class="text-muted">Try adjusting your filters to see more results.</p>
+          <button class="btn btn-primary mt-3" (click)="clearAllFilters()">
+            Clear All Filters
+          </button>
+        </div>
+        }
+
+        <!-- Pagination -->
+        @if (!isLoading && filteredTours.length > 0 && totalItems > itemsPerPage) {
+        <div class="mt-4">
+          <app-pagination
+            [current_page]="paginationCurrentPage"
+            [total]="totalItems"
+            [from]="paginationFrom"
+            [to]="paginationTo"
+            [per_page]="itemsPerPage"
+            (pageChange)="onPageChange($event)"
+          ></app-pagination>
+        </div>
+        }
+      </main>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<section class="make-trip-form-section">
+  <div class="container rounded-4 overflow-hidden">
+    <div class="make-trip-form-wrapper">
+      <!-- Title -->
+      <h1 class="form-title">Customize Your Travel Package!</h1>
+
+      <!-- Search Bar -->
+      <div class="search-bar-container">
+        <form [formGroup]="destinationForm" (ngSubmit)="onSearch()" class="search-form">
+          <div class="search-input-wrapper">
+            <i class="fa fa-map-marker-alt search-icon"></i>
+            <select
+              formControlName="location"
+              class="location-select"
+              [class.invalid]="
+                destinationForm.get('location')?.invalid && destinationForm.get('location')?.touched
+              "
+            >
+              <option value="" disabled selected>Select Your Location</option>
+              @for (destination of destinationsList; track destination.id) {
+              <option [value]="destination.title">{{ destination.title }}</option>
+              }
+            </select>
+            <button
+              type="submit"
+              class="search-btn"
+              [disabled]="destinationForm.invalid || isLoading"
+            >
+              <span *ngIf="!isLoading">Search Now</span>
+              <span *ngIf="isLoading">Searching...</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Features -->
+      <div class="features-container">
+        <div class="feature-item">
+          <div class="checkmark-circle">
+            <i class="fa fa-check checkmark-icon"></i>
+          </div>
+          <span class="feature-text">Make Your Favourite Package</span>
+        </div>
+        <div class="feature-item">
+          <div class="checkmark-circle">
+            <i class="fa fa-check checkmark-icon"></i>
+          </div>
+          <span class="feature-text">Easily Customize Tours</span>
+        </div>
+        <div class="feature-item">
+          <div class="checkmark-circle">
+            <i class="fa fa-check checkmark-icon"></i>
+          </div>
+          <span class="feature-text">Enjoy Your Trip</span>
+        </div>
+      </div>
+
+      <!-- Contact Guide Button -->
+      <div class="contact-guide-container">
+        <button class="contact-guide-btn" (click)="onContactGuide()">
+          <span class="guide-text">contact our tour guider agent</span>
+          <span class="contact-text">Contact Now <i class="fa fa-arrow-up contact-arrow"></i></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

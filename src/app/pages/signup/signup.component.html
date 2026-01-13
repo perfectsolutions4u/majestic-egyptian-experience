@@ -1,0 +1,228 @@
+<section class="my-5 py-5 bg-black">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="p-4 sideBar login-card">
+          <div class="text-center">
+            <img
+              src="./assets/goFly logo.svg"
+              alt="majestic logo"
+              title="majestic logo"
+              width="200px"
+              height="70px"
+              class="logo-animation"
+            />
+            <br />
+            <p class="fs-5 my-2 text-capitalize title-animation">
+              {{ 'signup.createAccount' | translate }}
+            </p>
+          </div>
+
+          <form
+            [formGroup]="registerForm"
+            (ngSubmit)="handleRegisterForm()"
+            class="form-animation row"
+          >
+            <div class="col-md-6 mb-3 form-group-animated">
+              <label for="name" class="text-capitalize fw-bold mb-2 form-label">{{
+                'signup.fullName' | translate
+              }}</label>
+              <div class="item position-relative input-wrapper">
+                <input
+                  type="text"
+                  id="name"
+                  formControlName="name"
+                  placeholder="{{ 'signup.yourName' | translate }}"
+                  class="form-control p-2 ps-5 rounded-3 animated-input"
+                />
+                <i class="fa-regular fa-user textMainColor input-icon"></i>
+              </div>
+
+              <!-- show validators -->
+              @if (registerForm.get('name')?.errors && registerForm.get('name')?.touched) {
+              <div class="alert alert-danger mt-2">
+                @if (registerForm.get('name')?.getError('required')) {
+                <span>{{ 'signup.nameRequired' | translate }}</span>
+                }
+              </div>
+              }
+            </div>
+            <div class="col-md-6 mb-3 form-group-animated">
+              <label for="email" class="text-capitalize fw-bold mb-2 form-label">{{
+                'signup.emailAddress' | translate
+              }}</label>
+              <div class="item position-relative input-wrapper">
+                <input
+                  type="email"
+                  id="email"
+                  formControlName="email"
+                  placeholder="{{ 'login.yourEmail' | translate }}"
+                  class="form-control p-2 ps-5 rounded-3 animated-input"
+                />
+                <i class="fa-regular fa-envelope textMainColor input-icon"></i>
+              </div>
+              <!-- show validators -->
+              @if (registerForm.get('email')?.errors && registerForm.get('email')?.touched) {
+              <div class="alert alert-danger mt-2">
+                @if (registerForm.get('email')?.getError('required')) {
+                <span>{{ 'signup.emailRequired' | translate }}</span>
+                }
+              </div>
+              }
+            </div>
+
+            <div class="col-md-6 mb-3 form-group-animated">
+              <label for="password" class="text-capitalize fw-bold mb-2 form-label">{{
+                'signup.password' | translate
+              }}</label>
+              <div class="item position-relative input-wrapper">
+                <input
+                  type="password"
+                  id="password"
+                  formControlName="password"
+                  placeholder="{{ 'login.yourPassword' | translate }}"
+                  class="form-control p-2 ps-5 rounded-3 animated-input"
+                />
+                <i class="fa fa-lock textMainColor input-icon"></i>
+              </div>
+              <!-- show validators -->
+              @if ( registerForm.get('password')?.errors && registerForm.get('password')?.touched )
+              {
+              <div class="alert alert-danger mt-2">
+                @if (registerForm.get('password')?.getError('required')) {
+                <span>{{ 'signup.passwordRequired' | translate }}</span>
+                }
+              </div>
+              }
+            </div>
+
+            <div class="col-md-6 mb-3 form-group-animated">
+              <label for="password_confirmation" class="text-capitalize fw-bold mb-2 form-label">{{
+                'signup.passwordConfirmation' | translate
+              }}</label>
+              <div class="item position-relative input-wrapper">
+                <input
+                  type="password"
+                  id="password_confirmation"
+                  formControlName="password_confirmation"
+                  placeholder="{{ 'signup.passwordConfirmation' | translate }}"
+                  class="form-control p-2 ps-5 rounded-3 animated-input"
+                />
+                <i class="fa fa-lock textMainColor input-icon"></i>
+              </div>
+              <!-- show validators -->
+              @if ( registerForm.get('password_confirmation')?.errors &&
+              registerForm.get('password_confirmation')?.touched ) {
+              <div class="alert alert-danger mt-2">
+                @if (registerForm.get('password_confirmation')?.getError('required')) {
+                <span>{{ 'signup.passwordConfirmationNotMatched' | translate }} </span>
+                }
+              </div>
+              }
+            </div>
+
+            <div class="col-md-6 mb-3 form-group-animated">
+              <label for="phone" class="text-capitalize fw-bold mb-2 form-label">{{
+                'signup.phoneNumber' | translate
+              }}</label>
+              <div class="item position-relative input-wrapper">
+                <input
+                  type="tel"
+                  id="phone"
+                  formControlName="phone"
+                  placeholder="{{ 'signup.yourPhone' | translate }}"
+                  class="form-control p-2 ps-5 rounded-3 animated-input"
+                />
+                <i class="fa fa-phone textMainColor input-icon"></i>
+              </div>
+              <!-- show validators -->
+              @if (registerForm.get('phone')?.errors && registerForm.get('phone')?.touched) {
+              <div class="alert alert-danger mt-2">
+                @if (registerForm.get('phone')?.getError('required')) {
+                <span>{{ 'signup.phoneRequired' | translate }}</span>
+                }
+              </div>
+              }
+            </div>
+
+            <div class="col-md-6 mb-3 form-group-animated">
+              <label for="birthdate" class="text-capitalize fw-bold mb-2 form-label">{{
+                'signup.birthDate' | translate
+              }}</label>
+              <div class="item position-relative input-wrapper">
+                <input
+                  type="date"
+                  id="birthdate"
+                  formControlName="birthdate"
+                  class="form-control p-2 ps-5 rounded-3 animated-input"
+                  [class.filled]="!!registerForm.get('birthdate')?.value"
+                  [attr.data-placeholder]="'Birth date'"
+                />
+
+                <i class="fa-regular fa-calendar-alt textMainColor input-icon"></i>
+              </div>
+              <!-- show validators -->
+              @if ( registerForm.get('birthDate')?.errors && registerForm.get('birthDate')?.touched
+              ) {
+              <div class="alert alert-danger mt-2">
+                @if (registerForm.get('birthDate')?.getError('required')) {
+                <span>{{ 'signup.birthDateRequired' | translate }}</span>
+                }
+              </div>
+              }
+            </div>
+
+            <div class="col-12 mb-3 form-group-animated">
+              <label for="nationality" class="text-capitalize fw-bold mb-2 form-label">{{
+                'signup.nationality' | translate
+              }}</label>
+
+              <div class="item input-wrapper">
+                <select
+                  formControlName="nationality"
+                  id="nationality"
+                  class="form-control text-capitalize animated-input"
+                >
+                  <option value="" class="bg-body-secondary" selected disabled>
+                    {{ 'signup.selectNationality' | translate }}
+                  </option>
+                  @for (city of countryList; track $index) {
+                  <option [value]="city.name">{{ city.name }}</option>
+                  }
+                </select>
+              </div>
+              <!-- show validators -->
+              @if ( registerForm.get('nationality')?.errors &&
+              registerForm.get('nationality')?.touched ) {
+              <div class="alert alert-danger mt-2">
+                @if (registerForm.get('nationality')?.getError('required')) {
+                <span>{{ 'signup.nationalityRequired' | translate }}</span>
+                }
+              </div>
+              }
+            </div>
+
+            <button
+              [disabled]="registerForm.invalid"
+              type="submit"
+              class="mainBtn Btn mb-3 w-100 submit-btn"
+            >
+              @if (isLoading) {
+              <i class="fa-solid fa-spinner fa-spin me-1 border-0 bg-transparent text-white"></i>
+              }
+              <i class="fa fa-paper-plane mx-2 border-0 bg-transparent text-white"></i>
+              {{ 'signup.signUp' | translate }}
+            </button>
+          </form>
+          <p class="my-2 text-center link-text">
+            {{ 'signup.alreadyHaveAccount' | translate }}
+            <span routerLink="/login" class="textMainColor fw-bold cPointer link-hover">{{
+              'signup.login' | translate
+            }}</span>
+            .
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

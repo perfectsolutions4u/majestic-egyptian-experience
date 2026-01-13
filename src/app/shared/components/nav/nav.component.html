@@ -1,0 +1,381 @@
+<!-- Mobile Sidebar Overlay -->
+@if (sidebarOpen()) {
+<div class="sidebar-overlay" (click)="sidebarOpen.set(false)"></div>
+}
+
+<!-- Mobile Sidebar -->
+<div class="mobile-sidebar" [class.open]="sidebarOpen()">
+  <div class="sidebar-header">
+    <a routerLink="/" class="sidebar-logo" (click)="sidebarOpen.set(false)">
+      <img [src]="logo" alt="logo" title="logo" class="logo-img" />
+      <!-- <span>Majestic Travel</span> -->
+    </a>
+    <button class="close-btn" (click)="sidebarOpen.set(false)">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul class="sidebar-menu">
+      <li class="menu-item">
+        <a
+          routerLink="/"
+          (click)="sidebarOpen.set(false)"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Home
+        </a>
+      </li>
+
+      <!-- Tours Dropdown -->
+      <li class="menu-item has-submenu">
+        <a
+          (click)="toggleSubmenu('tours')"
+          class="submenu-toggle"
+          routerLink="/tour"
+          routerLinkActive="active"
+        >
+          <i [class]="expandedSubmenus().tours ? 'fas fa-minus' : 'fas fa-plus'"></i>
+          Tours
+        </a>
+        @if (expandedSubmenus().tours) {
+        <ul class="submenu">
+          @for (cat of allCategories; track cat.id) {
+          <li>
+            <a
+              routerLink="/tour"
+              [queryParams]="{ type: cat.slug }"
+              (click)="sidebarOpen.set(false)"
+              >{{ cat.title }}</a
+            >
+          </li>
+          }
+        </ul>
+        }
+      </li>
+
+      <!-- Destinations Dropdown -->
+      <li class="menu-item has-submenu">
+        <a
+          (click)="toggleSubmenu('destinations')"
+          class="submenu-toggle"
+          routerLink="/destination"
+          routerLinkActive="active"
+        >
+          <i [class]="expandedSubmenus().destinations ? 'fas fa-minus' : 'fas fa-plus'"></i>
+          Destinations
+        </a>
+        @if (expandedSubmenus().destinations) {
+        <ul class="submenu">
+          @for (des of allDestinations; track des.id) {
+          <li>
+            <a [routerLink]="['/destination', des.slug]" (click)="sidebarOpen.set(false)">{{
+              des.title
+            }}</a>
+          </li>
+          }
+        </ul>
+        }
+      </li>
+
+      <li class="menu-item">
+        <a routerLink="/about" (click)="sidebarOpen.set(false)" routerLinkActive="active">
+          About
+        </a>
+      </li>
+      <li class="menu-item">
+        <a routerLink="/blog" (click)="sidebarOpen.set(false)" routerLinkActive="active"> Blogs </a>
+      </li>
+      <li class="menu-item">
+        <a routerLink="/contact" (click)="sidebarOpen.set(false)" routerLinkActive="active">
+          Contact
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <!-- make trip  -->
+    <button
+      class="mainBtn w-100 mb-2 text-start"
+      routerLink="/makeTrip"
+      (click)="sidebarOpen.set(false)"
+      routerLinkActive="active"
+    >
+      <i class="fas fa-plane text-white me-3"></i>
+      <span>Make a Trip</span>
+    </button>
+
+    <a href="https://wa.me/91345533865" class="whatsapp-section">
+      <i class="fab fa-whatsapp"></i>
+      <span>+91 345 533 865</span>
+    </a>
+  </div>
+</div>
+
+<!-- Top Header Section -->
+<header class="top-header">
+  <div class="container">
+    <div class="row align-items-center justify-content-between">
+      <!-- Logo -->
+      <div class="col-lg-3 col-md-3 col-6">
+        <a routerLink="/" class="logo-link">
+          <img [src]="logo" alt="logo" title="logo" class="logo-img" />
+        </a>
+      </div>
+
+      <!-- Search Bar - Desktop -->
+      <div class="col-lg-6 col-md-6 d-none d-lg-block">
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            type="text"
+            class="form-control search-input"
+            placeholder="Find Your Perfect Tour Package"
+          />
+        </div>
+      </div>
+
+      <!-- Right Side Icons - Desktop -->
+      <div class="col-lg-3 col-md-3 d-none d-lg-flex justify-content-end align-items-center">
+        <!-- Language Selector -->
+        <div
+          class="language-dropdown"
+          (mouseenter)="showLanguage.set(true)"
+          (mouseleave)="showLanguage.set(false)"
+        >
+          <button class="btn language-btn" type="button">
+            <i class="fas fa-globe"></i>
+            <span>{{ getCurrentLanguageCode() }}</span>
+            <!-- <i class="fas fa-chevron-down"></i> -->
+          </button>
+          @if (showLanguage()) {
+          <div class="dropdown-menu show">
+            <a class="dropdown-item" (click)="selectLanguage('en')">
+              <span class="flag-icon">🇬🇧</span> English
+            </a>
+            <a class="dropdown-item" (click)="selectLanguage('fr')">
+              <span class="flag-icon">🇫🇷</span> French
+            </a>
+            <!-- <a class="dropdown-item" (click)="selectLanguage('ja')">
+              <span class="flag-icon">🇯🇵</span> Japanese
+            </a>
+            <a class="dropdown-item" (click)="selectLanguage('ko')">
+              <span class="flag-icon">🇰🇷</span> Korean
+            </a>
+            <a class="dropdown-item" (click)="selectLanguage('zh')">
+              <span class="flag-icon">🇨🇳</span> Chinese
+            </a> -->
+          </div>
+          }
+        </div>
+
+        <!-- Settings Dropdown -->
+        <div
+          class="settings-dropdown mx-2 border rounded-2"
+          (mouseenter)="showSettings.set(true)"
+          (mouseleave)="showSettings.set(false)"
+        >
+          <button class="btn settings-btn" type="button">
+            <i class="fas fa-cog"></i>
+          </button>
+          @if (showSettings()) {
+          <div class="dropdown-menu show">
+            @if (!isLoggedIn()) {
+            <a class="dropdown-item" routerLink="/signup"> <i class="fas fa-user"></i> Sign Up </a>
+            } @if (!isLoggedIn()) {
+            <a class="dropdown-item" routerLink="/profile"> <i class="fas fa-user"></i> Profile </a>
+            }
+            <a class="dropdown-item" routerLink="/cart">
+              <i class="fas fa-shopping-cart"></i> Cart
+            </a>
+            <a class="dropdown-item" href="https://wa.me/91345533865">
+              <i class="fab fa-whatsapp"></i> +91 345 533 865
+            </a>
+            <a class="dropdown-item" href="mailto:info@example.com">
+              <i class="fas fa-envelope"></i> Email
+            </a>
+            @if (isLoggedIn()) {
+            <a class="dropdown-item" (click)="logout()">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+            }
+          </div>
+          }
+        </div>
+
+        @if (!isLoggedIn()) {
+        <!-- login button -->
+        <button class="mainBtn" routerLink="/login"><i class="fas fa-user"></i> Login</button>
+        }
+      </div>
+
+      <!-- Mobile Icons -->
+      <div class="col-6 d-lg-none text-end">
+        <div class="mobile-icons">
+          <!-- Search Icon -->
+          <button class="btn mobile-btn border rounded-2" (click)="toggleMobileSearch()">
+            <i class="fas fa-search"></i>
+          </button>
+
+          <!-- Settings Icon -->
+          <div
+            class="settings-dropdown mobile border rounded-2"
+            (mouseenter)="showSettings.set(true)"
+            (mouseleave)="showSettings.set(false)"
+          >
+            <button class="btn mobile-btn" type="button">
+              <i class="fas fa-cog"></i>
+            </button>
+            @if (showSettings()) {
+            <div class="dropdown-menu show">
+              <a class="dropdown-item" routerLink="/signup">
+                <i class="fas fa-user"></i> Sign Up
+              </a>
+              <a class="dropdown-item" routerLink="/profile">
+                <i class="fas fa-user"></i> Profile
+              </a>
+              <a class="dropdown-item" routerLink="/cart">
+                <i class="fas fa-shopping-cart"></i> Cart
+              </a>
+              <a class="dropdown-item" href="https://wa.me/91345533865">
+                <i class="fab fa-whatsapp"></i> +91 345 533 865
+              </a>
+              <a class="dropdown-item" href="mailto:info@example.com">
+                <i class="fas fa-envelope"></i> Email
+              </a>
+            </div>
+            }
+          </div>
+
+          <!-- Language Selector - Mobile -->
+          <div
+            class="language-dropdown mobile border rounded-2"
+            (mouseenter)="showLanguage.set(true)"
+            (mouseleave)="showLanguage.set(false)"
+          >
+            <button class="btn mobile-btn" type="button">
+              <!-- <i class="fas fa-globe"></i> -->
+              <span>{{ getCurrentLanguageCode() }}</span>
+            </button>
+            @if (showLanguage()) {
+            <div class="dropdown-menu show">
+              <a class="dropdown-item" (click)="selectLanguage('en')">
+                <span class="flag-icon">🇬🇧</span> English
+              </a>
+              <a class="dropdown-item" (click)="selectLanguage('fr')">
+                <span class="flag-icon">🇫🇷</span> French
+              </a>
+            </div>
+            }
+          </div>
+
+          <!-- Hamburger Menu -->
+          <button class="btn mobile-btn border rounded-2" (click)="sidebarOpen.set(true)">
+            <!-- <i class="fas fa-bars"></i> -->
+            <svg width="20" height="18" viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M1.29445 2.8421H10.5237C11.2389 2.8421 11.8182 2.2062 11.8182 1.42105C11.8182 0.635903 11.2389 0 10.5237 0H1.29445C0.579249 0 0 0.635903 0 1.42105C0 2.2062 0.579249 2.8421 1.29445 2.8421Z"
+              ></path>
+              <path
+                d="M1.23002 10.421H18.77C19.4496 10.421 20 9.78506 20 8.99991C20 8.21476 19.4496 7.57886 18.77 7.57886H1.23002C0.550421 7.57886 0 8.21476 0 8.99991C0 9.78506 0.550421 10.421 1.23002 10.421Z"
+              ></path>
+              <path
+                d="M18.8052 15.1579H10.2858C9.62563 15.1579 9.09094 15.7938 9.09094 16.5789C9.09094 17.3641 9.62563 18 10.2858 18H18.8052C19.4653 18 20 17.3641 20 16.5789C20 15.7938 19.4653 15.1579 18.8052 15.1579Z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Search Bar -->
+    @if (mobileSearchOpen()) {
+    <div class="row d-lg-none mt-3">
+      <div class="col-12">
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            type="text"
+            class="form-control search-input"
+            placeholder="Find Your Perfect Tour Package"
+          />
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</header>
+
+<!-- Main Navigation Bar - Desktop -->
+<nav class="main-navbar d-none d-lg-block">
+  <div class="container">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Home</a
+        >
+      </li>
+
+      <!-- Tours Dropdown -->
+      <li
+        class="nav-item dropdown"
+        (mouseenter)="showTours.set(true)"
+        (mouseleave)="showTours.set(false)"
+      >
+        <a class="nav-link dropdown-toggle" routerLink="/tour" routerLinkActive="active">Tours</a>
+        @if (showTours()) {
+        <ul class="dropdown-menu show">
+          @for (cat of allCategories; track cat.id) {
+          <li>
+            <a class="dropdown-item" routerLink="/tour" [queryParams]="{ type: cat.slug }">{{
+              cat.title
+            }}</a>
+          </li>
+          }
+        </ul>
+        }
+      </li>
+
+      <!-- Destinations Dropdown -->
+      <li
+        class="nav-item dropdown"
+        (mouseenter)="showDestinations.set(true)"
+        (mouseleave)="showDestinations.set(false)"
+      >
+        <a class="nav-link dropdown-toggle" routerLink="/destination" routerLinkActive="active"
+          >Destinations</a
+        >
+        @if (showDestinations()) {
+        <ul class="dropdown-menu show">
+          @for (des of allDestinations; track des.id) {
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="/destination"
+              [queryParams]="{ location: des.slug }"
+              >{{ des.title }}</a
+            >
+          </li>
+          }
+        </ul>
+        }
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/about" routerLinkActive="active">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/blog" routerLinkActive="active">Blogs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact</a>
+      </li>
+    </ul>
+  </div>
+</nav>

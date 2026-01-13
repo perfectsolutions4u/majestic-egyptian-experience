@@ -1,0 +1,20 @@
+@use '../../../styles/variables.scss' as *;
+.tour{
+  h3{
+    font-size: 18px;
+    height: 45px;
+    color: $text-color;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+  }
+
+  &:hover{
+    h3{color: $primary-color;}
+
+  }
+}

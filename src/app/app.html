@@ -1,0 +1,21 @@
+<div class="d-flex flex-column min-vh-100 justify-content-between">
+  <app-nav></app-nav>
+  <router-outlet></router-outlet>
+  <app-footer></app-footer>
+</div>
+
+<!-- what's app icon -->
+<app-whatsapp-icon></app-whatsapp-icon>
+
+<!-- spinner - only show in browser (not SSR) -->
+@if (isBrowser()) {
+<ngx-spinner
+  bdColor="rgba(0,0,0,0.98)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+  [fullScreen]="true"
+>
+  <p style="color: white; margin-top: 20px">Loading...</p>
+</ngx-spinner>
+}

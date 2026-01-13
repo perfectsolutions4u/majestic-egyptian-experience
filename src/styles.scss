@@ -1,0 +1,233 @@
+@use './app/styles/variables.scss' as *;
+
+// google fonts
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');/* You can add global styles to this file, and also import other style files */
+
+body{
+  font-family: $bady-font;
+
+  p{font-family: $paragraph-font;}
+}
+.Btn{
+  // background-color: $primary-color;
+  color: #fff;
+  border-radius: $border-radius;
+  border: none;
+  padding: 0.5rem 1rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+  i{transition: $transition-fast;}
+  &::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    // background-color: $second-color;
+    z-index:-1;
+    transform: translateY(100%);
+    transition: $transition;
+}
+  &:hover{
+    &::after{
+      transform: translateY(0);
+    }
+    i{rotate: 360deg;}
+  }
+}
+.mainBtn{
+  @extend .Btn;
+  background: linear-gradient(to right, $primary-color, $primary-white-color);
+  &::after{
+    background-color: $second-color;
+  }
+
+}
+.secBtn{
+  @extend .Btn;
+  background-color: $second-color;
+  &::after{
+    background-color: $primary-color;
+  }
+
+}
+.cPointer{
+  cursor: pointer;
+}
+
+.border{
+  border: $border !important;
+}
+
+.textMainColor{
+  color: $primary-color !important;
+}
+
+.textSecondColor{
+  color: $second-color !important;
+}
+
+.text-color{
+  color: $text-color !important;
+}
+
+.text-color-secondary{
+  color: $text-color-secondary !important;
+}
+
+.bgMainColor{
+  background-color: $primary-color !important;
+}
+
+.bgSecondColor{
+  background-color: $second-color !important;
+}
+
+.bg-color{
+  background-color: $text-color !important;
+}
+
+.flexCenter{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flexBetween{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.transition{transition: $transition; }
+.transition-fast{transition: $transition-fast; }
+
+.fontsm{
+  font-size: 14px;
+}
+
+.mainTitle{
+  text-align: center;
+  margin-bottom: 2.2rem;
+  h2{
+    font-size: 2rem;
+    font-weight: 600;
+    color: $text-color;
+  }
+  p{
+
+    font-weight: 400;
+    color: $text-color-secondary;
+  }
+}
+
+figure.img-Hover{
+  &::after{
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 0%;
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: 1;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    transition: $transition-fast;
+  }
+  &:hover{
+    &::after{
+      height: 250%;
+      background-color: transparent;
+      transition: $transition;
+    }
+    img{
+      transform: scale(1.1);
+    }
+  }
+}
+
+.owl-theme .owl-nav [class*=owl-]{
+  color: $primary-color;
+  font-size: 14px;
+  background-color: #fff;
+  color: $primary-color;
+  border-radius: 50%;
+  padding: 0.25rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  border: $border;
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  &.owl-prev{
+    left: -20px;
+  }
+  &.owl-next{
+    right: -20px;
+  }
+  &:hover{
+    background-color: $primary-color;
+    color: #fff;
+  }
+
+  @media (max-width: 586px) {
+    &.owl-prev{
+      left: 0px;
+    }
+    &.owl-next{
+      right: 0px;
+    }
+  }
+}
+
+.owl-theme .owl-dots{
+  margin-top: 20px;
+  .owl-dot{
+
+    &.active{
+      span{
+        width: 30px !important;
+        background-color: $primary-color;
+      }
+    }
+  }
+}
+
+
+// end global style
+
+// Material Datepicker z-index fix for Bootstrap modals
+// Bootstrap modal z-index: 1050, backdrop: 1040
+// Ensure datepicker appears above modal
+.cdk-overlay-container {
+  z-index: 11000 !important;
+}
+
+.cdk-overlay-pane {
+  &.mat-datepicker-popup,
+  &[class*="mat-datepicker"] {
+    z-index: 11000 !important;
+  }
+}
+
+.mat-datepicker-popup {
+  z-index: 11000 !important;
+}
+
+// Ensure modal backdrop doesn't interfere with datepicker
+.modal-backdrop.show {
+  z-index: 1040 !important; // Keep backdrop below datepicker
+}
+
+// start project style
+
+// .our-tours{
+
+// }
+

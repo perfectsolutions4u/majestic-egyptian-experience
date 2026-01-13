@@ -1,0 +1,35 @@
+<app-banner
+  [title]="'Shopping Cart'"
+  [subtitle]="'Life is better with a full cart.'"
+  [backgroundImage]="backgroundImage"
+></app-banner>
+
+<section class="my-5">
+  <div class="container mx-auto text-center">
+    <h3 class="h1">Shopping Cart</h3>
+    <p>
+      Your cart have <span class="textMainColor">{{ tourCart.length }}</span> items to book
+    </p>
+    @if (haveData) {
+    <div class="row g-3 my-4">
+      @for (cart of tourCart; track $index) {
+      <div class="col-md-6 col-lg-4">
+        <app-tour-cart [tour]="cart.tour"></app-tour-cart>
+      </div>
+      }
+    </div>
+
+    } @else {
+    <div class="text-center">
+      <p class="fs-2 textMainColor">Your cart is empty</p>
+    </div>
+    }
+
+    <div class="text-center flexCenter gap-3 mt-4">
+      <button class="secBtn" (click)="clearTourCart()">Clear Cart</button>
+      <button class="btn-success btn py-2 px-3 text-white rounded-3" [routerLink]="['/checkout']">
+        Checkout
+      </button>
+    </div>
+  </div>
+</section>

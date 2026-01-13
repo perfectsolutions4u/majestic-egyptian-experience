@@ -1,0 +1,97 @@
+<app-banner
+  [title]="destination.title"
+  [subtitle]="'Explore destination information'"
+  [backgroundImage]="backgroundImage"
+></app-banner>
+
+<section class="my-5">
+  <!-- gallery -->
+  <div class="container-fluid px-4">
+    @if (destination.gallery) {
+    <owl-carousel-o [options]="galleryOptions">
+      @for (image of destination.gallery; track image) {
+      <ng-template carouselSlide>
+        <figure class="img-Hover mb-0 overflow-hidden rounded-3 position-relative">
+          <img [src]="image" height="300" [alt]="destination.title" class="w-100 transition" />
+        </figure>
+      </ng-template>
+      }
+    </owl-carousel-o>
+    }
+  </div>
+  <!-- description -->
+  <div class="container">
+    <div class="my-5">
+      <div class="mainTitle mb-5">
+        <h2 class="text-capitalize mb-3 text-color h4">{{ destination.title }}</h2>
+        <div
+          class="text-color-secondary fontsm"
+          [innerHTML]="sanitizer.bypassSecurityTrustHtml(destination.description)"
+        ></div>
+      </div>
+
+      <!-- related tours -->
+      @if (relatedTours.length > 0) {
+      <div class="related-tours">
+        <div class="mainTitle">
+          <h2 class="text-capitalize mb-3 text-color h4">
+            Related Tours For {{ destination.title }}
+          </h2>
+          <p>A curated list of the most popular travel packages based on different destinations.</p>
+        </div>
+        <owl-carousel-o [options]="relatedToursOptions">
+          @for (tour of relatedTours; track tour.id) {
+          <ng-template carouselSlide>
+            <app-tour-cart [tour]="tour"></app-tour-cart>
+          </ng-template>
+          }
+        </owl-carousel-o>
+      </div>
+      }@else {
+      <p class="text-muted mb-0 fs-3 text-capitalize">No related tours available at the moment.</p>
+      }
+
+      <!--  -->
+    </div>
+  </div>
+</section>
+
+<!-- why choose us -->
+<app-why-choose-us></app-why-choose-us>
+
+<!-- gallery -->
+<section class="my-5 special-gallery">
+  <div class="container-fluid">
+    <div class="mainTitle">
+      <h2 class="text-capitalize mb-3 text-color h4">Recent Customer Experience</h2>
+    </div>
+    <owl-carousel-o [options]="newGalleryOptions">
+      @for (image of destination.gallery; track image) {
+      <ng-template carouselSlide>
+        <figure class="customer-experience-img mb-0 overflow-hidden rounded-3 position-relative">
+          <img [src]="image" [alt]="destination.title" class="w-100 h-100 transition" />
+        </figure>
+      </ng-template>
+      }
+    </owl-carousel-o>
+  </div>
+</section>
+
+<!-- blogs -->
+<section class="my-5 pt-5">
+  <div class="container">
+    <div class="mainTitle">
+      <h2 class="text-capitalize mb-3 text-color h4">Recent Blogs</h2>
+    </div>
+
+    @if (recentBlogs.length > 0) {
+    <owl-carousel-o [options]="blogsOptions">
+      @for (blog of recentBlogs; track blog.id) {
+      <ng-template carouselSlide>
+        <app-blog-cart [blog]="blog"></app-blog-cart>
+      </ng-template>
+      }
+    </owl-carousel-o>
+    }
+  </div>
+</section>

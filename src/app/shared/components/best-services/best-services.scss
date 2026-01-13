@@ -1,0 +1,43 @@
+@use '../../../styles/variables.scss' as *;
+.best-services{
+  .container{
+    padding-top: 50px ;
+    padding-bottom: 50px ;
+    background-color: #F2F2FF;
+  }
+  .mainTitle{
+    border-bottom: 1px solid #E0E0E0;
+  }
+
+  .row{
+    h3{font-size: 20px !important;}
+    p{font-size: 14px !important;}
+    svg{
+      fill: #000 !important;
+      padding: 5px;
+      border-radius: 50%;
+      width: 40px !important;
+      height: 40px !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #ffb52a !important;
+
+
+    }
+    & .col-lg-4:nth-child(2) svg {
+      background-color: $primary-color !important;
+    }
+  }
+
+  .discount{
+    max-width: 450px;
+  }
+
+  @media screen and (max-width: 576px) {
+    .discount{
+      width: 100%;
+    }
+  }
+
+}

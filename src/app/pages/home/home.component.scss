@@ -1,0 +1,447 @@
+@use '../../styles/variables.scss' as *;
+
+main{
+
+  margin-bottom: 50px;
+  .video-box{
+    position: relative;
+    width: 100%;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    video{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    .video-overlay{
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none; // Allow clicks to pass through
+
+      & > div {
+        pointer-events: auto; // Re-enable clicks for content
+        z-index: 3;
+        position: relative;
+      }
+
+      h2{
+        font-size: 3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+      p{
+        font-size: 1.5rem;
+        font-weight: 400;
+      }
+
+    }
+
+    @media (max-width: 768px) {
+      min-height: 70vh;
+
+      .video-overlay{
+        & > div{ width: 100% !important; padding: 0 1rem; }
+        h2{
+          font-size: 2rem;
+        }
+        p{
+          font-size: 1rem;
+        }
+      }
+    }
+
+    @media (max-width: 576px) {
+      min-height: 60vh;
+      .video-overlay{
+        & > div{ width: 100% !important; padding: 0 1rem; }
+        h2{
+          font-size: 1.2rem;
+        }
+        p{
+          font-size: 0.7rem;
+        }
+      }
+    }
+  }
+
+  .formBox{
+    transform: translateY(15px);
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.98) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 1200px;
+    margin: -80px auto 0 auto;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+
+
+    @media(max-width: 1200px){
+      max-width: 95%;
+      padding: 1.5rem !important;
+    }
+
+    @media (max-width: 992px) {
+      // max-width: 100%;
+      margin: -60px 1rem 0 1rem;
+      padding: 1.5rem !important;
+      border-radius: 1rem !important;
+    }
+
+    @media (max-width: 576px) {
+      margin: -40px 0.5rem 0 0.5rem;
+      padding: 1rem !important;
+      border-radius: 0.75rem !important;
+    }
+
+
+
+    &:hover {
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+      transform: translateY(8px);
+      -webkit-transform: translateY(8px);
+      -moz-transform: translateY(8px);
+      -ms-transform: translateY(8px);
+      -o-transform: translateY(8px);
+}
+
+    // Modern gradient border effect
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 1.5rem;
+      padding: 2px;
+      // background: linear-gradient(135deg, $second-color, $primary-color);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    &:hover::before {
+      opacity: 0.3;
+    }
+
+    form{
+      // Responsive form layout
+      @media (max-width: 768px) {
+        .col-md-3,
+        .col-md-6 {
+          margin-bottom: 1rem;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .col-md-3,
+        .col-md-6 {
+          width: 100%;
+          margin-bottom: 1rem;
+        }
+      }
+
+      // Remove all borders and outlines from select elements
+      select{
+        display: block;
+        width: 100%;
+        transition: all 0.3s ease;
+        background-color: transparent;
+        border: 0 !important;
+        outline: none !important;
+        box-shadow: none !important;
+
+        &:focus{
+          border: 0 !important;
+          outline: none !important;
+          box-shadow: none !important;
+        }
+
+        &:hover {
+          border: 0 !important;
+          outline: none !important;
+        }
+
+        &:active {
+          border: 0 !important;
+          outline: none !important;
+        }
+      }
+
+      // Remove all borders and outlines from input elements
+      input{
+        border: 0 !important;
+        outline: none !important;
+        box-shadow: none !important;
+
+        &:focus{
+          outline: none !important;
+          border: 0 !important;
+          box-shadow: none !important;
+        }
+
+        &:hover {
+          border: 0 !important;
+          outline: none !important;
+        }
+
+        &:active {
+          border: 0 !important;
+          outline: none !important;
+        }
+      }
+
+      // Remove borders from Material form fields
+      ::ng-deep mat-form-field {
+        .mat-mdc-text-field-wrapper {
+          border: none !important;
+          outline: none !important;
+        }
+
+        .mat-mdc-form-field-focus-overlay {
+          display: none !important;
+        }
+
+        .mdc-text-field {
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;
+        }
+
+        .mat-mdc-form-field-underline,
+        .mdc-line-ripple {
+          display: none !important;
+        }
+
+        .mat-mdc-select {
+          border: none !important;
+          outline: none !important;
+        }
+
+        .mat-mdc-input-element {
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;
+
+          &:focus {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+          }
+        }
+
+        &.mat-focused {
+          .mat-mdc-text-field-wrapper {
+            border: none !important;
+            outline: none !important;
+          }
+        }
+      }
+
+      // Additional Material form field styles
+      ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+        display: none !important;
+      }
+
+      .item {
+        position: relative;
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          right: -30px;
+          top: 70%;
+          transform: translateY(-50%);
+          width: 1px;
+          height: 60%;
+          background: linear-gradient(to bottom, transparent, $second-color, transparent);
+          z-index: 1;
+          opacity: 0.3;
+        }
+
+        @media (max-width: 1200px) {
+          &::after {
+            right: -16px;
+            top: 70%;
+          }
+        }
+
+        @media (max-width: 992px) {
+          &::after {
+            display: none;
+          }
+        }
+      }
+
+      // Enhanced input fields styling
+      .bg-secondary {
+        background: linear-gradient(135deg, rgba($second-color, 0.05), rgba($primary-color, 0.05)) !important;
+        border: 1px solid rgba($second-color, 0.1);
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: linear-gradient(135deg, rgba($second-color, 0.1), rgba($primary-color, 0.1)) !important;
+          border-color: rgba($second-color, 0.3);
+        }
+
+        label {
+          color: $second-color;
+          font-weight: 600;
+          transition: all 0.3s ease;
+
+          i {
+            color: $second-color;
+            transition: all 0.3s ease;
+          }
+        }
+
+        &:focus-within {
+          border-color: $second-color;
+          box-shadow: 0 0 0 3px rgba($second-color, 0.1);
+
+          label {
+            color: $second-color;
+
+            i {
+              transform: scale(1.1);
+              color: $primary-color;
+            }
+          }
+        }
+      }
+
+
+    }
+  }
+
+  ::ng-deep {
+    .mdc-tab{padding: 0 4px !important;}
+    .mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs>.mat-mdc-tab-header .mat-mdc-tab{
+      flex-grow: 0 !important;
+    }
+
+  .mat-mdc-tab-body-content{
+    overflow: hidden !important;
+  }
+
+  .mat-mdc-tab .mdc-tab-indicator__content--underline{
+    border-color: $second-color;
+    border-width: 3px;
+    transition: all 0.3s ease;
+  }
+
+ .mat-mdc-tab{
+   transition: all 0.3s ease;
+   border-radius: 8px 8px 0 0;
+   margin-right: 5px;
+
+   &:hover{
+     .mdc-tab__ripple::before {
+       opacity: .1;
+       background-color: $second-color;
+     }
+     .mdc-tab__text-label{
+       color: $second-color;
+       transform: translateY(-2px);
+     }
+     background-color: rgba($second-color, 0.05);
+   }
+ }
+
+  .mat-mdc-tab.mdc-tab--active{
+    background: linear-gradient(135deg, $second-color, $primary-color);
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 4px 15px rgba($second-color, 0.3);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+
+    .mdc-tab__text-label{
+      color: #fff;
+      font-weight: 600;
+    }
+    .mdc-tab-indicator__content--underline{
+      border-color: #fff;
+      padding-bottom: 3px;
+      border-width: 3px;
+    }
+
+    &:hover {
+      box-shadow: 0 6px 20px rgba($second-color, 0.4);
+      transform: translateY(-3px);
+    }
+  }
+
+  .mat-mdc-tab-label-container{
+    overflow: visible !important;
+    transform: translateY(-73px);
+   }
+    .mat-mdc-tab-header{
+      overflow: visible !important;
+      height: 0px !important;
+    }
+    .mat-mdc-tab .mdc-tab__text-label{
+      color: white !important;
+    }
+
+    .mat-mdc-radio-button .mdc-radio__native-control:enabled:checked+.mdc-radio__background>.mdc-radio__outer-circle {
+      border-color: $primary-color !important;
+    }
+
+    .mat-mdc-radio-button .mdc-radio__native-control:enabled:checked+.mdc-radio__background>.mdc-radio__inner-circle {
+      background-color: $primary-color !important;
+    }
+  }
+
+
+}
+
+.category-cart{
+  figure{ height: 200px; transition: $transition; -webkit-transition: $transition; -moz-transition: $transition; -ms-transition: $transition; -o-transition: $transition; }
+  figcaption{
+    padding-bottom: 0 !important;
+    h3{ margin-bottom: 0px; }
+    h4{ margin-bottom: 0; transform:translateY(40px) ; -webkit-transform:translateY(40px) ; -moz-transform:translateY(40px) ; -ms-transform:translateY(40px) ; -o-transform:translateY(40px) ; }
+   }
+  &:hover{
+    figure{
+      height: 160px;
+    }
+    figcaption{
+      h3,h4{color: $primary-color;}
+      h3{ margin-bottom: 4px; }
+      h4{ margin-bottom: 4px; transform: translateY(0px); -webkit-transform: translateY(0px); -moz-transform: translateY(0px); -ms-transform: translateY(0px); -o-transform: translateY(0px); }
+
+      }
+  }
+}
+
+
+
+
+

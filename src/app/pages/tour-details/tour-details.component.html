@@ -1,0 +1,985 @@
+@if (!tour) {
+<div class="loading d-flex justify-content-center align-items-center">
+  <div class="spinner-border text-dark" role="status">
+    <span class="visually-hidden text-dark">Loading...</span>
+  </div>
+</div>
+} @if (tour) {
+<section class="details-banner">
+  <figure class="overflow-hidden position-relative">
+    <img
+      [src]="backgroundImage"
+      class="w-100"
+      [alt]="tour.title"
+      [title]="tour.title"
+      loading="lazy"
+    />
+    <figcaption class="flexCenter">
+      <div class="text-center text-white">
+        <h6>
+          @if (totalPrice > 0) { Starting From
+          <span class="fs-5 fw-bold">{{ totalPrice | currency }}</span> /per person } @else {
+          Starting From <span class="fs-5 fw-bold">{{ tour.start_from | currency }}</span> /per
+          person }
+        </h6>
+        <h1 class="text-white text-capitalize my-3">{{ tour.title }}</h1>
+        <div class="info">
+          <span> {{ tour.duration }} </span>
+          @if (tour.destinations && tour.destinations.length > 0) {
+          <span> | {{ tour.destinations[0].tours_count }} destinations </span>
+          } @if (tour.categories && tour.categories.length > 0) {
+          <span> | {{ tour.categories[0].tours_count }} categories </span>
+          }
+        </div>
+      </div>
+    </figcaption>
+  </figure>
+</section>
+
+<section class="my-5 tour-details">
+  <div class="container">
+    <div class="row g-3 justify-content-between">
+      <div class="col-lg-8">
+        <div>
+          <!-- description -->
+          <div class="description">
+            <h2 class="text-capitalize mb-3 text-color h4">About Tour Package</h2>
+            <p class="text-color-secondary fontsm">{{ tour.overview_text }}</p>
+
+            <div class="row g-3 my-4 border p-3 rounded-3">
+              <div class="col-md-4">
+                <div class="d-flex align-items-center">
+                  <i class="fa fa-calendar-days me-3 textSecondColor"></i>
+                  <div class="">
+                    <h6 class="mb-0">Duration</h6>
+                    <span class="text-color-secondary fontsm">{{ tour.duration }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="d-flex align-items-center">
+                  <i class="fa fa-calendar-days me-3 textSecondColor"></i>
+                  <div>
+                    <h6 class="mb-0">Type</h6>
+                    <span class="text-color-secondary fontsm">{{ tour.type }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="d-flex align-items-center">
+                  <i class="fa fa-calendar-days me-3 textSecondColor"></i>
+                  <div>
+                    <h6 class="mb-0">Run</h6>
+                    <span class="text-color-secondary fontsm">{{ tour.run }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- gallery -->
+          <div class="mb-5">
+            <h2 class="text-capitalize mb-3 text-color h4">Explore Gallery</h2>
+            <owl-carousel-o [options]="galleryOptions">
+              @if (tour && tour.gallery && tour.gallery.length > 0) { @for (image of tour.gallery;
+              track $index) {
+              <ng-template carouselSlide>
+                <figure class="img-Hover mb-0 overflow-hidden rounded-3">
+                  <img
+                    [src]="image"
+                    [alt]="tour.title"
+                    height="150"
+                    class="w-100 transition"
+                    loading="lazy"
+                  />
+                </figure>
+              </ng-template>
+              } }
+            </owl-carousel-o>
+          </div>
+
+          <!-- highlights -->
+          <div class="mb-5">
+            <h2 class="text-capitalize mb-3 text-color h4">
+              Highlights of <span class="textMainColor mx-1">{{ tour.title }}</span>
+            </h2>
+            @if (tour.highlights) {
+            <div class="border p-3 rounded-3">
+              <div class="d-flex align-items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                  <path
+                    fill="#1781FE"
+                    d="M15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15V16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16V15C11.866 15 15 11.866 15 8Z"
+                  ></path>
+                  <path
+                    fill="#1781FE"
+                    d="M11.6947 6.45795L7.24644 10.9086C7.17556 10.9771 7.08572 11.0126 6.99596 11.0126C6.9494 11.0127 6.90328 11.0035 6.86027 10.9857C6.81727 10.9678 6.77822 10.9416 6.7454 10.9086L4.3038 8.46699C4.16436 8.32987 4.16436 8.10539 4.3038 7.96595L5.16652 7.10083C5.29892 6.96851 5.53524 6.96851 5.66764 7.10083L6.99596 8.42915L10.3309 5.09179C10.3638 5.05887 10.4028 5.03274 10.4457 5.01489C10.4887 4.99705 10.5347 4.98784 10.5812 4.98779C10.6757 4.98779 10.7656 5.02563 10.8317 5.09179L11.6944 5.95699C11.8341 6.09643 11.8341 6.32091 11.6947 6.45795Z"
+                  ></path>
+                </svg>
+                <span class="text-color-secondary fontsm">{{
+                  tour.highlights || 'No highlights found'
+                }}</span>
+              </div>
+            </div>
+            }
+          </div>
+
+          <!-- itinerary -->
+          <div class="mb-5">
+            <h2 class="text-capitalize mb-3 text-color h4">tour Itinerary</h2>
+            @if (tour && tour.days && tour.days.length > 0) {
+            <div class="faq-accordion">
+              @for (day of tour.days; track day.id; let i = $index) {
+              <div class="faq-item" [class.active]="isOpen(i)">
+                <button
+                  type="button"
+                  class="faq-question"
+                  (click)="toggleItinerary(i)"
+                  [attr.aria-expanded]="isOpen(i)"
+                >
+                  <span class="faq-question-text">{{ day.title || 'Day ' + (i + 1) }}</span>
+                  <span class="faq-icon">
+                    @if (isOpen(i)) {
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M6 3L10 7H2L6 3Z" fill="currentColor" transform="rotate(180 6 6)" />
+                    </svg>
+                    } @else {
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M6 3L10 7H2L6 3Z" fill="currentColor" />
+                    </svg>
+                    }
+                  </span>
+                </button>
+                @if (isOpen(i) && day.safeDescription) {
+                <div class="faq-answer">
+                  <div [innerHTML]="day.safeDescription"></div>
+                </div>
+                }
+              </div>
+              }
+            </div>
+            } @else {
+            <div class="border p-3 rounded-3">
+              <p class="text-muted mb-0">No itinerary available at the moment.</p>
+            </div>
+            }
+          </div>
+
+          <!-- included & excluded -->
+          <div class="mb-5">
+            <h2 class="text-capitalize mb-3 text-color h4">Package Features List</h2>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="">
+                  <h6 class="mb-3 text-capitalize">Included features</h6>
+                  <ul class="list-unstyled">
+                    @for (include of includedList; track $index) {
+                    <li class="d-flex gap-2 mb-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="flex-shrink-0"
+                        width="16"
+                        height="20"
+                        viewBox="0 0 16 14"
+                      >
+                        <path
+                          fill="#1781FE"
+                          d="M15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15V16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16V15C11.866 15 15 11.866 15 8Z"
+                        ></path>
+                        <path
+                          fill="#1781FE"
+                          d="M11.6947 6.45795L7.24644 10.9086C7.17556 10.9771 7.08572 11.0126 6.99596 11.0126C6.9494 11.0127 6.90328 11.0035 6.86027 10.9857C6.81727 10.9678 6.77822 10.9416 6.7454 10.9086L4.3038 8.46699C4.16436 8.32987 4.16436 8.10539 4.3038 7.96595L5.16652 7.10083C5.29892 6.96851 5.53524 6.96851 5.66764 7.10083L6.99596 8.42915L10.3309 5.09179C10.3638 5.05887 10.4028 5.03274 10.4457 5.01489C10.4887 4.99705 10.5347 4.98784 10.5812 4.98779C10.6757 4.98779 10.7656 5.02563 10.8317 5.09179L11.6944 5.95699C11.8341 6.09643 11.8341 6.32091 11.6947 6.45795Z"
+                        ></path>
+                      </svg>
+                      <span class="text-color-secondary fontsm">{{ include }}</span>
+                    </li>
+                    }
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="">
+                  <h6 class="mb-3 text-capitalize">Excluded features</h6>
+                  <ul class="list-unstyled">
+                    @for (exclude of excludedList; track $index) {
+                    <li class="d-flex gap-2 mb-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="flex-shrink-0"
+                        width="16"
+                        height="20"
+                        viewBox="0 0 16 14"
+                      >
+                        <g>
+                          <path
+                            fill="#FF3927"
+                            d="M15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15C11.866 15 15 11.866 15 8ZM16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8Z"
+                          ></path>
+                          <path
+                            fill="#FF3927"
+                            d="M6.00165 5.00036C5.8601 5.00368 5.72612 5.05514 5.62413 5.15703L5.1296 5.65267C4.89714 5.88495 4.92646 6.28828 5.19443 6.55662L6.67129 8.03561L5.19443 9.51394C4.92646 9.78219 4.89704 10.1856 5.1296 10.4184L5.62413 10.9136C5.8566 11.1458 6.2592 11.117 6.52753 10.8486L8.0044 9.36982L9.48126 10.8486C9.74978 11.117 10.1527 11.1458 10.3847 10.9136L10.8799 10.4184C11.1119 10.1857 11.0831 9.78228 10.8145 9.51394L9.33769 8.03561L10.8145 6.55662C11.0831 6.28828 11.1119 5.88495 10.8799 5.65267L10.3847 5.15703C10.1527 4.92429 9.74978 4.9537 9.48126 5.22241L8.0044 6.70084L6.52753 5.2225C6.37677 5.07109 6.18321 4.99594 6.00165 5.00036Z"
+                          ></path>
+                        </g>
+                      </svg>
+                      <span class="text-color-secondary fontsm">{{ exclude }}</span>
+                    </li>
+                    }
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- faq -->
+          <div class="mb-5">
+            <h2 class="text-capitalize mb-3 text-color h4">Frequently Asked & Question</h2>
+            <app-faq-content></app-faq-content>
+          </div>
+
+          <!-- reviews -->
+          <div class="mb-5 reviews">
+            <h2 class="text-capitalize mb-3 text-color h4">Customer Review & Rating</h2>
+            <div class="border p-3 rounded-3 text-center py-4">
+              <h5 class="text-capitalize h5 mb-0">very good</h5>
+              <span class="rating-number fw-bolder">5.0</span>
+              <div class="rating text-warning fontsm mb-3 mx-auto">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+              </div>
+
+              <button
+                data-bs-toggle="modal"
+                data-bs-target="#writeReviewModal"
+                type="button"
+                class="mainBtn"
+              >
+                @if (isLoading) {
+                <span class="spinner-border spinner-border-sm ms-2"></span>
+                } @else { Write a Review }
+              </button>
+            </div>
+
+            <div class="border p-3 rounded-3 text-center py-4 my-3">
+              @if (reviews.length > 0) { @for (review of reviews; track review.id) {
+              <div class="review mb-3">
+                <h5 class="text-capitalize h5 mb-0">{{ review.reviewer_name }}</h5>
+                <span class="rating-number fw-bolder">{{ review.rate }}</span>
+                <div class="rating text-warning fontsm mb-3 mx-auto">
+                  @for (i of [1, 2, 3, 4, 5]; track i) {
+                  <i class="fa fa-star"></i>
+                  }
+                </div>
+                <p class="text-muted mb-0">{{ review.content }}</p>
+                <p class="text-muted mb-0">{{ review.created_at | date : 'dd/MM/yyyy' }}</p>
+              </div>
+              } } @else {
+              <p class="text-muted mb-0">No reviews available at the moment.</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div>
+          <!-- booking form -->
+          <div class="bookingBox border pt-4 pb-3 px-3 rounded-3 mb-4">
+            <p class="text-capitalize mb-1">Starting From</p>
+            <h5 class="text-capitalize">
+              @if (totalPrice > 0) {
+              <b class="textMainColor fs-3 mb-4">{{ totalPrice | currency }}</b>
+              } @else {
+              <b class="textMainColor fs-3 mb-4">{{ tour.start_from | currency }}</b>
+              }
+              <span class="fontsm mx-1">/per person</span>
+            </h5>
+
+            <ul class="list-unstyled my-4">
+              <li class="d-flex gap-2 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                  <path
+                    fill="#1781FE"
+                    d="M15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15V16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16V15C11.866 15 15 11.866 15 8Z"
+                  />
+                  <path
+                    fill="#1781FE"
+                    d="M11.6947 6.45795L7.24644 10.9086C7.17556 10.9771 7.08572 11.0126 6.99596 11.0126C6.9494 11.0127 6.90328 11.0035 6.86027 10.9857C6.81727 10.9678 6.77822 10.9416 6.7454 10.9086L4.3038 8.46699C4.16436 8.32987 4.16436 8.10539 4.3038 7.96595L5.16652 7.10083C5.29892 6.96851 5.53524 6.96851 5.66764 7.10083L6.99596 8.42915L10.3309 5.09179C10.3638 5.05887 10.4028 5.03274 10.4457 5.01489C10.4887 4.99705 10.5347 4.98784 10.5812 4.98779C10.6757 4.98779 10.7656 5.02563 10.8317 5.09179L11.6944 5.95699C11.8341 6.09643 11.8341 6.32091 11.6947 6.45795Z"
+                  />
+                </svg>
+                <span class="fontsm">Mony Back Guarentee.</span>
+              </li>
+              <li class="d-flex gap-2 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                  <path
+                    fill="#1781FE"
+                    d="M15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15V16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16V15C11.866 15 15 11.866 15 8Z"
+                  />
+                  <path
+                    fill="#1781FE"
+                    d="M11.6947 6.45795L7.24644 10.9086C7.17556 10.9771 7.08572 11.0126 6.99596 11.0126C6.9494 11.0127 6.90328 11.0035 6.86027 10.9857C6.81727 10.9678 6.77822 10.9416 6.7454 10.9086L4.3038 8.46699C4.16436 8.32987 4.16436 8.10539 4.3038 7.96595L5.16652 7.10083C5.29892 6.96851 5.53524 6.96851 5.66764 7.10083L6.99596 8.42915L10.3309 5.09179C10.3638 5.05887 10.4028 5.03274 10.4457 5.01489C10.4887 4.99705 10.5347 4.98784 10.5812 4.98779C10.6757 4.98779 10.7656 5.02563 10.8317 5.09179L11.6944 5.95699C11.8341 6.09643 11.8341 6.32091 11.6947 6.45795Z"
+                  />
+                </svg>
+                <span class="fontsm">Your Safety is Our Top Priority. </span>
+              </li>
+            </ul>
+
+            <button
+              type="button"
+              class="mainBtn w-100 mb-3 fontsm"
+              data-bs-toggle="modal"
+              data-bs-target="#availabilityModal"
+            >
+              Check Availability
+            </button>
+            <button
+              type="button"
+              class="secBtn w-100 mb-3 fontsm"
+              data-bs-toggle="modal"
+              data-bs-target="#enquiryModal"
+            >
+              Submit an Enquiry
+            </button>
+          </div>
+
+          <!-- customize your tour -->
+          <div class="customizeTour border pt-4 pb-3 px-3 rounded-3 mb-4">
+            <p class="text-capitalize mb-1">Customize</p>
+            <h5 class="text-capitalize">travel package!</h5>
+
+            <ul class="list-unstyled my-4">
+              <li class="d-flex gap-2 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                  <path
+                    fill="#1781FE"
+                    d="M15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15V16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16V15C11.866 15 15 11.866 15 8Z"
+                  />
+                  <path
+                    fill="#1781FE"
+                    d="M11.6947 6.45795L7.24644 10.9086C7.17556 10.9771 7.08572 11.0126 6.99596 11.0126C6.9494 11.0127 6.90328 11.0035 6.86027 10.9857C6.81727 10.9678 6.77822 10.9416 6.7454 10.9086L4.3038 8.46699C4.16436 8.32987 4.16436 8.10539 4.3038 7.96595L5.16652 7.10083C5.29892 6.96851 5.53524 6.96851 5.66764 7.10083L6.99596 8.42915L10.3309 5.09179C10.3638 5.05887 10.4028 5.03274 10.4457 5.01489C10.4887 4.99705 10.5347 4.98784 10.5812 4.98779C10.6757 4.98779 10.7656 5.02563 10.8317 5.09179L11.6944 5.95699C11.8341 6.09643 11.8341 6.32091 11.6947 6.45795Z"
+                  />
+                </svg>
+                <span class="fontsm">Mony Back Guarentee.</span>
+              </li>
+              <li class="d-flex gap-2 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                  <path
+                    fill="#1781FE"
+                    d="M15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15V16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16V15C11.866 15 15 11.866 15 8Z"
+                  />
+                  <path
+                    fill="#1781FE"
+                    d="M11.6947 6.45795L7.24644 10.9086C7.17556 10.9771 7.08572 11.0126 6.99596 11.0126C6.9494 11.0127 6.90328 11.0035 6.86027 10.9857C6.81727 10.9678 6.77822 10.9416 6.7454 10.9086L4.3038 8.46699C4.16436 8.32987 4.16436 8.10539 4.3038 7.96595L5.16652 7.10083C5.29892 6.96851 5.53524 6.96851 5.66764 7.10083L6.99596 8.42915L10.3309 5.09179C10.3638 5.05887 10.4028 5.03274 10.4457 5.01489C10.4887 4.99705 10.5347 4.98784 10.5812 4.98779C10.6757 4.98779 10.7656 5.02563 10.8317 5.09179L11.6944 5.95699C11.8341 6.09643 11.8341 6.32091 11.6947 6.45795Z"
+                  />
+                </svg>
+                <span class="fontsm">Your Safety is Our Top Priority. </span>
+              </li>
+            </ul>
+
+            <button type="button" class="secBtn w-100 mb-3 fontsm" routerLink="/makeTrip">
+              Customize Package
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- fixed bottom button in mobile -->
+<div
+  class="position-fixed z-3 bottom-0 left-0 right-0 bg-white p-3 border-top w-100 d-md-none flexBetween flex-wrap gap-2"
+>
+  <div class="flex-grow-1">
+    <p class="text-capitalize mb-1">Starting From</p>
+    <h5 class="text-capitalize">
+      @if (totalPrice > 0) {
+      <b class="textMainColor fs-3 mb-4">{{ totalPrice | currency }}</b>
+      } @else {
+      <b class="textMainColor fs-3 mb-4">{{ tour.start_from | currency }}</b>
+      }
+      <span class="fontsm mx-1">/per person</span>
+    </h5>
+  </div>
+  <div class="d-flex align-items-center gap-2 fontsm">
+    <button class="mainBtn" data-bs-toggle="modal" data-bs-target="#availabilityModal">
+      Check Availability
+    </button>
+    <button class="secBtn" data-bs-toggle="modal" data-bs-target="#enquiryModal">
+      Submit an Enquiry
+    </button>
+  </div>
+</div>
+
+<!-- availability modal -->
+<div
+  class="modal fade"
+  id="availabilityModal"
+  tabindex="-1"
+  aria-labelledby="availabilityModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-0">
+        <!-- <h5 class="modal-title" id="availabilityModalLabel">Check Availability</h5> -->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mainTitle">
+          <h2 class="text-capitalize mb-3 text-color h4">Dates & Availability</h2>
+          <p>
+            Select your travel date & time, also minium traveller for reason easily booking a
+            package.
+          </p>
+        </div>
+
+        <form [formGroup]="bookingForm" (ngSubmit)="submitBookingForm()">
+          <!-- Date and Travelers Input Row -->
+          <div class="row g-3 mb-4">
+            <!-- Booking Date Input -->
+            <div class="col-md-6">
+              <div class="booking-input-wrapper position-relative">
+                <div class="booking-input" (click)="openDatePicker()">
+                  <i class="fa fa-calendar-days input-icon"></i>
+                  <div class="input-content">
+                    <div class="input-value">{{ getFormattedDate() }}</div>
+                    <div class="input-label">Booking Date</div>
+                  </div>
+                  <span class="input-indicator" [class.active]="isDatePickerOpen"></span>
+                </div>
+                <!-- Hidden Material Datepicker -->
+                <mat-form-field class="hidden-datepicker">
+                  <input
+                    matInput
+                    formControlName="start_date"
+                    [matDatepicker]="bookingDatepicker"
+                    readonly
+                  />
+                  <mat-datepicker
+                    #bookingDatepicker
+                    (closed)="onDatepickerClosed()"
+                    (opened)="isDatePickerOpen = true"
+                  ></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- Travelers Input -->
+            <div class="col-md-6">
+              <div class="booking-input-wrapper position-relative">
+                <div class="booking-input" (click)="toggleTravelersDropdown()">
+                  <i class="fa fa-user input-icon"></i>
+                  <div class="input-content">
+                    <div class="input-value">{{ getTravelersText() }}</div>
+                    <div class="input-label">Select Travelers</div>
+                  </div>
+                  <span class="input-indicator" [class.active]="isTravelersDropdownOpen"></span>
+                </div>
+                @if (isTravelersDropdownOpen) {
+                <div class="travelers-dropdown">
+                  <div class="travelers-header">
+                    <h6 class="mb-1">Travelers</h6>
+                    <p class="fontsm mb-0 text-color-secondary">
+                      You can book for a maximum number of people 20
+                    </p>
+                  </div>
+                  <div class="travelers-counter">
+                    <div class="counter-item">
+                      <label class="counter-label">Adult</label>
+                      <div class="counter-controls">
+                        <button
+                          type="button"
+                          class="counter-btn"
+                          (click)="decrement('adults')"
+                          [disabled]="(bookingForm.get('adults')?.value || 0) <= 0"
+                        >
+                          <i class="fa fa-minus"></i>
+                        </button>
+                        <span class="counter-value">{{
+                          bookingForm.get('adults')?.value || 0
+                        }}</span>
+                        <button
+                          type="button"
+                          class="counter-btn"
+                          (click)="increment('adults')"
+                          [disabled]="getTotalTravelers() >= 20"
+                        >
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="counter-item">
+                      <label class="counter-label">Children</label>
+                      <div class="counter-controls">
+                        <button
+                          type="button"
+                          class="counter-btn"
+                          (click)="decrement('children')"
+                          [disabled]="(bookingForm.get('children')?.value || 0) <= 0"
+                        >
+                          <i class="fa fa-minus"></i>
+                        </button>
+                        <span class="counter-value">{{
+                          bookingForm.get('children')?.value || 0
+                        }}</span>
+                        <button
+                          type="button"
+                          class="counter-btn"
+                          (click)="increment('children')"
+                          [disabled]="getTotalTravelers() >= 20"
+                        >
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="counter-item">
+                      <label class="counter-label">Infants</label>
+                      <div class="counter-controls">
+                        <button
+                          type="button"
+                          class="counter-btn"
+                          (click)="decrement('infants')"
+                          [disabled]="(bookingForm.get('infants')?.value || 0) <= 0"
+                        >
+                          <i class="fa fa-minus"></i>
+                        </button>
+                        <span class="counter-value">{{
+                          bookingForm.get('infants')?.value || 0
+                        }}</span>
+                        <button
+                          type="button"
+                          class="counter-btn"
+                          (click)="increment('infants')"
+                          [disabled]="getTotalTravelers() >= 20"
+                        >
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Tour Add-ons Selection -->
+          @if (tourOptions.length > 0) {
+          <div class="tour-types-section mb-4">
+            <div class="flexBetween mb-2">
+              <h6 class="mb-1">Tour Add-ons</h6>
+              <!-- total price of all selected options -->
+              <h6 class="mb-1 textMainColor">Total: {{ totalAddOnsPrice | currency }}</h6>
+            </div>
+            @for (option of tour.options; track option.id) {
+            <div class="option-dropdown-wrapper mb-1">
+              <div class="option-header border rounded-3 p-3">
+                <div class="flexBetween mb-2">
+                  <div>
+                    <h6 class="mb-0 text-capitalize">{{ option.name }}</h6>
+                    @if (option.description && option.description !== '.') {
+                    <p class="text-muted mb-0 fontsm">{{ option.description }}</p>
+                    }
+                  </div>
+                  <div class="text-end">
+                    @if (getOptionState(option.id).isSelected && getOptionState(option.id).price >
+                    0) {
+                    <span class="textMainColor fw-bold">{{
+                      getOptionState(option.id).price | currency
+                    }}</span>
+                    } @else {
+                    <span class="text-muted fontsm">Select travelers</span>
+                    }
+                  </div>
+                </div>
+                <div class="booking-input-wrapper position-relative mb-0">
+                  <div class="booking-input" (click)="toggleOptionDropdown(option.id)">
+                    <i class="fa fa-user input-icon"></i>
+                    <div class="input-content">
+                      <div class="input-value">
+                        @if (getOptionState(option.id).adults > 0 ||
+                        getOptionState(option.id).children > 0) { @if
+                        (getOptionState(option.id).adults > 0) {
+                        {{ getOptionState(option.id).adults }} Adult{{
+                          getOptionState(option.id).adults !== 1 ? 's' : ''
+                        }}
+                        } @if (getOptionState(option.id).children > 0) {
+                        {{ getOptionState(option.id).adults > 0 ? ', ' : ''
+                        }}{{ getOptionState(option.id).children }} Child{{
+                          getOptionState(option.id).children !== 1 ? 'ren' : ''
+                        }}
+                        } } @else { Select Travelers }
+                      </div>
+                      <div class="input-label">Select Travelers</div>
+                    </div>
+                    <span
+                      class="input-indicator"
+                      [class.active]="isOptionDropdownOpen(option.id)"
+                    ></span>
+                  </div>
+                  @if (isOptionDropdownOpen(option.id)) {
+                  <div class="travelers-dropdown">
+                    <div class="travelers-header">
+                      <h6 class="mb-1">Travelers for {{ option.name }}</h6>
+                      <p class="fontsm mb-0 text-color-secondary">
+                        Select number of adults and children
+                      </p>
+                    </div>
+                    <div class="travelers-counter">
+                      <div class="counter-item">
+                        <label class="counter-label">Adult</label>
+                        <div class="counter-controls">
+                          <button
+                            type="button"
+                            class="counter-btn"
+                            (click)="decrementOption(option.id, 'adults')"
+                            [disabled]="getOptionState(option.id).adults <= 0"
+                          >
+                            <i class="fa fa-minus"></i>
+                          </button>
+                          <span class="counter-value">{{ getOptionState(option.id).adults }}</span>
+                          <button
+                            type="button"
+                            class="counter-btn"
+                            (click)="incrementOption(option.id, 'adults')"
+                          >
+                            <i class="fa fa-plus"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="counter-item">
+                        <label class="counter-label">Children</label>
+                        <div class="counter-controls">
+                          <button
+                            type="button"
+                            class="counter-btn"
+                            (click)="decrementOption(option.id, 'children')"
+                            [disabled]="getOptionState(option.id).children <= 0"
+                          >
+                            <i class="fa fa-minus"></i>
+                          </button>
+                          <span class="counter-value">{{
+                            getOptionState(option.id).children
+                          }}</span>
+                          <button
+                            type="button"
+                            class="counter-btn"
+                            (click)="incrementOption(option.id, 'children')"
+                          >
+                            <i class="fa fa-plus"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  }
+                </div>
+              </div>
+            </div>
+            }
+          </div>
+          }@else{
+          <p class="text-muted mb-0 fs-3 text-capitalize">No options available at the moment.</p>
+          }
+
+          <!-- tour price + total price of all selected options -->
+          <div class="flexBetween">
+            <h6 class="mb-1">Tour Price</h6>
+            <h6 class="mb-1 textMainColor">{{ totalPrice + totalAddOnsPrice | currency }}</h6>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="text-center mt-4">
+            <button type="submit" class="mainBtn w-100 fontsm">Book Now</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+}
+
+<!-- related tours -->
+<section class="my-5 related-tours">
+  <div class="container">
+    <div class="mainTitle">
+      <h2 class="text-capitalize mb-3 text-color h4">Relevant Package</h2>
+      <p>A curated list of the most popular travel packages based on different destinations.</p>
+    </div>
+    @if (relatedTours.length > 0) {
+    <owl-carousel-o [options]="relatedToursOptions">
+      @for (tour of relatedTours; track tour.id) {
+      <ng-template carouselSlide>
+        <app-tour-cart [tour]="tour"></app-tour-cart>
+      </ng-template>
+      }
+    </owl-carousel-o>
+    } @else {
+    <p class="text-muted mb-0 fs-3 text-capitalize">No related tours available at the moment.</p>
+    }
+  </div>
+</section>
+
+<!-- write review modal -->
+<div
+  class="modal fade"
+  id="writeReviewModal"
+  tabindex="-1"
+  aria-labelledby="writeReviewModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="writeReviewModalLabel">Write a Review</h5>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="writeReview" (ngSubmit)="submitWriteReview()">
+          <div class="mb-3">
+            <label for="reviewer_name" class="form-label">Reviewer Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="reviewer_name"
+              formControlName="reviewer_name"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="rate" class="form-label">Rate</label>
+            <input type="number" class="form-control" id="rate" formControlName="rate" />
+          </div>
+          <div class="mb-3">
+            <input type="checkbox" id="confirm" formControlName="confirm" />
+            <label for="confirm" class="form-label ms-2">Confirm</label>
+          </div>
+          <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <textarea class="form-control" id="content" formControlName="content"></textarea>
+          </div>
+          <button type="submit" class="mainBtn w-100">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- enquiry modal -->
+<div
+  class="modal fade"
+  id="enquiryModal"
+  tabindex="-1"
+  aria-labelledby="enquiryModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content enquiry-modal-content">
+      <div class="modal-header border-bottom-0">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="enquiry-form-wrapper">
+          <h2 class="enquiry-title">We'd Love to Hear From You!</h2>
+
+          <form class="row g-3" [formGroup]="enquiryForm" (ngSubmit)="submitEnquiryForm()">
+            <!-- Full Name -->
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="full_name" class="form-label">Full Name</label>
+                <input
+                  type="text"
+                  id="full_name"
+                  formControlName="full_name"
+                  class="form-control enquiry-input"
+                  placeholder="Your Name"
+                />
+                @if (enquiryForm.get('full_name')?.invalid && enquiryForm.get('full_name')?.touched)
+                {
+                <small class="text-danger">Full name is required</small>
+                }
+              </div>
+            </div>
+
+            <!-- Email Address -->
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  formControlName="email"
+                  class="form-control enquiry-input"
+                  placeholder="Email Address"
+                />
+                @if (enquiryForm.get('email')?.invalid && enquiryForm.get('email')?.touched) {
+                <small class="text-danger">
+                  @if (enquiryForm.get('email')?.errors?.['required']) { Email is required } @else {
+                  @if (enquiryForm.get('email')?.errors?.['email']) { Please enter a valid email
+                  address } }
+                </small>
+                }
+              </div>
+            </div>
+
+            <!-- Number of People -->
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="number_of_people" class="form-label"
+                  >Number of People<span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  id="number_of_people"
+                  formControlName="number_of_people"
+                  class="form-control enquiry-input"
+                  placeholder="Number of people"
+                  min="1"
+                />
+                @if (enquiryForm.get('number_of_people')?.invalid &&
+                enquiryForm.get('number_of_people')?.touched) {
+                <small class="text-danger">Number of people is required</small>
+                }
+              </div>
+            </div>
+
+            <!-- Travel Date -->
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="travel_date" class="form-label">Travel Date</label>
+                <div class="enquiry-date-input-wrapper position-relative">
+                  <div class="enquiry-date-input" (click)="openEnquiryDatePicker()">
+                    <i class="fa fa-calendar-days me-2"></i>
+                    <span>{{ getEnquiryFormattedDate() }}</span>
+                  </div>
+                  <!-- Hidden Material Datepicker -->
+                  <mat-form-field class="hidden-datepicker">
+                    <input
+                      matInput
+                      formControlName="travel_date"
+                      [matDatepicker]="enquiryDatepicker"
+                      readonly
+                    />
+                    <mat-datepicker #enquiryDatepicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                @if (enquiryForm.get('travel_date')?.invalid &&
+                enquiryForm.get('travel_date')?.touched) {
+                <small class="text-danger">Travel date is required</small>
+                }
+              </div>
+            </div>
+
+            <!-- Tour Details -->
+            <div class="col-md-12">
+              <div class="form-group mb-3">
+                <label for="tour_details" class="form-label">Tour Details</label>
+                <textarea
+                  id="tour_details"
+                  formControlName="tour_details"
+                  class="form-control enquiry-textarea"
+                  rows="4"
+                  placeholder="Write about tour info"
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- Save Info Checkbox -->
+            <div class="col-md-12">
+              <div class="form-group mb-4">
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    id="save_info"
+                    formControlName="save_info"
+                    class="form-check-input"
+                  />
+                  <label for="save_info" class="form-check-label">
+                    Save my email address & name when I comment further time.
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+              <button
+                type="submit"
+                class="btn enquiry-submit-btn"
+                [disabled]="isEnquirySubmitting || enquiryForm.invalid"
+              >
+                @if (isEnquirySubmitting) {
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                } @else { Submit For Enquiry
+                <i class="fa fa-arrow-up ms-2"></i>
+                }
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Email Confirmation Modal -->
+@if (showEmailConfirmation) {
+<div
+  class="modal fade show"
+  id="emailConfirmationModal"
+  tabindex="-1"
+  style="display: block; background-color: rgba(0, 0, 0, 0.5)"
+  (click)="cancelEmailSending()"
+>
+  <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Email Sending</h5>
+        <button type="button" class="btn-close" (click)="cancelEmailSending()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="email-preview">
+          <div class="mb-3">
+            <strong>To:</strong>
+            <p class="mb-0 text-break">{{ emailPreview.to }}</p>
+          </div>
+          <div class="mb-3">
+            <strong>Subject:</strong>
+            <p class="mb-0">{{ emailPreview.subject }}</p>
+          </div>
+          <div class="mb-3">
+            <strong>Content:</strong>
+            <div class="email-body-preview border p-3 rounded bg-light">
+              <pre class="mb-0 white-space-pre-wrap">{{ emailPreview.body }}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cancelEmailSending()">
+          Cancel
+        </button>
+        <button type="button" class="btn mainBtn text-white" (click)="confirmAndSendEmail()">
+          @if (isEnquirySubmitting) {
+          <span class="spinner-border spinner-border-sm me-2"></span>
+          } Confirm & Send
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}

@@ -1,0 +1,29 @@
+<div class="pagination-container" *ngIf="total > 0">
+  <!-- Hidden dummy array for ngx-pagination server-side pagination -->
+  <div style="display: none;">
+    <div *ngFor="let item of dummyArray | paginate: { 
+      id: paginationId, 
+      itemsPerPage: itemsPerPage, 
+      currentPage: p, 
+      totalItems: totalItems 
+    }"></div>
+  </div>
+  
+  <pagination-controls
+    [id]="paginationId"
+    (pageChange)="onPageChange($event)"
+    [maxSize]="5"
+    [directionLinks]="true"
+    [autoHide]="false"
+    previousLabel="Previous"
+    nextLabel="Next"
+    screenReaderPaginationLabel="Pagination"
+    screenReaderPageLabel="page"
+    screenReaderCurrentLabel="You're on page">
+  </pagination-controls>
+  
+  <div class="pagination-info" *ngIf="from && to && total">
+    <span>Showing {{ from }} to {{ to }} of {{ total }} results</span>
+  </div>
+</div>
+

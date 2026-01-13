@@ -1,0 +1,32 @@
+@use '../../../styles/variables.scss' as *;
+.social-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  // background-color: #333;
+  border: $border;
+  border-color: $primary-color;
+  color: $primary-color;
+  text-decoration: none;
+  transition: $transition-fast;
+
+  i {
+    font-size: 1.2rem;
+  }
+
+  &:hover {
+    background-color: $primary-color;
+    color: #fff;
+    transform: translateY(-3px);
+  }
+}
+

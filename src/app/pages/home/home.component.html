@@ -1,0 +1,421 @@
+<!-- video section -->
+
+<main>
+  <div class="video-box position-relative">
+    <video
+      src="https://gofly-wp.egenstheme.com/wp-content/uploads/2025/09/home1-banner-video.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+    ></video>
+    <div class="video-overlay text-white flexCenter">
+      <div class="w-75 text-center">
+        <h2>Majestic Egyptian Experience</h2>
+        <p>Limited availability. Exceptional experiences. Exclusive Easter savings.</p>
+        <button routerLink="/makeTrip" class="mainBtn px-4 py-2">Book Your Trip</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- form search -->
+  <div class="formBox mx-auto bg-white rounded-5 p-4 pb-3 sideBar mb-md-0 text-capitalize">
+    <mat-tab-group>
+      <mat-tab [label]="'home.findYourTour' | translate">
+        <form
+          [formGroup]="tourSearchForm"
+          (ngSubmit)="onTourSubmit()"
+          class="row g-3 align-items-center justify-content-between"
+        >
+          <div class="col-md-3">
+            <div
+              class="text-capitalize bg-transparent textSecondColor rounded-3 px-2 py-1 text-start"
+            >
+              <!-- <label
+                 ><i class="fa fa-plane me-2 mb-2"></i
+                 >{{ "home.destinations" | translate }}</label
+               > -->
+              <select formControlName="location" class="p-2 rounded-1 text-secondary border-0">
+                <option value="" disabled selected class="bg-secondary text-white">
+                  {{ 'home.allDestinations' | translate }}
+                </option>
+                @for (des of allDestinations; track $index) {
+                <option [value]="des.slug">{{ des.title }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div
+              class="text-capitalize bg-transparent textSecondColor rounded-3 px-2 py-1 text-start"
+            >
+              <!-- <label
+                 ><i class="fa fa-layer-group me-2 mb-2"></i
+                 >{{ "home.categories" | translate }}</label
+               > -->
+              <select formControlName="type" class="p-2 rounded-1 text-secondary border-0">
+                <option value="" disabled selected class="bg-secondary text-white">
+                  {{ 'home.allCategories' | translate }}
+                </option>
+                @for (cat of allCategories; track $index) {
+
+                <option [value]="cat.slug">{{ cat.title }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div
+              class="text-capitalize bg-transparent textSecondColor rounded-3 px-2 py-1 text-start"
+            >
+              <!-- <label
+                 ><i class="fa fa-alarm-clock me-2 mb-2"></i
+                 >{{ "common.duration" | translate }}</label
+               > -->
+              <select formControlName="duration" class="p-2 rounded-1 text-secondary border-0">
+                <option value="" disabled selected class="bg-secondary text-white">
+                  {{ 'home.selectDate' | translate }}
+                </option>
+                @for (time of allDurations; track $index) {
+
+                <option [value]="time.slug">{{ time.title }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-3 col-12">
+            <div class="text-capitalize flexCenter">
+              <button type="submit" class="mainBtn Btn flexBetween gap-2 w-100">
+                {{ 'common.search' | translate
+                }}<i class="fa fa-magnifying-glass-plus text-white"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </mat-tab>
+
+      <mat-tab [label]="'home.makeYourTour' | translate">
+        <form
+          [formGroup]="makeTripForm"
+          (ngSubmit)="onMakeTripSubmit()"
+          class="row g-3 align-items-center justify-content-between"
+        >
+          <div class="col-12">
+            <mat-radio-group
+              [value]="MarkTime"
+              (change)="onChangeTime($event)"
+              class="d-flex flex-wrap gap-1"
+            >
+              <mat-radio-button value="exact">{{
+                'home.haveAnExactTime' | translate
+              }}</mat-radio-button>
+              <mat-radio-button value="approximate">{{
+                'home.haveAnApproximateTime' | translate
+              }}</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div class="col-md-3">
+            <div class="text-capitalize">
+              <label class="textSecondColor"
+                ><i class="fa fa-map-marker-alt me-2 mb-2"></i
+                >{{ 'home.destinations' | translate }}</label
+              >
+              <mat-form-field class="w-100">
+                <mat-select formControlName="city">
+                  <mat-option value="" disabled selected>
+                    {{ 'home.myDestination' | translate }}
+                  </mat-option>
+                  @for (des of allDestinations; track des.slug) {
+                  <mat-option [value]="des.slug">
+                    {{ des.title }}
+                  </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- if have exact time -->
+          @if (MarkTime==='exact') {
+          <div class="col-md-3">
+            <div class="text-capitalize">
+              <label class="textSecondColor"
+                ><i class="fa fa-calendar-days me-2 mb-2"></i>
+                {{ 'home.checkInDate' | translate }}
+              </label>
+              <mat-form-field class="w-100">
+                <mat-label>{{ 'home.startDate' | translate }}</mat-label>
+                <input
+                  formControlName="start_date"
+                  matInput
+                  [matDatepicker]="StartDatepicker"
+                  (click)="openStartDatePicker()"
+                  readonly
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="StartDatepicker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker touchUi #StartDatepicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="text-capitalize">
+              <label class="textSecondColor"
+                ><i class="fa fa-calendar-days me-2 mb-2"></i>
+                {{ 'home.checkOutDate' | translate }}
+              </label>
+              <mat-form-field class="w-100">
+                <mat-label>{{ 'home.endDate' | translate }}</mat-label>
+                <input
+                  formControlName="end_date"
+                  matInput
+                  [matDatepicker]="EndDatepicker"
+                  (click)="openEndDatePicker()"
+                  readonly
+                />
+                <mat-datepicker-toggle matIconSuffix [for]="EndDatepicker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #EndDatepicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          }
+
+          <!-- if have aproximate time -->
+          @if (MarkTime==='approximate') {
+          <div class="col-md-6">
+            <div>
+              <label class="textSecondColor"
+                ><i class="fa fa-calendar-days me-2 mb-2"></i>
+                {{ 'home.checkOutDate' | translate }}
+              </label>
+              <mat-form-field class="w-100">
+                <mat-label>{{ 'home.selectDate' | translate }}</mat-label>
+                <mat-select formControlName="approximate_time">
+                  @for (month of monthList; track month; let i = $index) {
+                  <mat-option [value]="i + 1">{{ month }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          }
+
+          <div class="col-md-3">
+            <div class="text-capitalize flexCenter">
+              <button type="submit" class="mainBtn Btn flexBetween gap-2 w-100">
+                {{ 'common.makeTrip' | translate
+                }}<i class="fa fa-plane-circle-check text-white"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</main>
+
+<!-- Discounts & Offers -->
+<section class="my-5 pt-5">
+  <div class="container">
+    <!-- main title -->
+    <div class="row justify-content-center align-items-center">
+      <div class="col-xl-6 col-lg-8">
+        <div class="mainTitle">
+          <h2 class="text-capitalize">Discounts & Offers</h2>
+          <p>A curated list of the most popular travel packages based on different destinations.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- discounts & offers cards slider carousel category that have featured = true -->
+    <owl-carousel-o [options]="featuredCategoriesOptions">
+      @for (cat of featuredCategories; track cat.id) {
+      <ng-template carouselSlide>
+        <div
+          [routerLink]="['/category', cat.slug]"
+          role="button"
+          class="category-cart cPointer d-flex flex-column rounded-3 overflow-hidden transition"
+        >
+          <figure class="img-Hover rounded-2 overflow-hidden position-relative mb-0">
+            <img
+              class="w-100 h-100 object-fit-cover transition"
+              [src]="cat.featured_image"
+              loading="lazy"
+              [title]="cat.title"
+              [alt]="cat.title"
+            />
+          </figure>
+          <figcaption class="p-2 text-center text-capitalize fw-bold">
+            <!-- <h3 [routerLink]="['/category', cat.slug]" class="transition fs-5 mt-2">
+              <i class="fa fa-location-dot me-2"></i> {{ cat.title }}
+            </h3> -->
+            <h4 class="transition fs-6 fw-bold">
+              <b class="textMainColor">{{ cat.tours_count }}</b> tours
+            </h4>
+          </figcaption>
+        </div>
+        <!-- <figure class="img-Hover rounded-2 overflow-hidden position-relative mb-0">
+          <img
+            class="w-100 object-fit-cover transition"
+            [src]="cat.featured_image"
+            loading="lazy"
+            [title]="cat.title"
+            [alt]="cat.title"
+            height="300"
+          />
+        </figure>
+        <figcaption class="p-2 text-center text-capitalize fw-bold">
+          <h3 [routerLink]="['/category', cat.slug]" class="transition fs-5 mt-2">
+            <i class="fa fa-layer-group me-2"></i> {{ cat.title }}
+          </h3>
+        </figcaption>  -->
+      </ng-template>
+      }
+    </owl-carousel-o>
+  </div>
+</section>
+
+<!-- Featured Destinations -->
+<section class="featured-destinations my-5 pt-5">
+  <div class="container">
+    <!-- main title -->
+    <div class="row justify-content-center align-items-center">
+      <div class="col-xl-6 col-lg-8">
+        <div class="mainTitle">
+          <h2 class="text-capitalize">Featured Destinations</h2>
+          <p>A curated list of the most popular travel packages based on different destinations.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- destinations cards slider carousel -->
+    <owl-carousel-o [options]="destinationsOptions">
+      @for (des of allDestinations; track des.id) {
+      <ng-template carouselSlide>
+        <app-destination-cart [destination]="des"></app-destination-cart>
+      </ng-template>
+      }
+    </owl-carousel-o>
+  </div>
+</section>
+
+<!-- Best services -->
+<app-best-services></app-best-services>
+
+<!-- our popular tours -->
+<section class="our-tours my-5 pt-5">
+  <div class="container">
+    <!-- main title -->
+    <div class="row justify-content-center align-items-center">
+      <div class="col-xl-6 col-lg-8">
+        <div class="mainTitle">
+          <h2 class="text-capitalize">Popular Travel Packages</h2>
+          <p>A curated list of the most popular travel packages based on different destinations.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- tours cards slider carousel -->
+    <owl-carousel-o [options]="popularToursOptions">
+      @for (tour of popularTours; track tour.id) {
+      <ng-template carouselSlide>
+        <app-tour-cart [tour]="tour"></app-tour-cart>
+      </ng-template>
+      }
+    </owl-carousel-o>
+  </div>
+</section>
+
+<!-- Last Minute Deals! 'tours' slider carousel  -->
+<section class="my-5 pt-5">
+  <div class="container">
+    <!-- main title -->
+    <div class="row justify-content-center align-items-center">
+      <div class="col-xl-6 col-lg-8">
+        <div class="mainTitle">
+          <h2 class="text-capitalize">Recent Tours</h2>
+          <p>A curated list of the most recent travel packages based on different destinations.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- tours cards   -->
+    <div class="row g-3">
+      @for (tour of popularTours.slice(-6); track tour.id) {
+      <div class="col-md-6 col-lg-4">
+        <app-tour-cart [tour]="tour"></app-tour-cart>
+      </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- make trip form -->
+<app-make-trip-form></app-make-trip-form>
+
+<!-- our partners slider -->
+<app-parteners></app-parteners>
+
+<!-- One Day Trips 'tours' -->
+
+<!-- Travel Inspirations 'blogs' -->
+<section class="travel-inspirations my-5 pt-5">
+  <div class="container">
+    <!-- main title -->
+    <div class="row justify-content-center align-items-center">
+      <div class="col-xl-6 col-lg-8">
+        <div class="mainTitle">
+          <h2 class="text-capitalize">Travel Inspirations</h2>
+          <p>
+            A curated list of inspiration the most tour & travel based on different destinations.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- blogs cards slider carousel -->
+    <owl-carousel-o [options]="blogsOptions">
+      @for (blog of allBlogs; track blog.id) {
+      <ng-template carouselSlide>
+        <app-blog-cart [blog]="blog"></app-blog-cart>
+      </ng-template>
+      }
+    </owl-carousel-o>
+    <!-- <div class="row g-3">
+      @for (blog of allBlogs; track blog.id) {
+      <div class="col-md-6">
+        <app-blog-cart [blog]="blog"></app-blog-cart>
+      </div>
+      }
+    </div> -->
+
+    <button routerLink="/blog" class="mainBtn Btn flexBetween gap-2 mt-4 mx-auto">
+      {{ 'common.viewAll' | translate }}<i class="fa fa-arrow-right text-white"></i>
+    </button>
+  </div>
+</section>
+
+<!-- Hear It from Travelers 'testimonials' -->
+
+<!-- General Questions 'faqs' -->
+<section class="my-5 pt-5">
+  <div class="container">
+    <!-- main title -->
+    <div class="row justify-content-center align-items-center">
+      <div class="col-xl-6 col-lg-8">
+        <div class="mainTitle">
+          <h2 class="text-capitalize">General Questions</h2>
+          <p>
+            We’re committed to offering more than just products—we provide exceptional experiences.
+          </p>
+        </div>
+      </div>
+    </div>
+    <app-faq-content></app-faq-content>
+  </div>
+</section>
+
+<!-- counters -->

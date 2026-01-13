@@ -1,0 +1,731 @@
+@use '../../styles/variables.scss' as *;
+.details-banner{
+  height: 55vh;
+  figure{
+    height: 100%;
+    img{
+      height: 100%;
+      object-fit: cover;
+      animation: zoomIn 10s ease-in-out infinite;
+      transition: $transition;
+    }
+  }
+
+  figcaption{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+
+    .info{
+      background-color: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(20px);
+      border-radius: $border-radius;
+      // font-size: 20px;
+      padding: 14px 30px;
+}
+  }
+
+  @media (max-width: 768px) {
+    height: 300px;
+  }
+}
+
+.loading{
+  height: 50vh;
+  .spinner-border{
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+// FAQ Accordion Styles for Itinerary
+.faq-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faq-item {
+  background: #f8f9fa;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &.active {
+    background: #fff;
+    border-color: rgba($primary-color, 0.5);
+    box-shadow: 0 2px 8px rgba(0, 102, 255, 0.1);
+  }
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+
+  &:hover {
+    background: rgba($primary-color, 0.05);
+  }
+
+  .faq-item.active & {
+    color: $primary-color;
+    font-weight: 600;
+  }
+}
+
+.faq-question-text {
+  flex: 1;
+  padding-right: 1rem;
+}
+
+.faq-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: $primary-color;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.faq-answer {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+  color: $text-color-secondary;
+  line-height: 1.6;
+  animation: slideDown 0.3s ease;
+
+  ::ng-deep {
+    p {
+      margin-bottom: 0.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    ul,
+    ol {
+      margin: 0.5rem 0;
+      padding-left: 1.5rem;
+    }
+
+    li {
+      margin-bottom: 0.25rem;
+    }
+  }
+}
+
+
+.reviews{
+  .rating-number{
+    font-size: 4rem;
+    color: $primary-color;
+    line-height: 1.2;
+  }
+}
+
+.bookingBox{
+  background-color: #F2F2FF;
+}
+
+.customizeTour{
+  background-color: #BDEBCE;
+}
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .faq-question {
+    padding: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .faq-answer {
+    padding: 0 1rem 1rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.08);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  75% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1.35);
+  }
+}
+
+// Booking Form Styles
+.booking-input-wrapper {
+  margin-bottom: 1rem;
+}
+
+.booking-input {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  background-color: #fff;
+  cursor: pointer;
+  transition: $transition-fast;
+  position: relative;
+
+  &:hover {
+    border-color: $primary-color;
+  }
+
+  .input-icon {
+    font-size: 1.25rem;
+    color: $primary-color;
+    flex-shrink: 0;
+  }
+
+  .input-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    .input-value {
+      font-size: 1rem;
+      font-weight: 500;
+      color: $text-color;
+    }
+
+    .input-label {
+      font-size: 0.875rem;
+      color: $text-color-secondary;
+    }
+  }
+
+  .input-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    flex-shrink: 0;
+    transition: $transition-fast;
+
+    &.active {
+      background-color: $primary-color;
+    }
+  }
+}
+
+// Hide Material Datepicker form field but keep functionality
+.hidden-datepicker {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+
+  ::ng-deep {
+    .mat-mdc-form-field-wrapper {
+      padding: 0;
+      margin: 0;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      padding: 0;
+      margin: 0;
+    }
+
+    .mat-mdc-form-field-input-control {
+      display: none;
+    }
+  }
+}
+
+// Custom Material Datepicker Calendar Styles
+::ng-deep {
+  // CDK Overlay pane containing datepicker - ensure it's above modal
+  .cdk-overlay-pane {
+    &.mat-datepicker-popup {
+      z-index: 11000 !important; // Higher than Bootstrap modal (1050)
+      position: fixed !important;
+    }
+  }
+
+  .mat-datepicker-popup {
+    z-index: 11000 !important; // Higher than Bootstrap modal (1050)
+
+    .mat-calendar {
+      border-radius: $border-radius;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+      .mat-calendar-header {
+        padding: 0.5rem 1rem;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid $border-color;
+
+        .mat-calendar-controls{margin: 0 auto !important;}
+      }
+
+      .mat-calendar-body-cell-content {
+        border-radius: 50%;
+        transition: $transition-fast;
+
+        &:hover {
+          background-color: rgba($primary-color, 0.1);
+        }
+
+        &.mat-calendar-body-selected {
+          background-color: $primary-color;
+          color: #fff;
+        }
+
+        &.mat-calendar-body-today {
+          border: 2px solid $primary-color;
+        }
+      }
+
+      .mat-calendar-body-label {
+        color: $text-color;
+        font-weight: 600;
+      }
+
+      .mat-calendar-table-header {
+        color: $text-color-secondary;
+        font-weight: 500;
+      }
+
+      .mat-calendar-arrow {
+        color: $primary-color;
+      }
+
+      .mat-calendar-period-button {
+        color: $text-color;
+        font-weight: 600;
+
+        &:hover {
+          background-color: rgba($primary-color, 0.1);
+        }
+      }
+
+      .mat-calendar-content{padding: 8px !important;}
+    }
+  }
+}
+
+.travelers-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+
+  .travelers-header {
+    margin-bottom: 1.5rem;
+
+    h6 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: $text-color;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .travelers-counter {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .counter-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .counter-label {
+      font-size: 1rem;
+      font-weight: 500;
+      color: $text-color;
+      margin: 0;
+    }
+
+    .counter-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .counter-btn {
+        width: 32px;
+        height: 32px;
+        border: 1px solid $border-color;
+        border-radius: 50%;
+        background: #fff;
+        color: $text-color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: $transition-fast;
+
+        &:hover:not(:disabled) {
+          background-color: $primary-color;
+          color: #fff;
+          border-color: $primary-color;
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        i {
+          font-size: 0.75rem;
+        }
+      }
+
+      .counter-value {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: $text-color;
+        min-width: 2rem;
+        text-align: center;
+      }
+    }
+  }
+}
+
+.tour-types-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.tour-type-item {
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  padding: 1rem;
+  transition: $transition-fast;
+  background: #fff;
+
+  &:hover {
+    border-color: $primary-color;
+    box-shadow: 0 2px 8px rgba($primary-color, 0.1);
+  }
+
+  &.selected {
+    border-color: $primary-color;
+    background-color: rgba($primary-color, 0.05);
+  }
+
+  .tour-type-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    margin: 0;
+    width: 100%;
+
+    .tour-type-radio {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: $primary-color;
+    }
+
+    .tour-type-badge {
+      display: inline-block;
+      padding: 0.375rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+
+      &.private-tour {
+        background-color: #1781fe;
+      }
+
+      &.family-tour {
+        background-color: #0d47a1;
+      }
+
+      &.group-tour {
+        background-color: #2e7d32;
+      }
+    }
+
+    .tour-type-name {
+      flex: 1;
+      font-size: 0.875rem;
+      color: $text-color;
+    }
+
+    .tour-type-price {
+      font-size: 1rem;
+      font-weight: 600;
+      color: $text-color;
+      white-space: nowrap;
+    }
+  }
+}
+
+// Modal specific styles
+#availabilityModal {
+  .modal-dialog {
+    max-width: 800px;
+  }
+
+  .modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .modal-header {
+    border-bottom: none;
+    padding: 1.5rem 1.5rem 0;
+    position: relative;
+
+    .btn-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background-color: #fff;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      opacity: 1;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: #ff0000 !important;
+      transition: $transition-fast;
+      border: none;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+
+      &:hover {
+        background-color: #ff0000;
+        color: #fff !important;
+        transform: scale(1.1);
+        opacity: 1;
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 0.25rem rgba(255, 0, 0, 0.25);
+      }
+    }
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+}
+
+// Reusable Form Styles
+%form-input-base {
+  border: 1px solid #e0e0e0;
+  border-radius: $border-radius;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: $transition-fast;
+  background-color: #f8f9fa;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    background-color: #fff;
+    box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.1);
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+}
+
+%modal-close-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background-color: #fff;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  opacity: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: #ff0000 !important;
+  transition: $transition-fast;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+
+  &:hover {
+    background-color: #ff0000;
+    color: #fff !important;
+    transform: scale(1.1);
+  }
+}
+
+// Enquiry Modal
+.enquiry-modal-content {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+
+  .modal-header {
+    border-bottom: none;
+    padding: 1.5rem 1.5rem 0;
+    position: relative;
+
+    .btn-close {
+      @extend %modal-close-btn;
+    }
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+}
+
+.enquiry-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $text-color;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.enquiry-input,
+.enquiry-textarea {
+  @extend %form-input-base;
+}
+
+.enquiry-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.enquiry-date-input-wrapper .enquiry-date-input {
+  @extend %form-input-base;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  i {
+    color: $primary-color;
+  }
+}
+
+.enquiry-submit-btn {
+  @extend .secBtn !optional;
+  min-width: 200px;
+
+  i {
+    font-size: 0.875rem;
+    transform: rotate(45deg);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .booking-input {
+    padding: 0.875rem;
+
+    .input-content {
+      .input-value {
+        font-size: 0.875rem;
+      }
+
+      .input-label {
+        font-size: 0.75rem;
+      }
+    }
+  }
+
+  .tour-type-item {
+    .tour-type-label {
+      flex-wrap: wrap;
+      gap: 0.75rem;
+
+      .tour-type-name {
+        width: 100%;
+        order: 3;
+      }
+    }
+  }
+
+  .enquiry-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .enquiry-submit-btn {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+// Email Confirmation Modal
+.email-preview {
+  .email-body-preview {
+    max-height: 300px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 0.9rem;
+
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  }
+}
+
+

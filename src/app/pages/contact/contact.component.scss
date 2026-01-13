@@ -1,0 +1,28 @@
+@use '../../styles/variables.scss' as *;
+
+.item{
+  text-align: center;
+  transition: $transition-fast;
+  height: 200px;
+  a,i{
+    transition: $transition-fast;
+  }
+  &:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background-color: $primary-color !important;
+    color: #fff !important;
+    i{
+      transform: rotate(360deg) !important;
+    }
+    a{
+      color: #fff !important;
+    }
+  }
+}
+
+.contact-form{
+  max-width: 700px;
+  margin: 0 auto;
+}
+

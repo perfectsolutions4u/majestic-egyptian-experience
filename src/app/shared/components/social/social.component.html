@@ -1,0 +1,13 @@
+<div class="social-container">
+  @for (link of socialLinks; track link.type) {
+  <a
+    [href]="link.url"
+    [title]="link.type"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="social-link"
+  >
+    <i class="fa-brands fa-{{ link.type }}"></i>
+  </a>
+  }
+</div>

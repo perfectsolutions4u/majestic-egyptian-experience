@@ -1,0 +1,143 @@
+<app-banner
+  [title]="'Contact'"
+  [subtitle]="'Get in touch with us'"
+  [backgroundImage]="backgroundImage"
+></app-banner>
+
+<section class="my-5 pt-5">
+  <div class="container">
+    <!-- main title -->
+    <div class="row justify-content-center align-items-center">
+      <div class="col-xl-6 col-lg-8">
+        <div class="mainTitle">
+          <h2 class="text-capitalize">{{ 'contact.contactUs' | translate }}</h2>
+          <p>{{ 'contact.getInTouchWithUs' | translate }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- contact info -->
+    <div class="row g-3 mb-5 pb-3">
+      <div class="col-md-6 col-lg-4">
+        <div class="item p-3 bg-warning bg-opacity-25 rounded-3 shadow-sm border">
+          <i class="fa fa-phone-volume fs-1"></i>
+          <h3 class="text-capitalize my-3">{{ 'contact.callUs' | translate }}</h3>
+          @if (getPhoneDisplay()) {
+          <a
+            [href]="'tel:' + getFirstPhoneNumber()"
+            class="text-decoration-none text-dark fw-bold"
+            >{{ getPhoneDisplay() }}</a
+          >
+          }
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="item p-3 bg-secondary bg-opacity-25 rounded-3 shadow-sm border">
+          <i class="fa fa-envelope fs-1"></i>
+          <h3 class="text-capitalize my-3">{{ 'contact.emailUs' | translate }}</h3>
+          @if (userEmail) {
+          <a [href]="'mailto:' + userEmail" class="text-decoration-none text-dark fw-bold">{{
+            userEmail
+          }}</a>
+          }
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-4">
+        <div class="item p-3 bg-success bg-opacity-25 rounded-3 shadow-sm border">
+          <i class="fa fa-map-marker-alt fs-1"></i>
+          <h3 class="text-capitalize my-3">{{ 'contact.visitUs' | translate }}</h3>
+          <p class="text-dark fw-bold">{{ userAddress }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- contact form -->
+    <form
+      [formGroup]="contactForm"
+      (ngSubmit)="getContactData()"
+      class="contact-form row g-3 border p-3 rounded-3"
+    >
+      <div class="col-12">
+        <div class="text-center">
+          <h3 class="text-capitalize fw-bold">{{ 'contact.contactForm' | translate }}</h3>
+          <p class="fontsm text-muted">{{ 'contact.contactFormDescription' | translate }}</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div>
+          <input
+            type="text"
+            formControlName="name"
+            class="form-control p-2 rounded-3"
+            placeholder="{{ 'contact.name' | translate }}"
+          />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div>
+          <input
+            type="email"
+            formControlName="email"
+            class="form-control p-2 rounded-3"
+            placeholder="{{ 'contact.email' | translate }}"
+          />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div>
+          <input
+            type="tel"
+            formControlName="phone"
+            class="form-control p-2 rounded-3"
+            placeholder="{{ 'contact.phone' | translate }}"
+          />
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div>
+          <input
+            type="text"
+            formControlName="subject"
+            class="form-control p-2 rounded-3"
+            placeholder="{{ 'contact.subject' | translate }}"
+          />
+        </div>
+      </div>
+      <div class="col-12">
+        <div>
+          <select formControlName="country" class="form-control p-2 rounded-3">
+            <option value="" class="bg-dark" disabled>
+              {{ 'contact.country' | translate }}
+            </option>
+            <option *ngFor="let item of countryList" [value]="item.name">
+              {{ item.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12">
+        <div>
+          <textarea
+            rows="5"
+            formControlName="message"
+            class="form-control p-2 rounded-3"
+            placeholder="{{ 'contact.message' | translate }}"
+          ></textarea>
+        </div>
+      </div>
+
+      <div>
+        <button type="submit" class="mainBtn w-100">
+          {{ 'contact.send' | translate }}
+          <i class="fa fa-paper-plane fa-rotate-by rounded-circle ms-2"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<app-make-trip-form></app-make-trip-form>
+
+<app-parteners></app-parteners>

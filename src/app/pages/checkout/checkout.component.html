@@ -1,0 +1,142 @@
+<app-banner
+  [title]="'Checkout'"
+  [subtitle]="'Complete your purchase'"
+  [backgroundImage]="backgroundImage"
+></app-banner>
+
+<section class="my-5">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="bg-light p-3 rounded-3 shadow-sm border">
+          <div class="text-start">
+            <h2 class="h3 fw-bold">Billing Details</h2>
+            <p class="fontsm">Please fill in the details below to complete your purchase</p>
+          </div>
+          <form class="row g-3" [formGroup]="checkoutForm" (ngSubmit)="getCheckoutData()">
+            <div class="col-md-6">
+              <label for="first_name" class="form-label">First Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="first_name"
+                formControlName="first_name"
+                placeholder="First Name"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="last_name" class="form-label">Last Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="last_name"
+                formControlName="last_name"
+                placeholder="Last Name"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                formControlName="email"
+                placeholder="Email"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="phone" class="form-label">Phone</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="phone"
+                formControlName="phone"
+                placeholder="Phone"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="state" class="form-label">state</label>
+              <input
+                type="text"
+                class="form-control"
+                id="state"
+                formControlName="state"
+                placeholder="State"
+              />
+            </div>
+            <div class="col-12">
+              <label for="country" class="form-label">Country</label>
+              <select class="form-control" id="country" formControlName="country">
+                <option value="" disabled selected>Select Country</option>
+                @for (country of AllCountries; track $index) {
+                <option [value]="country.name">{{ country.name }}</option>
+                }
+              </select>
+            </div>
+            <div class="col-12">
+              <label for="notes" class="form-label">Notes</label>
+              <textarea
+                class="form-control"
+                id="notes"
+                formControlName="notes"
+                placeholder="Notes"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <!-- [disabled]="!checkoutForm.valid || !haveData" -->
+            <button type="submit" class="mainBtn w-100 mt-3">Submit Order</button>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div>
+          <div class="text-start">
+            <h2 class="h3 fw-bold">Order Summary</h2>
+            <p class="fontsm">Please review the details below to complete your purchase</p>
+          </div>
+          <!-- cart   carousel -->
+          @if (haveData) {
+          <owl-carousel-o [options]="cartListOptions">
+            @for (cart of CartData; track $index) {
+            <ng-template carouselSlide>
+              <app-tour-cart [tour]="cart.tour"></app-tour-cart>
+            </ng-template>
+            }
+          </owl-carousel-o>
+          } @else {
+          <p class="text-center text-danger">No data found in your cart</p>
+          }
+
+          <!-- total price before discount coupon -->
+          <div class="flexBetween mt-4">
+            <h6 class="mb-1">Total Price</h6>
+            <h6 class="mb-1 textMainColor fw-bold">{{ getTotalPrice() | currency }}</h6>
+          </div>
+
+          <!-- discount coupon -->
+          <div [formGroup]="checkoutForm" class="form-group flexBetween gap-3 my-3">
+            <input
+              type="text"
+              class="form-control"
+              id="coupon"
+              formControlName="coupon_id"
+              placeholder="Enter coupon code"
+            />
+            <button type="button" class="btn secBtn flex-shrink-0" (click)="applyCoupon()">
+              Apply
+            </button>
+          </div>
+
+          <!-- total price after discount coupon -->
+          @if (couponApplied) {
+          <div class="flexBetween">
+            <h6 class="mb-1">Total Price After Discount</h6>
+            <h6 class="mb-1 textMainColor fw-bold">{{ getTotalPrice() | currency }}</h6>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
