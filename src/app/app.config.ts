@@ -26,7 +26,7 @@ export const appConfig: ApplicationConfig = {
     // Development URLs will be: http://localhost:4200/route (works with ng serve)
     {
       provide: LocationStrategy,
-      useClass: environment.production ? HashLocationStrategy : PathLocationStrategy,
+      useClass: HashLocationStrategy, // PathLocationStrategy : HashLocationStrategy
     },
     provideAnimations(), // Required for Angular Material animations and ngx-toastr
     provideNativeDateAdapter(), // Required for Angular Material Datepicker
