@@ -19,7 +19,7 @@
   </div>
 
   <!-- form search -->
-  <div class="formBox mx-auto bg-white rounded-5 p-4 pb-3 sideBar mb-md-0 text-capitalize">
+  <div class="formBox mx-auto bg-white rounded-4 p-4 pb-3 pt-5 sideBar mb-md-0 text-capitalize">
     <mat-tab-group>
       <mat-tab [label]="'home.findYourTour' | translate">
         <form
@@ -35,7 +35,7 @@
                  ><i class="fa fa-plane me-2 mb-2"></i
                  >{{ "home.destinations" | translate }}</label
                > -->
-              <select formControlName="location" class="p-2 rounded-1 text-secondary border-0">
+              <select formControlName="location" class="p-2 rounded-2 text-secondary">
                 <option value="" disabled selected class="bg-secondary text-white">
                   {{ 'home.allDestinations' | translate }}
                 </option>
@@ -117,11 +117,11 @@
           </div>
           <div class="col-md-3">
             <div class="text-capitalize">
-              <label class="textSecondColor"
+              <!-- <label class="textSecondColor"
                 ><i class="fa fa-map-marker-alt me-2 mb-2"></i
                 >{{ 'home.destinations' | translate }}</label
-              >
-              <mat-form-field class="w-100">
+              > -->
+              <mat-form-field class="w-100 bg-transparent border rounded-2">
                 <mat-select formControlName="city">
                   <mat-option value="" disabled selected>
                     {{ 'home.myDestination' | translate }}
@@ -140,11 +140,11 @@
           @if (MarkTime==='exact') {
           <div class="col-md-3">
             <div class="text-capitalize">
-              <label class="textSecondColor"
+              <!-- <label class="textSecondColor"
                 ><i class="fa fa-calendar-days me-2 mb-2"></i>
                 {{ 'home.checkInDate' | translate }}
-              </label>
-              <mat-form-field class="w-100">
+              </label> -->
+              <mat-form-field class="w-100 bg-transparent border rounded-2">
                 <mat-label>{{ 'home.startDate' | translate }}</mat-label>
                 <input
                   formControlName="start_date"
@@ -163,11 +163,11 @@
           </div>
           <div class="col-md-3">
             <div class="text-capitalize">
-              <label class="textSecondColor"
+              <!-- <label class="textSecondColor"
                 ><i class="fa fa-calendar-days me-2 mb-2"></i>
                 {{ 'home.checkOutDate' | translate }}
-              </label>
-              <mat-form-field class="w-100">
+              </label> -->
+              <mat-form-field class="w-100 bg-transparent border rounded-2">
                 <mat-label>{{ 'home.endDate' | translate }}</mat-label>
                 <input
                   formControlName="end_date"
@@ -187,11 +187,11 @@
           @if (MarkTime==='approximate') {
           <div class="col-md-6">
             <div>
-              <label class="textSecondColor"
+              <!-- <label class="textSecondColor"
                 ><i class="fa fa-calendar-days me-2 mb-2"></i>
                 {{ 'home.checkOutDate' | translate }}
-              </label>
-              <mat-form-field class="w-100">
+              </label> -->
+              <mat-form-field class="w-100 bg-transparent border rounded-2">
                 <mat-label>{{ 'home.selectDate' | translate }}</mat-label>
                 <mat-select formControlName="approximate_time">
                   @for (month of monthList; track month; let i = $index) {

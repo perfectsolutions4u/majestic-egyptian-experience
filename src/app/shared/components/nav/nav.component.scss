@@ -424,6 +424,105 @@
   }
 }
 
+// Search Overlay
+.search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.search-overlay-content {
+  background-color: #fff;
+  border-radius: $border-radius;
+  width: 100%;
+  max-width: 1200px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.search-overlay-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-bottom: $border;
+  flex-shrink: 0;
+}
+
+.search-overlay-input-container {
+  position: relative;
+  flex: 1;
+}
+
+.search-overlay-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $text-color;
+  z-index: 1;
+}
+
+.search-overlay-input {
+  padding-left: 45px;
+  border: $border;
+  border-radius: $border-radius;
+  height: 50px;
+  font-family: $bady-font;
+  color: $text-color;
+  font-size: 1rem;
+
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: $box-shadow;
+    outline: none;
+  }
+
+  &::placeholder {
+    color: $text-color;
+    font-size: 0.9rem;
+  }
+}
+
+.search-overlay-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: $second-color;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: $transition;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $border-radius;
+
+  &:hover {
+    color: $primary-color;
+    background-color: $primary-white-color;
+  }
+}
+
+.search-overlay-results {
+  padding: 2rem;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
 // Responsive Design
 @media (max-width: 992px) {
   .top-header {
@@ -436,5 +535,22 @@
 
   .search-container {
     max-width: 100%;
+  }
+
+  .search-overlay {
+    padding: 1rem;
+  }
+
+  .search-overlay-content {
+    margin-top: 1rem;
+    max-height: 95vh;
+  }
+
+  .search-overlay-header {
+    padding: 1rem;
+  }
+
+  .search-overlay-results {
+    padding: 1rem;
   }
 }

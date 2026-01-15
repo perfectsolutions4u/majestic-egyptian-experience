@@ -97,6 +97,10 @@ main{
     visibility: visible !important;
     display: block !important;
 
+    .mainBtn{
+      padding: 17px 5px !important;
+    }
+
 
     @media(max-width: 1200px){
       max-width: 95%;
@@ -168,23 +172,27 @@ main{
         width: 100%;
         transition: all 0.3s ease;
         background-color: transparent;
-        border: 0 !important;
+        border: $border !important;
         outline: none !important;
         box-shadow: none !important;
+        padding: 17px 5px !important;
 
         &:focus{
-          border: 0 !important;
+          border: $border !important;
+          border-color: $primary-color !important;
           outline: none !important;
           box-shadow: none !important;
         }
 
         &:hover {
-          border: 0 !important;
+          border: $border !important;
+          border-color: $primary-color !important;
           outline: none !important;
         }
 
         &:active {
-          border: 0 !important;
+          border: $border !important;
+          border-color: $primary-color !important;
           outline: none !important;
         }
       }
@@ -341,6 +349,17 @@ main{
   }
 
   ::ng-deep {
+
+    .mat-mdc-text-field-wrapper{
+      background-color: transparent !important;
+    }
+    .mat-mdc-form-field-infix{
+      padding: 17px 5px !important;
+    }
+    .mat-form-field-appearance-fill .mat-mdc-select-arrow-wrapper {
+       transform: translateY(0px);
+    }
+
     .mdc-tab{padding: 0 4px !important;}
     .mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs>.mat-mdc-tab-header .mat-mdc-tab{
       flex-grow: 0 !important;
@@ -358,37 +377,46 @@ main{
 
  .mat-mdc-tab{
    transition: all 0.3s ease;
-   border-radius: 8px 8px 0 0;
+   border-radius: 8px;
    margin-right: 5px;
+   background-color: #f2f2f2 !important;
+   border: $border !important;
+   border-color: $primary-color !important;
+
+   .mdc-tab__text-label{
+    color: $primary-color !important;
+   }
 
    &:hover{
+     border-radius: 18px;
      .mdc-tab__ripple::before {
-       opacity: .1;
-       background-color: $second-color;
-     }
+      //  opacity: .1;
+       background-color: $primary-color !important;
+       border-radius: 18px;
+    }
      .mdc-tab__text-label{
-       color: $second-color;
+      //  color: $second-color !important;
        transform: translateY(-2px);
      }
-     background-color: rgba($second-color, 0.05);
+    //  background-color: linear-gradient(135deg, $primary-color, $primary-white-color) !important;
+
    }
  }
 
   .mat-mdc-tab.mdc-tab--active{
-    background: linear-gradient(135deg, $second-color, $primary-color);
-    border-radius: 8px 8px 0 0;
-    box-shadow: 0 4px 15px rgba($second-color, 0.3);
+    background: linear-gradient(135deg, $primary-color, $primary-white-color) !important;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba($second-color, 0.3) !important;
     transform: translateY(-2px);
     transition: all 0.3s ease;
-
     .mdc-tab__text-label{
-      color: #fff;
+      color: #fff !important;
       font-weight: 600;
     }
     .mdc-tab-indicator__content--underline{
       border-color: #fff;
-      padding-bottom: 3px;
-      border-width: 3px;
+      padding-bottom: 0px;
+      border-width: 0px;
     }
 
     &:hover {
@@ -405,9 +433,9 @@ main{
       overflow: visible !important;
       height: 0px !important;
     }
-    .mat-mdc-tab .mdc-tab__text-label{
-      color: white !important;
-    }
+    // .mat-mdc-tab .mdc-tab__text-label{
+    //   color: white !important;
+    // }
 
     .mat-mdc-radio-button .mdc-radio__native-control:enabled:checked+.mdc-radio__background>.mdc-radio__outer-circle {
       border-color: $primary-color !important;

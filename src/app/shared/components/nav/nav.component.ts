@@ -14,15 +14,26 @@ import { isPlatformBrowser } from '@angular/common';
 import { DataService } from '../../../services/data.service';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { TourCartComponent } from '../tour-cart/tour-cart.component';
 
 @Component({
   selector: 'app-nav',
-  imports: [RouterLink, RouterLinkActive, TranslateModule],
+  imports: [
+    RouterLink,
+    RouterLinkActive,
+    TranslateModule,
+    CommonModule,
+    FormsModule,
+    TourCartComponent,
+  ],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.scss',
 })
 export class NavComponent implements OnInit, OnDestroy {
   private $destory = new Subject<void>();
+  private escKeyListener?: (event: KeyboardEvent) => void;
 
   allDestinations: any[] = [];
   allCategories: any[] = [];
@@ -33,11 +44,17 @@ export class NavComponent implements OnInit, OnDestroy {
   showLanguage = signal(false);
   sidebarOpen = signal(false);
   mobileSearchOpen = signal(false);
+  searchOverlayOpen = signal(false);
   selectedLanguage = signal('en');
   expandedSubmenus = signal({
     destinations: false,
     tours: false,
   });
+
+  // Search functionality
+  searchInput = signal('');
+  searchResults: any[] = [];
+  isSearching = signal(false);
 
   constructor(
     private translate: TranslateService,
@@ -75,14 +92,22 @@ export class NavComponent implements OnInit, OnDestroy {
       const savedLang = localStorage.getItem('language') || 'en';
       this.selectedLanguage.set(savedLang);
       this.translate.use(savedLang);
+
+      // Add ESC key listener to close search overlay
+      this.escKeyListener = (event: KeyboardEvent) => {
+        if (event.key === 'Escape' && this.searchOverlayOpen()) {
+          this.closeSearchOverlay();
+        }
+      };
+      document.addEventListener('keydown', this.escKeyListener);
     } else {
       this.translate.use('en');
     }
   }
 
-  toggleMobileSearch(): void {
-    this.mobileSearchOpen.update((val) => !val);
-  }
+  // toggleMobileSearch(): void {
+  //   this.mobileSearchOpen.update((val) => !val);
+  // }
 
   toggleSubmenu(submenu: 'destinations' | 'tours'): void {
     this.expandedSubmenus.update((current) => ({
@@ -107,9 +132,60 @@ export class NavComponent implements OnInit, OnDestroy {
     return this.selectedLanguage().toUpperCase();
   }
 
+  openSearchOverlay(): void {
+    this.searchOverlayOpen.set(true);
+    // Focus on search input after overlay opens
+    setTimeout(() => {
+      const searchInput = document.querySelector('.search-overlay-input') as HTMLInputElement;
+      if (searchInput) {
+        searchInput.focus();
+      }
+    }, 100);
+  }
+
+  closeSearchOverlay(): void {
+    this.searchOverlayOpen.set(false);
+    this.searchInput.set('');
+    this.searchResults = [];
+  }
+
+  onSearchInputChange(value: string): void {
+    this.searchInput.set(value);
+    const trimmed = value.trim();
+
+    if (trimmed.length > 0) {
+      this.isSearching.set(true);
+      this._DataService
+        .getTours({ title: trimmed })
+        .pipe(takeUntil(this.$destory))
+        .subscribe({
+          next: (res) => {
+            const tours = res?.data?.data || res?.data || (Array.isArray(res) ? res : []);
+            this.searchResults = Array.isArray(tours) ? tours : [];
+            this.isSearching.set(false);
+            this.cdr.markForCheck();
+          },
+          error: (err) => {
+            console.error('Error searching tours:', err);
+            this.searchResults = [];
+            this.isSearching.set(false);
+            this.cdr.markForCheck();
+          },
+        });
+    } else {
+      this.searchResults = [];
+      this.isSearching.set(false);
+    }
+  }
+
   ngOnDestroy(): void {
     this.$destory.next();
     this.$destory.complete();
+
+    // Remove ESC key listener
+    if (isPlatformBrowser(this.platformId) && this.escKeyListener) {
+      document.removeEventListener('keydown', this.escKeyListener);
+    }
   }
 
   getDestinations() {
