@@ -46,12 +46,13 @@ export class CartComponent implements OnInit {
           } else {
             this.haveData = true;
 
+            // Use total_price from API response if available, otherwise calculate it
             this.tourCart = response.data.map((tour: any) => ({
               ...tour,
-              totalPrice:
-                tour.adults * tour.tour.adult_price +
+              totalPrice: tour.total_price ||
+                (tour.adults * tour.tour.adult_price +
                 tour.children * tour.tour.child_price +
-                tour.infants * tour.tour.infant_price,
+                tour.infants * tour.tour.infant_price),
             }));
           }
           this._cdr.markForCheck();

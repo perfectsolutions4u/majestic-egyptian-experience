@@ -28,59 +28,60 @@
           class="row g-3 align-items-center justify-content-between"
         >
           <div class="col-md-3">
-            <div
-              class="text-capitalize bg-transparent textSecondColor rounded-3 px-2 py-1 text-start"
-            >
-              <!-- <label
-                 ><i class="fa fa-plane me-2 mb-2"></i
-                 >{{ "home.destinations" | translate }}</label
-               > -->
-              <select formControlName="location" class="p-2 rounded-2 text-secondary">
-                <option value="" disabled selected class="bg-secondary text-white">
-                  {{ 'home.allDestinations' | translate }}
-                </option>
-                @for (des of allDestinations; track $index) {
-                <option [value]="des.slug">{{ des.title }}</option>
-                }
-              </select>
+            <div class="input-with-icon-label">
+              <i class="fa fa-compass input-icon"></i>
+              <div class="input-content">
+                <select formControlName="location" class="custom-select-input">
+                  <option value="" disabled selected>
+                    {{ 'home.allDestinations' | translate }}
+                  </option>
+                  @for (des of allDestinations; track $index) {
+                  <option [value]="des.slug">{{ des.title }}</option>
+                  }
+                </select>
+                <div class="input-display">
+                  <span class="input-value">{{ getSelectedDestination() || ('home.allDestinations' | translate) }}</span>
+                  <span class="input-label">{{ 'home.destinations' | translate }}</span>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-md-3">
-            <div
-              class="text-capitalize bg-transparent textSecondColor rounded-3 px-2 py-1 text-start"
-            >
-              <!-- <label
-                 ><i class="fa fa-layer-group me-2 mb-2"></i
-                 >{{ "home.categories" | translate }}</label
-               > -->
-              <select formControlName="type" class="p-2 rounded-1 text-secondary border-0">
-                <option value="" disabled selected class="bg-secondary text-white">
-                  {{ 'home.allCategories' | translate }}
-                </option>
-                @for (cat of allCategories; track $index) {
-
-                <option [value]="cat.slug">{{ cat.title }}</option>
-                }
-              </select>
+            <div class="input-with-icon-label">
+              <i class="fa fa-layer-group input-icon"></i>
+              <div class="input-content">
+                <select formControlName="type" class="custom-select-input">
+                  <option value="" disabled selected>
+                    {{ 'home.allCategories' | translate }}
+                  </option>
+                  @for (cat of allCategories; track $index) {
+                  <option [value]="cat.slug">{{ cat.title }}</option>
+                  }
+                </select>
+                <div class="input-display">
+                  <span class="input-value">{{ getSelectedCategory() || ('home.allCategories' | translate) }}</span>
+                  <span class="input-label">{{ 'home.categories' | translate }}</span>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-md-3">
-            <div
-              class="text-capitalize bg-transparent textSecondColor rounded-3 px-2 py-1 text-start"
-            >
-              <!-- <label
-                 ><i class="fa fa-alarm-clock me-2 mb-2"></i
-                 >{{ "common.duration" | translate }}</label
-               > -->
-              <select formControlName="duration" class="p-2 rounded-1 text-secondary border-0">
-                <option value="" disabled selected class="bg-secondary text-white">
-                  {{ 'home.selectDate' | translate }}
-                </option>
-                @for (time of allDurations; track $index) {
-
-                <option [value]="time.slug">{{ time.title }}</option>
-                }
-              </select>
+            <div class="input-with-icon-label">
+              <i class="fa fa-calendar-days input-icon"></i>
+              <div class="input-content">
+                <select formControlName="duration" class="custom-select-input">
+                  <option value="" disabled selected>
+                    {{ 'home.selectDate' | translate }}
+                  </option>
+                  @for (time of allDurations; track $index) {
+                  <option [value]="time.slug">{{ time.title }}</option>
+                  }
+                </select>
+                <div class="input-display">
+                  <span class="input-value">{{ getSelectedDuration() || ('home.selectDate' | translate) }}</span>
+                  <span class="input-label">{{ 'common.duration' | translate }}</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -116,69 +117,76 @@
             </mat-radio-group>
           </div>
           <div class="col-md-3">
-            <div class="text-capitalize">
-              <!-- <label class="textSecondColor"
-                ><i class="fa fa-map-marker-alt me-2 mb-2"></i
-                >{{ 'home.destinations' | translate }}</label
-              > -->
-              <mat-form-field class="w-100 bg-transparent border rounded-2">
-                <mat-select formControlName="city">
-                  <mat-option value="" disabled selected>
-                    {{ 'home.myDestination' | translate }}
-                  </mat-option>
-                  @for (des of allDestinations; track des.slug) {
-                  <mat-option [value]="des.slug">
-                    {{ des.title }}
-                  </mat-option>
-                  }
-                </mat-select>
-              </mat-form-field>
+            <div class="input-with-icon-label">
+              <i class="fa fa-compass input-icon"></i>
+              <div class="input-content">
+                <mat-form-field class="w-100 custom-mat-field">
+                  <mat-select formControlName="city">
+                    <mat-option value="" disabled selected>
+                      {{ 'home.myDestination' | translate }}
+                    </mat-option>
+                    @for (des of allDestinations; track des.slug) {
+                    <mat-option [value]="des.slug">
+                      {{ des.title }}
+                    </mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+                <div class="input-display">
+                  <span class="input-value">{{ getSelectedCity() || ('home.myDestination' | translate) }}</span>
+                  <span class="input-label">{{ 'home.destinations' | translate }}</span>
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- if have exact time -->
           @if (MarkTime==='exact') {
           <div class="col-md-3">
-            <div class="text-capitalize">
-              <!-- <label class="textSecondColor"
-                ><i class="fa fa-calendar-days me-2 mb-2"></i>
-                {{ 'home.checkInDate' | translate }}
-              </label> -->
-              <mat-form-field class="w-100 bg-transparent border rounded-2">
-                <mat-label>{{ 'home.startDate' | translate }}</mat-label>
-                <input
-                  formControlName="start_date"
-                  matInput
-                  [matDatepicker]="StartDatepicker"
-                  (click)="openStartDatePicker()"
-                  readonly
-                />
-                <mat-datepicker-toggle
-                  matIconSuffix
-                  [for]="StartDatepicker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker touchUi #StartDatepicker></mat-datepicker>
-              </mat-form-field>
+            <div class="input-with-icon-label">
+              <i class="fa fa-calendar-days input-icon"></i>
+              <div class="input-content">
+                <mat-form-field class="w-100 custom-mat-field">
+                  <input
+                    formControlName="start_date"
+                    matInput
+                    [matDatepicker]="StartDatepicker"
+                    (click)="openStartDatePicker()"
+                    readonly
+                  />
+                  <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="StartDatepicker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker touchUi #StartDatepicker></mat-datepicker>
+                </mat-form-field>
+                <div class="input-display">
+                  <span class="input-value">{{ getFormattedStartDate() || ('home.startDate' | translate) }}</span>
+                  <span class="input-label">{{ getFormattedStartDateLabel() || ('home.startDate' | translate) }}</span>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-md-3">
-            <div class="text-capitalize">
-              <!-- <label class="textSecondColor"
-                ><i class="fa fa-calendar-days me-2 mb-2"></i>
-                {{ 'home.checkOutDate' | translate }}
-              </label> -->
-              <mat-form-field class="w-100 bg-transparent border rounded-2">
-                <mat-label>{{ 'home.endDate' | translate }}</mat-label>
-                <input
-                  formControlName="end_date"
-                  matInput
-                  [matDatepicker]="EndDatepicker"
-                  (click)="openEndDatePicker()"
-                  readonly
-                />
-                <mat-datepicker-toggle matIconSuffix [for]="EndDatepicker"></mat-datepicker-toggle>
-                <mat-datepicker touchUi #EndDatepicker></mat-datepicker>
-              </mat-form-field>
+            <div class="input-with-icon-label">
+              <i class="fa fa-calendar-days input-icon"></i>
+              <div class="input-content">
+                <mat-form-field class="w-100 custom-mat-field">
+                  <input
+                    formControlName="end_date"
+                    matInput
+                    [matDatepicker]="EndDatepicker"
+                    (click)="openEndDatePicker()"
+                    readonly
+                  />
+                  <mat-datepicker-toggle matIconSuffix [for]="EndDatepicker"></mat-datepicker-toggle>
+                  <mat-datepicker touchUi #EndDatepicker></mat-datepicker>
+                </mat-form-field>
+                <div class="input-display">
+                  <span class="input-value">{{ getFormattedEndDate() || ('home.endDate' | translate) }}</span>
+                  <span class="input-label">{{ getFormattedEndDateLabel() || ('home.endDate' | translate) }}</span>
+                </div>
+              </div>
             </div>
           </div>
           }
@@ -186,19 +194,21 @@
           <!-- if have aproximate time -->
           @if (MarkTime==='approximate') {
           <div class="col-md-6">
-            <div>
-              <!-- <label class="textSecondColor"
-                ><i class="fa fa-calendar-days me-2 mb-2"></i>
-                {{ 'home.checkOutDate' | translate }}
-              </label> -->
-              <mat-form-field class="w-100 bg-transparent border rounded-2">
-                <mat-label>{{ 'home.selectDate' | translate }}</mat-label>
-                <mat-select formControlName="approximate_time">
-                  @for (month of monthList; track month; let i = $index) {
-                  <mat-option [value]="i + 1">{{ month }}</mat-option>
-                  }
-                </mat-select>
-              </mat-form-field>
+            <div class="input-with-icon-label">
+              <i class="fa fa-calendar-days input-icon"></i>
+              <div class="input-content">
+                <mat-form-field class="w-100 custom-mat-field">
+                  <mat-select formControlName="approximate_time">
+                    @for (month of monthList; track month; let i = $index) {
+                    <mat-option [value]="i + 1">{{ month }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+                <div class="input-display">
+                  <span class="input-value">{{ getSelectedMonth() || ('home.selectDate' | translate) }}</span>
+                  <span class="input-label">{{ 'home.selectDate' | translate }}</span>
+                </div>
+              </div>
             </div>
           </div>
           }

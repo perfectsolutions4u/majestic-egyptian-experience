@@ -25,7 +25,7 @@
                 </p>
               </div>
 
-              <div class="row g-3 my-4 chooseDestination" @staggerCards>
+              <div class="row g-2 my-3 chooseDestination" @staggerCards>
                 <div
                   class="js-check col-lg-3 col-md-6"
                   *ngFor="let destination of destinationList; let i = index"
@@ -49,7 +49,7 @@
                         <img
                           [src]="destination.featured_image"
                           class="destination-image w-100"
-                          height="280"
+                          height="220"
                           [alt]="destination.title"
                           [title]="destination.title"
                         />
@@ -103,7 +103,7 @@
                 <p class="step-subtitle">Choose your preferred travel dates</p>
               </div>
 
-              <div class="row g-4 my-4">
+              <div class="row g-3 my-3">
                 <div class="col-lg-5" @slideInLeft>
                   <div class="date-type-card">
                     <h4 class="date-type-title">Select Date Type</h4>
@@ -232,6 +232,7 @@
                         matInput
                         formControlName="first_name"
                         placeholder="Ahmed"
+                        [class.is-invalid]="isFieldInvalid('first_name')"
                       />
                       <!-- <mat-icon matPrefix>person</mat-icon> -->
                     </mat-form-field>
@@ -244,6 +245,7 @@
                         matInput
                         formControlName="last_name"
                         placeholder="Zenger"
+                        [class.is-invalid]="isFieldInvalid('last_name')"
                       />
                       <!-- <mat-icon matPrefix>person_outline</mat-icon> -->
                     </mat-form-field>
@@ -256,6 +258,7 @@
                         matInput
                         formControlName="email"
                         placeholder="ahmed@gmail.com"
+                        [class.is-invalid]="isFieldInvalid('email')"
                       />
                       <!-- <mat-icon matPrefix>email</mat-icon> -->
                     </mat-form-field>
@@ -279,6 +282,7 @@
                         matInput
                         formControlName="phone_number"
                         placeholder="01069769249"
+                        [class.is-invalid]="isFieldInvalid('phone_number')"
                       />
                       <!-- <mat-icon matPrefix>phone</mat-icon> -->
                     </mat-form-field>

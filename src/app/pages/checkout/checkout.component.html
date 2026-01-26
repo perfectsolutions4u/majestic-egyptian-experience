@@ -19,6 +19,7 @@
               <input
                 type="text"
                 class="form-control"
+                [class.is-invalid]="isFieldInvalid('first_name')"
                 id="first_name"
                 formControlName="first_name"
                 placeholder="First Name"
@@ -29,6 +30,7 @@
               <input
                 type="text"
                 class="form-control"
+                [class.is-invalid]="isFieldInvalid('last_name')"
                 id="last_name"
                 formControlName="last_name"
                 placeholder="Last Name"
@@ -39,6 +41,7 @@
               <input
                 type="email"
                 class="form-control"
+                [class.is-invalid]="isFieldInvalid('email')"
                 id="email"
                 formControlName="email"
                 placeholder="Email"
@@ -47,8 +50,9 @@
             <div class="col-md-6">
               <label for="phone" class="form-label">Phone</label>
               <input
-                type="tel"
+                type="number"
                 class="form-control"
+                [class.is-invalid]="isFieldInvalid('phone')"
                 id="phone"
                 formControlName="phone"
                 placeholder="Phone"
@@ -59,14 +63,19 @@
               <input
                 type="text"
                 class="form-control"
+                [class.is-invalid]="isFieldInvalid('state')"
                 id="state"
                 formControlName="state"
                 placeholder="State"
               />
             </div>
-            <div class="col-12">
+            <div class="col-md-6">
               <label for="country" class="form-label">Country</label>
-              <select class="form-control" id="country" formControlName="country">
+              <select
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('country')"
+                id="country"
+                formControlName="country">
                 <option value="" disabled selected>Select Country</option>
                 @for (country of AllCountries; track $index) {
                 <option [value]="country.name">{{ country.name }}</option>
@@ -77,6 +86,7 @@
               <label for="notes" class="form-label">Notes</label>
               <textarea
                 class="form-control"
+                [class.is-invalid]="isFieldInvalid('notes')"
                 id="notes"
                 formControlName="notes"
                 placeholder="Notes"
@@ -85,7 +95,7 @@
             </div>
 
             <!-- [disabled]="!checkoutForm.valid || !haveData" -->
-            <button type="submit" class="mainBtn w-100 mt-3">Submit Order</button>
+            <button [disabled]="!checkoutForm.valid || !haveData" type="submit" class="mainBtn w-100 mt-3">Submit Order</button>
           </form>
         </div>
       </div>
@@ -100,7 +110,16 @@
           <owl-carousel-o [options]="cartListOptions">
             @for (cart of CartData; track $index) {
             <ng-template carouselSlide>
-              <app-tour-cart [tour]="cart.tour"></app-tour-cart>
+              <div class="card">
+                <figure>
+                  <img [src]="cart.tour.featured_image" [alt]="cart.tour.title" class="img-fluid">
+                </figure>
+                <div class="card-body pt-0">
+                  <h5 class="card-title">{{ cart.tour.title }}</h5>
+                  <p class="card-text textMainColor fw-bold">{{ cart.tour.start_from | currency }}</p>
+                </div>
+              </div>
+              <!-- <app-tour-cart [tour]="cart.tour"></app-tour-cart> -->
             </ng-template>
             }
           </owl-carousel-o>

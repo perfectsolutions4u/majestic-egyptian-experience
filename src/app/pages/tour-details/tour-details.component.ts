@@ -98,94 +98,6 @@ export class TourDetailsComponent implements OnInit {
   openOptionDropdowns: Map<number, boolean> = new Map();
 
   ngOnInit(): void {
-    // Get settings email
-    this._DataService.getSetting().subscribe({
-      next: (res) => {
-        if (res?.data) {
-          const emailSetting = res.data.find((item: any) => item.option_key === 'email_address');
-          this.settingsEmail = Array.isArray(emailSetting?.option_value)
-            ? emailSetting.option_value[0] || ''
-            : emailSetting?.option_value || '';
-        }
-      },
-    });
-
-    this._ActivatedRoute.params.subscribe((params) => {
-      this.slug = params['slug'];
-      this._DataService.getTourBySlug(this.slug).subscribe((res) => {
-        if (res && res.data) {
-          Promise.resolve().then(() => {
-            this.tour = res.data;
-            // console.log('tour', this.tour);
-            // get related tours by destinations or categories
-            if (this.tour?.destinations) {
-              const destinationSlug = this.tour.destinations[0].slug;
-              this._DataService.getTours({ destination_slug: destinationSlug }).subscribe((res) => {
-                this.relatedTours = res.data.data;
-                this._cdr.markForCheck();
-              });
-            } else if (this.tour?.categories) {
-              const categorySlug = this.tour.categories[0].slug;
-              this._DataService.getTours({ category_slug: categorySlug }).subscribe((res) => {
-                this.relatedTours = res.data.data;
-                this._cdr.markForCheck();
-              });
-            } else {
-              this.relatedTours = [];
-            }
-            console.log('related tours', this.relatedTours);
-
-            this.writeReview.get('tour_id')?.setValue(this.tour?.id);
-            this.bookingForm.get('tour_id')?.setValue(this.tour?.id);
-            this.enquiryForm.get('tour_id')?.setValue(this.tour?.id);
-            // get tour pricing for adults in first = 1
-            this.getTourPricing(this.bookingForm.get('adults')?.value);
-            // get reviews by tour id
-            // if (this.tour?.id) {
-            //   this.getReviews(this.tour.id);
-            // }
-            // Sanitize HTML descriptions for itinerary days
-            if (this.tour && this.tour.days && Array.isArray(this.tour.days)) {
-              this.tour.days = this.tour.days.map((day: any) => ({
-                ...day,
-                safeDescription: day.description
-                  ? this.sanitizer.bypassSecurityTrustHtml(day.description)
-                  : this.sanitizer.bypassSecurityTrustHtml(''),
-              }));
-            }
-            // Convert included and excluded strings to arrays
-            if (this.tour && this.tour.included) {
-              this.includedList = this.tour.included
-                .split(',')
-                .map((item: string) => item.trim())
-                .filter((item: string) => item.length > 0);
-            }
-            if (this.tour && this.tour.excluded) {
-              this.excludedList = this.tour.excluded
-                .split(',')
-                .map((item: string) => item.trim())
-                .filter((item: string) => item.length > 0);
-            }
-
-            // get tour options and initialize their state
-            if (this.tour && this.tour.options) {
-              this.tourOptions = this.tour.options.map((option: any) => option.name);
-              // Initialize option states
-              this.tour.options.forEach((option: any) => {
-                this.optionStates.set(option.id, {
-                  adults: 0,
-                  children: 0,
-                  isSelected: false,
-                  price: 0,
-                });
-              });
-            }
-            console.log('tour', this.tour);
-            this._cdr.markForCheck();
-          });
-        }
-      });
-    });
 
     this.writeReview = new FormGroup({
       reviewer_name: new FormControl('', [Validators.required]),
@@ -213,21 +125,144 @@ export class TourDetailsComponent implements OnInit {
       save_info: new FormControl(false),
       tour_id: new FormControl<number | null>(null),
     });
+
+    // Get settings email
+    this._DataService.getSetting().subscribe({
+      next: (res) => {
+        if (res?.data) {
+          const emailSetting = res.data.find((item: any) => item.option_key === 'email_address');
+          this.settingsEmail = Array.isArray(emailSetting?.option_value)
+            ? emailSetting.option_value[0] || ''
+            : emailSetting?.option_value || '';
+        }
+      },
+    });
+
+    this._ActivatedRoute.params.subscribe((params) => {
+      this.slug = params['slug'];
+      this._DataService.getTourBySlug(this.slug).subscribe((res) => {
+        if (res && res.data) {
+          this.tour = res.data;
+          // console.log('tour', this.tour);
+
+          // Set tour_id in all forms - ensure tour.id exists
+          if (this.tour && this.tour.id) {
+            const tourIdControl = this.writeReview.get('tour_id');
+            const bookingIdControl = this.bookingForm.get('tour_id');
+            const enquiryIdControl = this.enquiryForm.get('tour_id');
+
+            if (tourIdControl) {
+              tourIdControl.setValue(this.tour.id);
+            }
+            if (bookingIdControl) {
+              bookingIdControl.setValue(this.tour.id);
+            }
+            if (enquiryIdControl) {
+              enquiryIdControl.setValue(this.tour.id);
+            }
+
+            console.log('Tour ID set:', this.tour.id);
+            console.log('write review tour id', this.writeReview.get('tour_id')?.value);
+            console.log('booking form tour id', this.bookingForm.get('tour_id')?.value);
+            console.log('enquiry form tour id', this.enquiryForm.get('tour_id')?.value);
+          } else {
+            console.warn('Tour ID is missing:', this.tour);
+          }
+
+          // get related tours by destinations or categories
+          if (this.tour?.destinations) {
+            const destinationSlug = this.tour.destinations[0].slug;
+            this._DataService.getTours({ destination_slug: destinationSlug }).subscribe((res) => {
+              this.relatedTours = res.data.data;
+              this._cdr.markForCheck();
+            });
+          } else if (this.tour?.categories) {
+            const categorySlug = this.tour.categories[0].slug;
+            this._DataService.getTours({ category_slug: categorySlug }).subscribe((res) => {
+              this.relatedTours = res.data.data;
+              this._cdr.markForCheck();
+            });
+          } else {
+            this.relatedTours = [];
+          }
+          console.log('related tours', this.relatedTours);
+
+          // get tour pricing for adults in first = 1
+          this.getTourPricing(this.bookingForm.get('adults')?.value);
+
+          // Load reviews - use reviews from tour if available, otherwise fetch from API
+          if (this.tour?.reviews && Array.isArray(this.tour.reviews) && this.tour.reviews.length > 0) {
+            this.reviews = this.tour.reviews;
+          } else if (this.tour?.id) {
+            this.getReviews(this.tour.id);
+          }
+          // Sanitize HTML descriptions for itinerary days
+          if (this.tour && this.tour.days && Array.isArray(this.tour.days)) {
+            this.tour.days = this.tour.days.map((day: any) => ({
+              ...day,
+              safeDescription: day.description
+                ? this.sanitizer.bypassSecurityTrustHtml(day.description)
+                : this.sanitizer.bypassSecurityTrustHtml(''),
+            }));
+          }
+          // Convert included and excluded strings to arrays
+          if (this.tour && this.tour.included) {
+            this.includedList = this.tour.included
+              .split(',')
+              .map((item: string) => item.trim())
+              .filter((item: string) => item.length > 0);
+          }
+          if (this.tour && this.tour.excluded) {
+            this.excludedList = this.tour.excluded
+              .split(',')
+              .map((item: string) => item.trim())
+              .filter((item: string) => item.length > 0);
+          }
+
+          // get tour options and initialize their state
+          if (this.tour && this.tour.options) {
+            this.tourOptions = this.tour.options.map((option: any) => option.name);
+            // Initialize option states
+            this.tour.options.forEach((option: any) => {
+              this.optionStates.set(option.id, {
+                adults: 0,
+                children: 0,
+                isSelected: false,
+                price: 0,
+              });
+            });
+          }
+          console.log('tour', this.tour);
+          this._cdr.markForCheck();
+        }
+      });
+    });
   }
 
   submitWriteReview(): void {
     if (this.writeReview.valid) {
       this.isLoading = true;
+      // Get tour_id before reset - use form value or fallback to tour.id
+      const tourId = this.writeReview.get('tour_id')?.value || this.tour?.id;
+
+      if (!tourId) {
+        this._ToastrService.error('Tour ID is missing. Please refresh the page.');
+        this.isLoading = false;
+        return;
+      }
+
       this._DataService
-        .writeReview(this.writeReview.get('tour_id')?.value, this.writeReview.value)
+        .writeReview(tourId, this.writeReview.value)
         .subscribe({
           next: (res) => {
             console.log(res);
 
             this._ToastrService.success(res.message);
+            this.writeReview.get('tour_id')?.setValue(this.tour?.id);
             this.writeReview.reset();
             this.isLoading = false;
-            this.getReviews(this.writeReview.get('tour_id')?.value);
+            // Use the stored tourId for getReviews
+            this.getReviews(tourId);
             // Close modal and remove all backdrops
             this.closeModalAndRemoveBackdrop('writeReviewModal');
             this._cdr.markForCheck();
@@ -242,10 +277,65 @@ export class TourDetailsComponent implements OnInit {
   }
 
   getReviews(id: number): void {
-    this._DataService.getreviewByTourId(id).subscribe((res) => {
-      console.log(res);
-      this.reviews = res.data;
+    this._DataService.getreviewByTourId(id).subscribe({
+      next: (res) => {
+        console.log(res);
+        if (res && res.data) {
+          this.reviews = Array.isArray(res.data) ? res.data : [];
+        } else {
+          this.reviews = [];
+        }
+        this._cdr.markForCheck();
+      },
+      error: (err) => {
+        console.error('Error fetching reviews:', err);
+        // If API call fails, try to use reviews from tour object if available
+        if (this.tour?.reviews && Array.isArray(this.tour.reviews)) {
+          this.reviews = this.tour.reviews;
+        } else {
+          this.reviews = [];
+        }
+        this._cdr.markForCheck();
+      },
     });
+  }
+
+  getReviewQualityText(): string {
+    const reviewCount =
+      this.reviews.length || this.tour?.reviews_number || 0;
+
+    if (reviewCount === 0) {
+      return 'New Tour';
+    }
+
+    // Calculate average rating from actual reviews if available
+    const averageRating = this.getAverageRating();
+
+    if (averageRating >= 4.5) {
+      return 'Excellent Quality';
+    } else if (averageRating >= 4.0) {
+      return 'Very Good Quality';
+    } else if (averageRating >= 3.5) {
+      return 'Good Quality';
+    } else if (averageRating >= 3.0) {
+      return 'Average Quality';
+    } else if (averageRating > 0) {
+      return 'Below Average Quality';
+    } else {
+      return 'No Rating Available';
+    }
+  }
+
+  getAverageRating(): number {
+    if (this.reviews.length === 0) {
+      return this.tour?.rate || 0;
+    }
+
+    const totalRating = this.reviews.reduce(
+      (sum, review) => sum + (review.rate || 0),
+      0
+    );
+    return totalRating / this.reviews.length;
   }
 
   // check pricing
@@ -432,6 +522,9 @@ export class TourDetailsComponent implements OnInit {
       if (selectedOptions.length > 0) {
         formValue.options = selectedOptions;
       }
+
+      // Add total_price (base tour price + add-ons price)
+      formValue.total_price = this.totalPrice + this.totalAddOnsPrice;
 
       // console.log(formValue);
       this._BookingService

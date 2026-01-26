@@ -37,7 +37,7 @@
           <i class="fa fa-envelope fs-1"></i>
           <h3 class="text-capitalize my-3">{{ 'contact.emailUs' | translate }}</h3>
           @if (userEmail) {
-          <a [href]="'mailto:' + userEmail" class="text-decoration-none text-dark fw-bold">{{
+          <a [href]="'mailto:' + userEmail" class="text-decoration-none text-dark fw-bold text-break">{{
             userEmail
           }}</a>
           }

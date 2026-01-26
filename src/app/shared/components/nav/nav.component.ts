@@ -12,7 +12,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { isPlatformBrowser } from '@angular/common';
 import { DataService } from '../../../services/data.service';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil, tap, debounceTime, distinctUntilChanged } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -34,6 +34,7 @@ import { TourCartComponent } from '../tour-cart/tour-cart.component';
 export class NavComponent implements OnInit, OnDestroy {
   private $destory = new Subject<void>();
   private escKeyListener?: (event: KeyboardEvent) => void;
+  private searchSubject = new Subject<string>();
 
   allDestinations: any[] = [];
   allCategories: any[] = [];
@@ -103,6 +104,39 @@ export class NavComponent implements OnInit, OnDestroy {
     } else {
       this.translate.use('en');
     }
+
+    // Setup search debounce
+    this.searchSubject
+      .pipe(
+        debounceTime(3000), // Wait 1 second after user stops typing
+        distinctUntilChanged(), // Only emit if value changed
+        takeUntil(this.$destory)
+      )
+      .subscribe((trimmed) => {
+        if (trimmed.length > 0) {
+          this.isSearching.set(true);
+          this._DataService
+            .getTours({ title: trimmed })
+            .pipe(takeUntil(this.$destory))
+            .subscribe({
+              next: (res) => {
+                const tours = res?.data?.data || res?.data || (Array.isArray(res) ? res : []);
+                this.searchResults = Array.isArray(tours) ? tours : [];
+                this.isSearching.set(false);
+                this.cdr.markForCheck();
+              },
+              error: (err) => {
+                console.error('Error searching tours:', err);
+                this.searchResults = [];
+                this.isSearching.set(false);
+                this.cdr.markForCheck();
+              },
+            });
+        } else {
+          this.searchResults = [];
+          this.isSearching.set(false);
+        }
+      });
   }
 
   // toggleMobileSearch(): void {
@@ -153,29 +187,14 @@ export class NavComponent implements OnInit, OnDestroy {
     this.searchInput.set(value);
     const trimmed = value.trim();
 
-    if (trimmed.length > 0) {
-      this.isSearching.set(true);
-      this._DataService
-        .getTours({ title: trimmed })
-        .pipe(takeUntil(this.$destory))
-        .subscribe({
-          next: (res) => {
-            const tours = res?.data?.data || res?.data || (Array.isArray(res) ? res : []);
-            this.searchResults = Array.isArray(tours) ? tours : [];
-            this.isSearching.set(false);
-            this.cdr.markForCheck();
-          },
-          error: (err) => {
-            console.error('Error searching tours:', err);
-            this.searchResults = [];
-            this.isSearching.set(false);
-            this.cdr.markForCheck();
-          },
-        });
-    } else {
+    // Clear results immediately if input is empty
+    if (trimmed.length === 0) {
       this.searchResults = [];
       this.isSearching.set(false);
     }
+
+    // Emit to subject which will debounce the API call
+    this.searchSubject.next(trimmed);
   }
 
   ngOnDestroy(): void {
@@ -236,5 +255,10 @@ export class NavComponent implements OnInit, OnDestroy {
           this.allCategories = [];
         },
       });
+  }
+
+  layoutType: 'grid' | 'list' = 'grid';
+  setLayout(type: 'grid' | 'list') {
+    this.layoutType = type;
   }
 }

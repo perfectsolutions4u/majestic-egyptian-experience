@@ -148,12 +148,22 @@ export class HomeComponent implements OnInit {
       duration: [''],
     });
 
+    // Subscribe to form value changes to update display
+    this.tourSearchForm.valueChanges.subscribe(() => {
+      this.cdr.markForCheck();
+    });
+
+    this.makeTripForm.valueChanges.subscribe(() => {
+      this.cdr.markForCheck();
+    });
+
     // Load translated months
     this.loadMonths();
 
     // Reload months when language changes
     this.translate.onLangChange.subscribe(() => {
       this.loadMonths();
+      this.cdr.markForCheck();
     });
   }
 
@@ -264,6 +274,107 @@ export class HomeComponent implements OnInit {
 
   openEndDatePicker() {
     this.datepickerService.openDatePicker(this.endDatepicker);
+  }
+
+  // Helper methods to get display values
+  getSelectedDestination(): string {
+    const location = this.tourSearchForm?.get('location')?.value;
+    if (!location) return '';
+    const destination = this.allDestinations.find((d) => d.slug === location);
+    return destination?.title || '';
+  }
+
+  getSelectedCategory(): string {
+    const type = this.tourSearchForm?.get('type')?.value;
+    if (!type) return '';
+    const category = this.allCategories.find((c) => c.slug === type);
+    return category?.title || '';
+  }
+
+  getSelectedDuration(): string {
+    const duration = this.tourSearchForm?.get('duration')?.value;
+    if (!duration) return '';
+    const durationObj = this.allDurations.find((d) => d.slug === duration);
+    return durationObj?.title || '';
+  }
+
+  getSelectedCity(): string {
+    const city = this.makeTripForm?.get('city')?.value;
+    if (!city) return '';
+    const destination = this.allDestinations.find((d) => d.slug === city);
+    return destination?.title || '';
+  }
+
+  getFormattedStartDate(): string {
+    const date = this.makeTripForm?.get('start_date')?.value;
+    if (!date) return '';
+
+    // Handle both Date objects and string dates
+    const dateObj = date instanceof Date ? date : new Date(date);
+    if (isNaN(dateObj.getTime())) return '';
+
+    try {
+      const day = dateObj.getDate();
+      const month = dateObj.toLocaleDateString(this.translate.currentLang || 'en', { month: 'long' });
+      return `${day} ${month}`;
+    } catch {
+      return '';
+    }
+  }
+
+  getFormattedStartDateLabel(): string {
+    const date = this.makeTripForm?.get('start_date')?.value;
+    if (!date) return '';
+
+    const dateObj = date instanceof Date ? date : new Date(date);
+    if (isNaN(dateObj.getTime())) return '';
+
+    try {
+      const weekday = dateObj.toLocaleDateString(this.translate.currentLang || 'en', { weekday: 'long' });
+      const year = dateObj.getFullYear();
+      return `${weekday} ${year}`;
+    } catch {
+      return '';
+    }
+  }
+
+  getFormattedEndDate(): string {
+    const date = this.makeTripForm?.get('end_date')?.value;
+    if (!date) return '';
+
+    // Handle both Date objects and string dates
+    const dateObj = date instanceof Date ? date : new Date(date);
+    if (isNaN(dateObj.getTime())) return '';
+
+    try {
+      const day = dateObj.getDate();
+      const month = dateObj.toLocaleDateString(this.translate.currentLang || 'en', { month: 'long' });
+      return `${day} ${month}`;
+    } catch {
+      return '';
+    }
+  }
+
+  getFormattedEndDateLabel(): string {
+    const date = this.makeTripForm?.get('end_date')?.value;
+    if (!date) return '';
+
+    const dateObj = date instanceof Date ? date : new Date(date);
+    if (isNaN(dateObj.getTime())) return '';
+
+    try {
+      const weekday = dateObj.toLocaleDateString(this.translate.currentLang || 'en', { weekday: 'long' });
+      const year = dateObj.getFullYear();
+      return `${weekday} ${year}`;
+    } catch {
+      return '';
+    }
+  }
+
+  getSelectedMonth(): string {
+    const monthIndex = this.makeTripForm?.get('approximate_time')?.value;
+    if (!monthIndex || monthIndex < 1 || monthIndex > 12) return '';
+    return this.monthList[monthIndex - 1] || '';
   }
 
   getPopularTours() {

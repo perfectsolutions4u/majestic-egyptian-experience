@@ -318,7 +318,7 @@
 .dropdown-item {
   display: flex;
   align-items: center;
-  padding:0.5rem 0.75rem ;
+  padding: 0.5rem 0.75rem;
   color: $second-color;
   text-decoration: none;
   transition: $transition;
@@ -371,7 +371,8 @@
     transition: $transition;
     border-bottom: 3px solid transparent;
 
-    &:hover , &.active {
+    &:hover,
+    &.active {
       color: $primary-color;
       border-bottom-color: $primary-color;
     }
@@ -409,7 +410,7 @@
 
       .dropdown-item {
         display: block;
-        padding:.5rem 0.75rem ;
+        padding: .5rem 0.75rem;
         color: $second-color;
         text-decoration: none;
         transition: $transition;
@@ -521,13 +522,26 @@
   overflow-y: auto;
   flex: 1;
   min-height: 0;
+
+  .layout-toggle {
+    width: 100px;
+
+    i.active {
+      color: $primary-color !important;
+      transform: scale(1.5);
+      -webkit-transform: scale(1.5);
+      -moz-transform: scale(1.5);
+      -ms-transform: scale(1.5);
+      -o-transform: scale(1.5);
+    }
+  }
 }
 
 // Responsive Design
 @media (max-width: 992px) {
   .top-header {
     .row {
-      > div {
+      >div {
         margin-bottom: 0;
       }
     }

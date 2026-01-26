@@ -11,7 +11,7 @@ import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [BannerComponent, CommonModule, ReactiveFormsModule, TourCartComponent, CarouselModule],
+  imports: [BannerComponent, CommonModule, ReactiveFormsModule, CarouselModule],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',
 })
@@ -36,11 +36,12 @@ export class CheckoutComponent {
     this.getCountries();
     this.getCartData();
 
+    const phonePattern = /^01{0,1,2,5}{8}$/; // egyptian phone number pattern 01126600995
     this.checkoutForm = new FormGroup({
       first_name: new FormControl('', [Validators.required]),
       last_name: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
-      phone: new FormControl('', [Validators.required]),
+      phone: new FormControl('', [Validators.required, Validators.pattern(phonePattern)]),
       state: new FormControl('', [Validators.required]),
       country: new FormControl('', [Validators.required]),
       notes: new FormControl(''),
@@ -99,6 +100,8 @@ export class CheckoutComponent {
                 coupon_id: cResponse.data.id,
               };
               this.couponApplied = true;
+              // reset coupon_id
+              this.checkoutForm.get('coupon_id')?.reset();
             }
             this._cdr.markForCheck();
             // Send checkout data with coupon
@@ -110,6 +113,8 @@ export class CheckoutComponent {
           this.toaster.error(cError.error?.message || 'Invalid coupon code');
           setTimeout(() => {
             this.couponApplied = false;
+            // reset coupon_id
+            this.checkoutForm.get('coupon_id')?.reset();
             this._cdr.markForCheck();
           }, 0);
         },
@@ -146,6 +151,11 @@ export class CheckoutComponent {
           this.CartData = response.data;
           if (this.CartData.length > 0) {
             this.haveData = true;
+            // Use total_price from API response if available, otherwise calculate it
+            this.CartData = this.CartData.map((cart: any) => ({
+              ...cart,
+              total_Price: cart.total_price || this.calculateCartItemPrice(cart),
+            }));
           } else {
             this.haveData = false;
           }
@@ -161,17 +171,66 @@ export class CheckoutComponent {
     });
   }
 
+  // Calculate price for a cart item considering pricing groups
+  private calculateCartItemPrice(cart: any): number {
+    if (!cart || !cart.tour) {
+      return 0;
+    }
+
+    const adults = cart.adults || 0;
+    const children = cart.children || 0;
+    const infants = cart.infants || 0;
+    const tour = cart.tour;
+
+    // Check if pricing_groups exist and have items
+    if (tour.pricing_groups && tour.pricing_groups.length > 0) {
+      // Find the correct pricing group based on number of adults
+      const matchedGroup = tour.pricing_groups.find(
+        (group: { from: number; to: number }) => adults >= group.from && adults <= group.to
+      );
+
+      if (matchedGroup) {
+        // Use prices from matched pricing group
+        return (
+          adults * matchedGroup.price +
+          children * matchedGroup.child_price +
+          infants * (tour.infant_price || 0)
+        );
+      } else {
+        // No matching group found, use default prices
+        return (
+          adults * tour.adult_price +
+          children * tour.child_price +
+          infants * (tour.infant_price || 0)
+        );
+      }
+    } else {
+      // No pricing_groups exist, use default prices
+      return (
+        adults * tour.adult_price +
+        children * tour.child_price +
+        infants * (tour.infant_price || 0)
+      );
+    }
+  }
+
   // Private method to calculate total price
   private calculateTotalPrice(): number {
     if (!this.CartData || this.CartData.length === 0) {
       return 0;
     }
-    return this.CartData.reduce((sum: number, cart: any) => sum + (cart.totalPrice || 0), 0);
+    return this.CartData.reduce((sum: number, cart: any) => sum + (cart.total_Price || 0), 0);
   }
 
   // Public getter that returns cached value to avoid ExpressionChangedAfterItHasBeenCheckedError
   getTotalPrice(): number {
     return this.totalPrice;
+  }
+
+  // Check if a form field is invalid and has been touched
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.checkoutForm.get(fieldName);
+    return !!(field && field.invalid && (field.dirty || field.touched));
   }
 
   getCountries() {

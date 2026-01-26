@@ -176,7 +176,7 @@
           <div class="dropdown-menu show">
             @if (!isLoggedIn()) {
             <a class="dropdown-item" routerLink="/signup"> <i class="fas fa-user"></i> Sign Up </a>
-            } @if (!isLoggedIn()) {
+            } @if (isLoggedIn()) {
             <a class="dropdown-item" routerLink="/profile"> <i class="fas fa-user"></i> Profile </a>
             }
             <a class="dropdown-item" routerLink="/cart">
@@ -189,7 +189,7 @@
               <i class="fas fa-envelope"></i> Email
             </a>
             @if (isLoggedIn()) {
-            <a class="dropdown-item" (click)="logout()">
+            <a class="dropdown-item cPointer" (click)="logout()">
               <i class="fas fa-sign-out-alt"></i> Logout
             </a>
             }
@@ -222,12 +222,15 @@
             </button>
             @if (showSettings()) {
             <div class="dropdown-menu show">
+              @if (!isLoggedIn()) {
               <a class="dropdown-item" routerLink="/signup">
                 <i class="fas fa-user"></i> Sign Up
               </a>
-              <a class="dropdown-item" routerLink="/profile">
+              } @if (isLoggedIn()) {
+              <a class="dropdown-item cPointer" routerLink="/profile">
                 <i class="fas fa-user"></i> Profile
               </a>
+              }
               <a class="dropdown-item" routerLink="/cart">
                 <i class="fas fa-shopping-cart"></i> Cart
               </a>
@@ -237,6 +240,11 @@
               <a class="dropdown-item" href="mailto:info@example.com">
                 <i class="fas fa-envelope"></i> Email
               </a>
+              @if (isLoggedIn()) {
+              <a class="dropdown-item" (click)="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </a>
+              }
             </div>
             }
           </div>
@@ -329,10 +337,16 @@
         </div>
       </div>
       } @else if (searchResults.length > 0) {
+        <span  class="layout-toggle mb-4 border rounded-3 p-2 flexBetween">
+          <!-- is active -->
+          <i class="fas fa-th cPointer" [class.active]="layoutType === 'grid'" (click)="setLayout('grid')"></i>
+          <span class=" text-muted">|</span>
+          <i class="fas fa-list-ul cPointer " [class.active]="layoutType === 'list'" (click)="setLayout('list')"></i>
+        </span>
       <div class="row g-4">
         @for (tour of searchResults; track tour.id) {
         <div class="col-xl-4 col-md-6 col-sm-6">
-          <app-tour-cart [tour]="tour" [layoutType]="'grid'"></app-tour-cart>
+          <app-tour-cart [tour]="tour" [layoutType]="layoutType"></app-tour-cart>
         </div>
         }
       </div>

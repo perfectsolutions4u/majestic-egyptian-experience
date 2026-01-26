@@ -213,11 +213,11 @@ export class MakeTripComponent implements OnInit, OnDestroy {
     });
 
     this.submitFormGroup = new FormGroup({
-      first_name: new FormControl(''),
-      last_name: new FormControl(''),
-      email: new FormControl(''),
-      nationality: new FormControl(''),
-      phone_number: new FormControl(''),
+      first_name: new FormControl('', [Validators.required]),
+      last_name: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      nationality: new FormControl('', [Validators.required]),
+      phone_number: new FormControl('' , [Validators.required, Validators.pattern(/^01[0-2|5]\d{8}$/)]),
       adults: new FormControl(0),
       children: new FormControl(0),
       infants: new FormControl(0),
@@ -380,5 +380,11 @@ export class MakeTripComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.$destory.next();
     this.$destory.complete();
+  }
+
+  // Check if a form field is invalid and has been touched
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.submitFormGroup.get(fieldName);
+    return !!(field && field.invalid && (field.dirty || field.touched));
   }
 }

@@ -268,7 +268,7 @@ export class DataService extends BaseService implements OnDestroy {
   // get tour by slug
   getTourBySlug(slug: string): Observable<any> {
     return this.HttpClient.get(
-      `${this.baseUrl}/tours/${slug}?includes=destinations,categories,days,seo,options`
+      `${this.baseUrl}/tours/${slug}?includes=destinations,categories,days,seo,options,reviews`
     );
   }
 
@@ -366,7 +366,7 @@ export class DataService extends BaseService implements OnDestroy {
     return this.HttpClient.get(`${this.baseUrl}/tour-reviews`);
   }
   getreviewByTourId(tour_id: number): Observable<any> {
-    return this.HttpClient.get(`${this.baseUrl}/tour-reviews/${tour_id}`);
+    return this.HttpClient.get(`${this.baseUrl}/tour-reviews?tour_id=${tour_id}`);
   }
   writeReview(tour_id: number, review: any): Observable<any> {
     return this.HttpClient.post(`${this.baseUrl}/tour-reviews/${tour_id}`, review);

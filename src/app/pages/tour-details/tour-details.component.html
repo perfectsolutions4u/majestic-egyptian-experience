@@ -251,14 +251,12 @@
           <div class="mb-5 reviews">
             <h2 class="text-capitalize mb-3 text-color h4">Customer Review & Rating</h2>
             <div class="border p-3 rounded-3 text-center py-4">
-              <h5 class="text-capitalize h5 mb-0">very good</h5>
-              <span class="rating-number fw-bolder">5.0</span>
+              <h5 class="text-capitalize h5 mb-0">{{ getReviewQualityText() }}</h5>
+              <span class="rating-number fw-bolder">{{ getAverageRating().toFixed(1) }}</span>
               <div class="rating text-warning fontsm mb-3 mx-auto">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
+                @for (i of [1, 2, 3, 4, 5]; track i) {
+                <i [ngClass]="i <= getAverageRating() ? 'fa-solid' : 'fa-regular'" class="fa fa-star"></i>
+                }
               </div>
 
               <button
@@ -273,15 +271,19 @@
               </button>
             </div>
 
-            <div class="border p-3 rounded-3 text-center py-4 my-3">
-              @if (reviews.length > 0) { @for (review of reviews; track review.id) {
-              <div class="review mb-3">
-                <h5 class="text-capitalize h5 mb-0">{{ review.reviewer_name }}</h5>
-                <span class="rating-number fw-bolder">{{ review.rate }}</span>
-                <div class="rating text-warning fontsm mb-3 mx-auto">
-                  @for (i of [1, 2, 3, 4, 5]; track i) {
-                  <i class="fa fa-star"></i>
-                  }
+            <div class="border p-3 rounded-3 py-4 my-3">
+              @if (reviews.length > 0) { @for (review of reviews.slice(-5); track review.id) {
+              <div class="review mb-2 bg-succes pb-2 border-bottom">
+                <div class="flexBetween text-center">
+                  <h5 class="text-capitalize h5 mb-0">{{ review.reviewer_name }}</h5>
+                  <div>
+                    <span class="fs-5 fw-bolder">{{ review.rate.toFixed(1) }}</span>
+                    <div class="rating text-warning fontsm ">
+                      @for (i of [1, 2, 3, 4, 5]; track i) {
+                      <i [ngClass]="i <= review.rate ? 'fa-solid' : 'fa-regular'" class="fa fa-star"></i>
+                      }
+                    </div>
+                  </div>
                 </div>
                 <p class="text-muted mb-0">{{ review.content }}</p>
                 <p class="text-muted mb-0">{{ review.created_at | date : 'dd/MM/yyyy' }}</p>
@@ -762,7 +764,7 @@
           </div>
           <div class="mb-3">
             <label for="rate" class="form-label">Rate</label>
-            <input type="number" class="form-control" id="rate" formControlName="rate" />
+            <input type="number" max="5" min="0" class="form-control" id="rate" formControlName="rate" />
           </div>
           <div class="mb-3">
             <input type="checkbox" id="confirm" formControlName="confirm" />
