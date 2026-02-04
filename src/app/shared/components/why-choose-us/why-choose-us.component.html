@@ -1,0 +1,20 @@
+<section class="why-choose-us">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h2 class="section-title">Why Choose Us</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 col-sm-6" *ngFor="let feature of features">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas" [ngClass]="feature.icon"></i>
+          </div>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-description">{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

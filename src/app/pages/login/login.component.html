@@ -1,0 +1,98 @@
+<section class="my-5 py-5 bg-black">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-lg-5 col-md-8 mx-auto">
+        <div class="p-4 sideBar login-card">
+          <div class="text-center">
+            <img
+              src="./assets/goFly logo.svg"
+              alt="majestic logo"
+              title="majestic logo"
+              width="200px"
+              height="70px"
+              class="logo-animation"
+            />
+            <br />
+            <p class="fs-5 my-2 text-capitalize title-animation">
+              {{ 'signup.createAccount' | translate }}
+            </p>
+          </div>
+
+          <form [formGroup]="loginForm" (ngSubmit)="handleLoginForm()" class="form-animation row">
+            <div class="col-12 mb-3 form-group-animated">
+              <label for="email" class="text-capitalize fw-bold mb-2 form-label">{{
+                'signup.emailAddress' | translate
+              }}</label>
+              <div class="item position-relative input-wrapper">
+                <input
+                  type="email"
+                  id="email"
+                  formControlName="email"
+                  placeholder="{{ 'login.yourEmail' | translate }}"
+                  class="form-control p-2 ps-5 rounded-3 animated-input"
+                />
+                <i class="fa-regular fa-envelope textMainColor input-icon"></i>
+              </div>
+              <!-- show validators -->
+              @if (loginForm.get('email')?.errors && loginForm.get('email')?.touched) {
+              <div class="alert alert-danger mt-2">
+                @if (loginForm.get('email')?.getError('required')) {
+                <span>{{ 'signup.emailRequired' | translate }}</span>
+                }
+              </div>
+              }
+            </div>
+
+            <div class="col-12 mb-3 form-group-animated">
+              <label for="password" class="text-capitalize fw-bold mb-2 form-label">{{
+                'signup.password' | translate
+              }}</label>
+              <div class="item position-relative input-wrapper">
+                <input
+                  type="password"
+                  id="password"
+                  formControlName="password"
+                  placeholder="{{ 'login.yourPassword' | translate }}"
+                  class="form-control p-2 ps-5 rounded-3 animated-input"
+                />
+                <i class="fa fa-lock textMainColor input-icon"></i>
+              </div>
+              <a
+                routerLink="/forget-password"
+                class="text-white fw-bold mt-3 text-decoration-none link-hover"
+                >{{ 'login.forgotPassword' | translate }}</a
+              >
+              <!-- show validators -->
+              @if (loginForm.get('password')?.errors && loginForm.get('password')?.touched) {
+              <div class="alert alert-danger mt-2">
+                @if (loginForm.get('password')?.getError('required')) {
+                <span>{{ 'signup.passwordRequired' | translate }}</span>
+                }
+              </div>
+              }
+            </div>
+
+            <button
+              [disabled]="loginForm.invalid"
+              type="submit"
+              class="mainBtn Btn mb-3 w-100 submit-btn"
+            >
+              @if (isLoading) {
+              <i class="fa-solid fa-spinner fa-spin me-1 border-0 bg-transparent text-white"></i>
+              }
+              <i class="fa fa-paper-plane mx-2 border-0 bg-transparent text-white"></i>
+              {{ 'login.login' | translate }}
+            </button>
+          </form>
+          <p class="my-2 text-center link-text">
+            {{ 'login.dontHaveAccount' | translate }}
+            <span routerLink="/signup" class="textMainColor fw-bold cPointer link-hover">{{
+              'login.signUp' | translate
+            }}</span>
+            .
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

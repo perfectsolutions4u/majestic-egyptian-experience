@@ -1,0 +1,39 @@
+<app-banner
+  [title]="'Destinations'"
+  [subtitle]="'Explore our destinations'"
+  [backgroundImage]="backgroundImage"
+></app-banner>
+
+<div class="container text-center my-5 mx-auto">
+  <h2 class="h1">Our Destinations</h2>
+  <p>Explore our destinations</p>
+</div>
+
+<section class="my-5">
+  <div class="container">
+    @if (allDestinations.length > 0) {
+    <div class="row g-3 mt-4">
+      @for (destination of allDestinations; track destination.id) {
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <app-destination-cart [destination]="destination"></app-destination-cart>
+      </div>
+      }
+    </div>
+
+    @if (apiResponse.total > apiResponse.per_page) {
+    <app-pagination
+      [current_page]="apiResponse.current_page"
+      [total]="apiResponse.total"
+      [per_page]="apiResponse.per_page"
+      [from]="apiResponse.from"
+      [to]="apiResponse.to"
+      (pageChange)="onPageChange($event)"
+    >
+    </app-pagination>
+    } } @else if (hasLoaded) {
+    <div class="text-center py-5">
+      <p class="text-muted">No destinations found.</p>
+    </div>
+    }
+  </div>
+</section>

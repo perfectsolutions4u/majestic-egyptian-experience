@@ -1,0 +1,23 @@
+<div
+  [routerLink]="['/destination', destination?.slug]"
+  role="button"
+  class="destination-cart cPointer d-flex flex-column rounded-3 overflow-hidden transition"
+>
+  <figure class="img-Hover rounded-2 overflow-hidden position-relative mb-0">
+    <img
+      class="w-100 h-100 object-fit-cover transition"
+      [src]="destination?.featured_image"
+      loading="lazy"
+      [title]="destination?.title"
+      [alt]="destination?.title"
+    />
+  </figure>
+  <figcaption class="p-2 text-center text-capitalize fw-bold">
+    <h3 [routerLink]="['/destination', destination?.slug]" class="transition fs-5 mt-2">
+      <i class="fa fa-location-dot me-2"></i> {{ destination?.title }}
+    </h3>
+    <h4 class="transition fs-6">
+      <b class="textMainColor">{{ destination?.tours_count }}</b> tours
+    </h4>
+  </figcaption>
+</div>

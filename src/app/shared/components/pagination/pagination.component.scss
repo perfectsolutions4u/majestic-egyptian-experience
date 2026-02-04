@@ -1,0 +1,257 @@
+@use '../../../styles/variables.scss' as *;
+
+.pagination-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 2.5rem 1rem;
+  margin-top: 2rem;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    padding: 2rem 0.5rem;
+    gap: 1rem;
+  }
+}
+
+.pagination-info {
+  color: $text-color-secondary;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: $paragraph-font;
+  letter-spacing: 0.3px;
+  margin-top: 0.25rem;
+
+  span {
+    color: $text-color;
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    text-align: center;
+  }
+}
+
+// ngx-pagination styles
+::ng-deep {
+  .ngx-pagination {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    list-style: none;
+    flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+      gap: 0.5rem;
+    }
+  }
+
+  .ngx-pagination li {
+    display: inline-block;
+    margin: 0;
+    line-height: 1;
+  }
+
+  // Previous & Next Buttons
+  .ngx-pagination .pagination-previous,
+  .ngx-pagination .pagination-next {
+    min-width: 44px;
+    height: 44px;
+    padding: 0;
+    // border: 2px solid $primary-color;
+    background-color: transparent;
+    color: $primary-color;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, $primary-color 0%, $primary-white-color 100%);
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: -1;
+    }
+
+    // &:hover:not(.disabled) {
+    //   color: #fff;
+    //   // border-color: $primary-color;
+    //   transform: translateY(-2px);
+    //   // box-shadow: 0 4px 12px rgba($primary-color, 0.3);
+
+    //   &::before {
+    //     left: 0;
+    //   }
+    // }
+    &:hover:not(.disabled) {
+      border-color: $primary-color;
+      color: $primary-color;
+      background-color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($primary-color, 0.15);
+
+      &::before {
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+    &:active:not(.disabled) {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba($primary-color, 0.2);
+    }
+
+    &.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+      border-color: $border-color;
+      color: $text-color-secondary;
+    }
+
+    @media (max-width: 768px) {
+      min-width: 40px;
+      height: 40px;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+    }
+  }
+
+  .ngx-pagination .small-screen {
+    display: none;
+  }
+
+  // Current/Active Page
+  .ngx-pagination .current {
+    min-width: 44px;
+    height: 44px;
+    padding: 0.625rem;
+    border: 2px solid $primary-color !important;
+    background: linear-gradient(135deg, $primary-color 0%, $primary-white-color 100%) !important;
+    color: #fff !important;
+    border-radius: $border-radius;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba($primary-color, 0.25);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover {
+      background: linear-gradient(135deg, $second-color 0%, $second-color, 5%) 100% !important;
+      border-color: $second-color !important;
+      color: #fff !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($second-color, 0.35);
+    }
+
+    @media (max-width: 768px) {
+      min-width: 40px;
+      height: 40px;
+      font-size: 0.9rem;
+    }
+  }
+
+  // Page Number Buttons
+  .ngx-pagination a,
+  .ngx-pagination button {
+    min-width: 44px;
+    height: 44px;
+    padding: 0.625rem;
+    border: 2px solid $border-color;
+    background-color: #fff;
+    color: $text-color;
+    border-radius: $border-radius;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba($primary-color, 0.08);
+      transform: translate(-50%, -50%);
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    &:hover {
+      border-color: $primary-color;
+      color: $primary-color;
+      background-color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($primary-color, 0.15);
+
+      &::before {
+        width: 120px;
+        height: 120px;
+        background: rgba($primary-color, 0.12);
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba($primary-color, 0.1);
+    }
+
+    @media (max-width: 768px) {
+      min-width: 40px;
+      height: 40px;
+      font-size: 0.9rem;
+      padding: 0.5rem;
+    }
+  }
+
+  // Ellipsis
+  .ngx-pagination .ellipsis {
+    color: $text-color-secondary;
+    padding: 0.625rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 44px;
+
+    @media (max-width: 768px) {
+      min-width: 40px;
+      height: 40px;
+      padding: 0.5rem;
+    }
+  }
+}
+

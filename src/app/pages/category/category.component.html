@@ -1,0 +1,28 @@
+<app-banner
+  [title]="'Category'"
+  [subtitle]="'Explore our tours by category'"
+  [backgroundImage]="backgroundImage"
+></app-banner>
+
+<div class="category-container">
+  <div class="container">
+    <div class="row">
+      <div class="col-12" *ngIf="hasLoaded && listTours.length === 0">
+        <p class="no-tours">No tours found in this category.</p>
+      </div>
+      <div class="col-md-4" *ngFor="let tour of listTours">
+        <app-tour-cart [tour]="tour"></app-tour-cart>
+      </div>
+    </div>
+    <div class="row" *ngIf="apiResponse.total > apiResponse.per_page">
+      <div class="col-12">
+        <app-pagination
+          [current_page]="apiResponse.current_page"
+          [total]="apiResponse.total"
+          [per_page]="apiResponse.per_page"
+          (pageChange)="onPageChange($event)"
+        ></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

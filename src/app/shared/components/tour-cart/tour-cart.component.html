@@ -1,0 +1,82 @@
+<div
+  [routerLink]="['/tour', tour?.slug]"
+  role="button"
+  [ngClass]="layoutType === 'grid' ? 'row gx-3 flex-column' : 'row gx-3 flex-wrap'"
+  class="tour align-items-center rounded-3 overflow-hidden border transition p-2 ms-1 mb-1"
+>
+  <div [ngClass]="layoutType === 'grid' ? '' : ' col-md-5'" class="px-0">
+    <figure class="img-Hover rounded-2 overflow-hidden position-relative mb-0">
+      <img
+        [src]="tour?.featured_image"
+        class="w-100 transition"
+        height="200px"
+        [alt]="tour?.title"
+        [title]="tour?.title"
+        loading="lazy"
+      />
+
+      <span
+        (click)="tour && tour.id && addFav(tour.id, $event)"
+        class="textMainColor fs-5 fw-bold position-absolute top-0 end-0 m-2"
+      >
+        <i
+          [ngClass]="{
+            'fa-heart': true,
+            'fa-regular': tour && tour.id ? !favouriteIds.includes(tour.id) : true,
+            'fa-solid': tour && tour.id ? favouriteIds.includes(tour.id) : false
+          }"
+          class="fa fa-heart"
+        ></i>
+      </span>
+
+      <!-- @if (tour?.featured) {
+      <span
+        class="text-uppercase text-whit py-0 px-2 m-1 m-2 secBtn Btn position-absolute top-0 start-0"
+        >{{ 'common.featured' | translate }}</span
+      >
+      } -->
+    </figure>
+  </div>
+
+  <div [ngClass]="layoutType === 'grid' ? '' : ' col-md-7'" class="p-2">
+    <figcaption>
+      <h3 [routerLink]="['/tour', tour?.slug]" class="text-capitalize transition cPointer">
+        {{ tour?.title }}
+      </h3>
+
+      <!-- destination - duration -->
+      <div class="fontsm d-flex align-items-center">
+        @if (tour && tour.destinations && tour.destinations.length > 0) {
+        <span class="me-2">
+          <i class="fas fa-location-dot me-1 textSecondColor"></i>
+          {{ tour.destinations[0].title }}
+        </span>
+        <i class="fa fa-arrows-left-right mx-2 textSecondColor"></i>
+        }
+        <span class="me-2">
+          <!-- <i class="fa fa-calendar-days me-1 textSecondColor"></i> -->
+          {{ tour?.duration }}
+        </span>
+      </div>
+
+      <div class="flexBetween mt-2 flex-wrap">
+        <!-- <div class="my-2 fontsm">
+          @for (filled of [1, 2, 3, 4, 5]; track filled) {
+          <i [ngClass]="filled ? 'fa fa-star text-warning' : 'fa-regular fa-star text-warning'"></i>
+          }
+          <br />
+          <span class="textMainColor text-capitalize me-2">{{ 'good' }}</span>
+          <span class="textSecondColor"> (10 Reviews)</span>
+        </div> -->
+        <button class="mainBtn text-nowrap">
+          Book Now <i class="fas fa-arrow-trend-up ms-1"></i>
+        </button>
+        <!-- price -->
+        <p class="mb-0 text-capitalize">
+          per person <br />
+          <b class="textMainColor fs-5">{{ tour?.start_from | currency }}</b>
+        </p>
+      </div>
+    </figcaption>
+  </div>
+</div>

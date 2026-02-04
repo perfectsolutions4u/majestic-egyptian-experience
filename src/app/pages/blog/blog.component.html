@@ -1,0 +1,39 @@
+<app-banner
+  [title]="'Blogs'"
+  [subtitle]="'Explore our latest travel insights and stories.'"
+  [backgroundImage]="backgroundImage"
+></app-banner>
+
+<div class="container text-center my-5 mx-auto">
+  <h2 class="h1">Our Blogs</h2>
+  <p>Read our latest blog posts</p>
+</div>
+
+<section class="my-5">
+  <div class="container">
+    @if (listBlog.length > 0) {
+    <div class="row g-3">
+      @for (blog of listBlog; track blog.id) {
+      <div class="col-md-6">
+        <app-blog-cart [blog]="blog"></app-blog-cart>
+      </div>
+      }
+    </div>
+
+    @if (apiResponse.total > apiResponse.per_page) {
+    <app-pagination
+      [current_page]="apiResponse.current_page"
+      [total]="apiResponse.total"
+      [per_page]="apiResponse.per_page"
+      [from]="apiResponse.from"
+      [to]="apiResponse.to"
+      (pageChange)="onPageChange($event)"
+    >
+    </app-pagination>
+    } } @else if (hasLoaded) {
+    <div class="text-center py-5">
+      <p class="text-muted">No blogs found.</p>
+    </div>
+    }
+  </div>
+</section>

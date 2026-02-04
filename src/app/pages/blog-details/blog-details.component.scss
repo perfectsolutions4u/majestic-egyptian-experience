@@ -1,0 +1,28 @@
+@use '../../styles/variables.scss' as *;
+
+.tag{
+  transition: $transition-fast;
+  border: $border;
+  border-color: $primary-color;
+  color: $primary-color;
+
+  &:hover{
+    background-color: $primary-color !important;
+    color: #fff !important;
+    transform: translateY(-3px) !important;
+    -webkit-transform: translateY(-3px) !important;
+    -moz-transform: translateY(-3px) !important;
+    -ms-transform: translateY(-3px) !important;
+    -o-transform: translateY(-3px) !important;
+}
+}
+
+.sidebar{
+  li{
+    transition: $transition-fast;
+    &:hover{
+      background-color: $primary-white-color;
+      color: #fff !important;
+    }
+  }
+}

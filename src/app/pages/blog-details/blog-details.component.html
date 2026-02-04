@@ -1,0 +1,122 @@
+<app-banner
+  [title]="blogData.title"
+  [subtitle]="'Read the full blog post'"
+  [backgroundImage]="backgroundImage"
+></app-banner>
+
+<section class="my-5">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div>
+          @if (blogData.title) {
+          <h2 class="text-capitalize mb-3 text-color h4">{{ blogData.title }}</h2>
+          } @if (blogData.description) {
+          <div
+            class="text-color-secondary fontsm"
+            [innerHTML]="sanitizer.bypassSecurityTrustHtml(blogData.description)"
+          ></div>
+          } @if (blogData.featured_image) {
+          <figure class="img-Hover rounded-2 overflow-hidden position-relative mb-0">
+            <img
+              class="w-100 object-fit-cover transition"
+              [src]="blogData.featured_image"
+              loading="lazy"
+              [title]="blogData.title || ''"
+              [alt]="blogData.title || ''"
+              height="400"
+            />
+          </figure>
+          }
+
+          <!-- tages list  , social media share -->
+          <div class="flexBetween flex-wrap gap-3 mt-4 p-3 border rounded-3">
+            @if (blogData.tags && blogData.tags.length > 0) {
+            <div>
+              <i class="fa-solid fa-tags"></i>
+              <span class="me-3">Tags:</span>
+              @for (tag of blogData.tags; track $index) {
+              <span
+                class="tag d-inline-block m-1 fontsm rounded-2 cPointer text-capitalize py-1 px-2"
+                >{{ tag }}</span
+              >
+              }
+            </div>
+            } @if (settings && settings.length > 0) {
+            <div class="d-flex align-items-center">
+              <i class="fa-solid fa-share-nodes"></i>
+              <span class="me-3">Share:</span>
+              <!-- social media share links from settings -->
+              <app-social [socialLinks]="settings"></app-social>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="sidebar">
+          <div class="p-3 border rounded-3 mb-3">
+            <h5>category</h5>
+
+            <ul class="list-unstyled mt-3">
+              @for (category of blogCategories; track $index) {
+              <li
+                class="mb-2 px-2 py-1 rounded-2 cPointer text-capitalize fontsm"
+                [routerLink]="['/blog-category', category.id]"
+              >
+                <i class="fa-solid fa-check-circle me-2 textMainColor"></i>
+                {{ category.title }}
+              </li>
+              }
+            </ul>
+          </div>
+
+          <div class="p-3 border rounded-3 mb-3">
+            <h5>recent posts</h5>
+
+            @for (item of recentPosts.slice(-2); track $index) {
+            <div [routerLink]="['/blog', item.slug]" class="d-flex mt-3">
+              <figure class="rounded-3 overflow-hidden flex-shrink-0">
+                <img
+                  [src]="item.featured_image"
+                  width="100px"
+                  height="90px"
+                  loading="lazy"
+                  [alt]="item.title"
+                  [title]="item.title"
+                />
+              </figure>
+              <figcaption class="ps-3">
+                <div class="me-3">
+                  <i class="fa fa-calendar-days me-2"></i>
+                  <span>{{ item.created_at | date : 'dd-MMM-yyyy' }}</span>
+                </div>
+                <h4 class="text-capitalize cPointer h6 mt-2">
+                  {{ item.title }}
+                </h4>
+              </figcaption>
+            </div>
+            }
+          </div>
+
+          <div class="p-3 border rounded-3 mb-3">
+            <h5>tags</h5>
+
+            @if (blogData.tags && blogData.tags.length > 0) {
+            <div>
+              <i class="fa-solid fa-tags"></i>
+              <span class="me-3">Tags:</span>
+              @for (tag of blogData.tags; track $index) {
+              <span
+                class="tag d-inline-block m-1 fontsm rounded-2 cPointer text-capitalize py-1 px-2"
+                >{{ tag }}</span
+              >
+              }
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

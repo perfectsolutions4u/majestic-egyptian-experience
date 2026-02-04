@@ -1,0 +1,475 @@
+<section class="make-trip-section" id="makeTrip">
+  <div class="container">
+    <div class="stepper-wrapper" @fadeInUp>
+      <mat-stepper class="modern-stepper text-capitalize" #stepper>
+        <!-- Step 1: Choose Destinations -->
+        <mat-step
+          class="step-container"
+          [stepControl]="firstFormGroup"
+          [completed]="prefilled"
+          [editable]="!prefilled"
+        >
+          <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>
+              <div class="step-label">
+                <i class="fa fa-map-marker-alt me-2"></i>
+                Choose Your Destinations
+              </div>
+            </ng-template>
+
+            <div class="step-content" @fadeInUp>
+              <div class="step-header">
+                <h2 class="step-title">Where would you like to go?</h2>
+                <p class="step-subtitle">
+                  Select your dream destination from our amazing collection
+                </p>
+              </div>
+
+              <div class="row g-2 my-3 chooseDestination" @staggerCards>
+                <div
+                  class="js-check col-lg-3 col-md-6"
+                  *ngFor="let destination of destinationList; let i = index"
+                  [@fadeInUp]
+                  [style.animation-delay]="i * 0.1 + 's'"
+                >
+                  <input
+                    type="checkbox"
+                    hidden
+                    [id]="destination.id"
+                    [value]="destination.title"
+                    [checked]="isDestinationSelected(destination.title)"
+                    (change)="onToursChange($event, destination.title)"
+                  />
+                  <label [for]="destination.id" class="destination-card-label w-100">
+                    <div class="tourDestinationCard w-100">
+                      <figure
+                        class="destination-figure position-relative overflow-hidden mb-0 w-100"
+                      >
+                        <div class="image-overlay"></div>
+                        <img
+                          [src]="destination.featured_image"
+                          class="destination-image w-100"
+                          height="220"
+                          [alt]="destination.title"
+                          [title]="destination.title"
+                        />
+                        <div class="check-icon-wrapper">
+                          <i class="fa fa-check check-icon"></i>
+                        </div>
+                        <div class="destination-overlay">
+                          <i class="fa fa-eye me-2"></i>
+                          View Details
+                        </div>
+                      </figure>
+                      <figcaption class="card_data text-center">
+                        <h3 class="destination-title">
+                          {{ destination.title }}
+                        </h3>
+                        <div class="destination-indicator"></div>
+                      </figcaption>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="step-actions" @fadeInUp>
+                <button class="modern-btn btn-primary" matStepperNext>
+                  <span>Continue</span>
+                  <i class="fa fa-arrow-right ms-2"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- Step 2: Pickup Travel Dates -->
+        <mat-step
+          class="step-container"
+          [stepControl]="secondFormGroup"
+          [completed]="prefilled"
+          [editable]="!prefilled"
+        >
+          <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>
+              <div class="step-label">
+                <i class="fa fa-calendar-alt me-2"></i>
+                Pickup Travel Dates
+              </div>
+            </ng-template>
+
+            <div class="step-content" @fadeInUp>
+              <div class="step-header">
+                <h2 class="step-title">When do you want to travel?</h2>
+                <p class="step-subtitle">Choose your preferred travel dates</p>
+              </div>
+
+              <div class="row g-3 my-3">
+                <div class="col-lg-5" @slideInLeft>
+                  <div class="date-type-card">
+                    <h4 class="date-type-title">Select Date Type</h4>
+                    <mat-radio-group
+                      class="date-radio-group d-flex flex-column"
+                      aria-label="Pickup Travel Dates"
+                      formControlName="type"
+                    >
+                      <mat-radio-button class="date-radio-option" checked value="exact_time">
+                        <i class="fa fa-calendar-check me-2"></i>
+                        I know the exact dates
+                      </mat-radio-button>
+                      <mat-radio-button class="date-radio-option" value="approx_time">
+                        <i class="fa fa-calendar-week me-2"></i>
+                        I have approximate dates
+                      </mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+
+                <div
+                  class="col-lg-7 flex-grow-1"
+                  *ngIf="isDateTypeSelected('exact_time')"
+                  @slideInRight
+                >
+                  <div class="date-picker-card">
+                    <h4 class="date-picker-title">
+                      <i class="fa fa-calendar me-2"></i>
+                      Select Date Range
+                    </h4>
+                    <mat-form-field appearance="outline" class="w-100 date-range-field">
+                      <mat-label>Select a date range</mat-label>
+                      <mat-date-range-input [formGroup]="secondFormGroup" [rangePicker]="picker">
+                        <input
+                          matStartDate
+                          matInput
+                          formControlName="start_date"
+                          placeholder="Start date"
+                          class="date-input"
+                          (click)="picker.open()"
+                          readonly
+                        />
+                        <input
+                          matEndDate
+                          matInput
+                          formControlName="end_date"
+                          placeholder="End date"
+                          class="date-input"
+                          (click)="picker.open()"
+                          readonly
+                        />
+                      </mat-date-range-input>
+                      <mat-datepicker-toggle
+                        matIconSuffix
+                        matInput
+                        [for]="picker"
+                      ></mat-datepicker-toggle>
+                      <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div
+                  class="col-lg-7 flex-grow-1"
+                  *ngIf="isDateTypeSelected('approx_time')"
+                  @slideInRight
+                >
+                  <div class="date-picker-card">
+                    <h4 class="date-picker-title">
+                      <i class="fa fa-calendar-week me-2"></i>
+                      Select Month
+                    </h4>
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Select Month</mat-label>
+                      <mat-select formControlName="month">
+                        <mat-option *ngFor="let month of monthList; index as i" [value]="i + 1">
+                          {{ month }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+
+              <div class="step-actions" @fadeInUp *ngIf="!prefilled">
+                <button class="modern-btn btn-secondary" matStepperPrevious>
+                  <i class="fa fa-arrow-left me-2"></i>
+                  <span>Back</span>
+                </button>
+                <button class="modern-btn btn-primary" matStepperNext>
+                  <span>Continue</span>
+                  <i class="fa fa-arrow-right ms-2"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- Step 3: Submit -->
+        <mat-step class="step-container" [stepControl]="submitFormGroup">
+          <form [formGroup]="submitFormGroup">
+            <ng-template matStepLabel>
+              <div class="step-label">
+                <i class="fa fa-user-edit me-2"></i>
+                Complete Your Information
+              </div>
+            </ng-template>
+
+            <div class="step-content" @fadeInUp>
+              <div class="step-header">
+                <h2 class="step-title">Tell us about yourself</h2>
+                <p class="step-subtitle">Fill in your details to complete your trip inquiry</p>
+              </div>
+
+              <div class="form-section">
+                <h4 class="section-title">
+                  <i class="fa fa-user me-2"></i>
+                  Personal Information
+                </h4>
+                <div class="row g-4">
+                  <div class="col-md-4" @fadeInUp>
+                    <mat-form-field appearance="outline" class="w-100 modern-form-field">
+                      <mat-label>First name</mat-label>
+                      <input
+                        type="text"
+                        matInput
+                        formControlName="first_name"
+                        placeholder="Ahmed"
+                        [class.is-invalid]="isFieldInvalid('first_name')"
+                      />
+                      <!-- <mat-icon matPrefix>person</mat-icon> -->
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4" @fadeInUp>
+                    <mat-form-field appearance="outline" class="w-100 modern-form-field">
+                      <mat-label>Last name</mat-label>
+                      <input
+                        type="text"
+                        matInput
+                        formControlName="last_name"
+                        placeholder="Zenger"
+                        [class.is-invalid]="isFieldInvalid('last_name')"
+                      />
+                      <!-- <mat-icon matPrefix>person_outline</mat-icon> -->
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4" @fadeInUp>
+                    <mat-form-field appearance="outline" class="w-100 modern-form-field">
+                      <mat-label>Email</mat-label>
+                      <input
+                        type="email"
+                        matInput
+                        formControlName="email"
+                        placeholder="ahmed@gmail.com"
+                        [class.is-invalid]="isFieldInvalid('email')"
+                      />
+                      <!-- <mat-icon matPrefix>email</mat-icon> -->
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-6" @fadeInUp>
+                    <mat-form-field appearance="outline" class="w-100 modern-form-field">
+                      <mat-label>Nationality</mat-label>
+                      <mat-select formControlName="nationality">
+                        <mat-option *ngFor="let item of countriesList" [value]="item.name">
+                          {{ item.name }}
+                        </mat-option>
+                      </mat-select>
+                      <!-- <mat-icon matPrefix>public</mat-icon> -->
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-6" @fadeInUp>
+                    <mat-form-field appearance="outline" class="w-100 modern-form-field">
+                      <mat-label>Phone number</mat-label>
+                      <input
+                        type="tel"
+                        matInput
+                        formControlName="phone_number"
+                        placeholder="01069769249"
+                        [class.is-invalid]="isFieldInvalid('phone_number')"
+                      />
+                      <!-- <mat-icon matPrefix>phone</mat-icon> -->
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h4 class="section-title">
+                  <i class="fa fa-dollar-sign me-2"></i>
+                  Budget & Preferences
+                </h4>
+                <div class="row g-4">
+                  <div class="col-md-6" @fadeInUp>
+                    <mat-form-field appearance="outline" class="w-100 modern-form-field">
+                      <mat-label>Min Budget</mat-label>
+                      <input
+                        matInput
+                        type="number"
+                        formControlName="min_person_budget"
+                        (input)="onBudgetChange()"
+                      />
+                      <!-- <mat-icon matPrefix>attach_money</mat-icon> -->
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-6" @fadeInUp>
+                    <mat-form-field appearance="outline" class="w-100 modern-form-field">
+                      <mat-label>Max Budget</mat-label>
+                      <input
+                        matInput
+                        type="number"
+                        formControlName="max_person_budget"
+                        (input)="onBudgetChange()"
+                      />
+                      <!-- <mat-icon matPrefix>attach_money</mat-icon> -->
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-12" @fadeInUp>
+                    <div class="checkbox-wrapper">
+                      <input
+                        type="checkbox"
+                        id="flight_offer"
+                        formControlName="flight_offer"
+                        class="modern-checkbox"
+                      />
+                      <label for="flight_offer" class="checkbox-label">
+                        <i class="fa fa-plane me-2"></i>
+                        Add flight offer to my trip
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h4 class="section-title">
+                  <i class="fa fa-users me-2"></i>
+                  Travelers
+                </h4>
+                <div class="row g-4">
+                  <div class="col-md-4" @fadeInUp>
+                    <div class="traveler-counter-card">
+                      <label class="traveler-label">
+                        <i class="fa fa-user-tie me-2"></i>
+                        Adults ( +12 )
+                      </label>
+                      <div class="counter-wrapper">
+                        <button
+                          (click)="decrement('adults')"
+                          class="counter-btn decrement"
+                          type="button"
+                        >
+                          <i class="fa fa-minus"></i>
+                        </button>
+                        <div class="counter-value">
+                          {{ submitFormGroup.get('adults')?.value }}
+                        </div>
+                        <input type="hidden" value="0" formControlName="adults" />
+                        <button
+                          (click)="increment('adults')"
+                          class="counter-btn increment"
+                          type="button"
+                        >
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4" @fadeInUp>
+                    <div class="traveler-counter-card">
+                      <label class="traveler-label">
+                        <i class="fa fa-child me-2"></i>
+                        Children ( 2 to 11 )
+                      </label>
+                      <div class="counter-wrapper">
+                        <button
+                          (click)="decrement('children')"
+                          class="counter-btn decrement"
+                          type="button"
+                        >
+                          <i class="fa fa-minus"></i>
+                        </button>
+                        <div class="counter-value">
+                          {{ submitFormGroup.get('children')?.value }}
+                        </div>
+                        <input type="hidden" value="0" formControlName="children" />
+                        <button
+                          (click)="increment('children')"
+                          class="counter-btn increment"
+                          type="button"
+                        >
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4" @fadeInUp>
+                    <div class="traveler-counter-card">
+                      <label class="traveler-label">
+                        <i class="fa fa-baby me-2"></i>
+                        Infants ( 0 to 2 )
+                      </label>
+                      <div class="counter-wrapper">
+                        <button
+                          (click)="decrement('infants')"
+                          class="counter-btn decrement"
+                          type="button"
+                        >
+                          <i class="fa fa-minus"></i>
+                        </button>
+                        <div class="counter-value">
+                          {{ submitFormGroup.get('infants')?.value }}
+                        </div>
+                        <input type="hidden" value="0" formControlName="infants" />
+                        <button
+                          (click)="increment('infants')"
+                          class="counter-btn increment"
+                          type="button"
+                        >
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section" @fadeInUp>
+                <h4 class="section-title">
+                  <i class="fa fa-sticky-note me-2"></i>
+                  Additional Notes
+                </h4>
+                <mat-form-field appearance="outline" class="w-100 modern-form-field">
+                  <mat-label>Notes</mat-label>
+                  <textarea
+                    matInput
+                    formControlName="additional_notes"
+                    rows="4"
+                    placeholder="Add any special requests or notes here..."
+                  ></textarea>
+                  <!-- <mat-icon matPrefix>note</mat-icon> -->
+                </mat-form-field>
+              </div>
+
+              <div class="step-actions final-actions" @fadeInUp>
+                <button
+                  class="modern-btn btn-secondary"
+                  matStepperPrevious
+                  *ngIf="!prefilled"
+                  type="button"
+                >
+                  <i class="fa fa-arrow-left me-2"></i>
+                  <span>Back</span>
+                </button>
+                <button (click)="submitForm()" class="modern-btn btn-success" type="button">
+                  <i class="fa fa-paper-plane me-2"></i>
+                  <span>Submit Inquiry</span>
+                </button>
+                <button class="modern-btn btn-outline" (click)="stepper.reset()" type="button">
+                  <i class="fa fa-redo me-2"></i>
+                  <span>Reset</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+      </mat-stepper>
+    </div>
+  </div>
+</section>
