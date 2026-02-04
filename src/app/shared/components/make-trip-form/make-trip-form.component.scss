@@ -6,7 +6,7 @@
   .container {
 
     margin: 0 auto;
-    background: #35935F;
+    background: linear-gradient(to right, $primary-color, $primary-white-color);
     padding-inline: 0;
   }
 
