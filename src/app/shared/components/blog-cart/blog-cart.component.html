@@ -1,37 +1,37 @@
 <div
   [routerLink]="['/blog', blog?.slug]"
   role="button"
-  class="blog-cart row align-items-center cPointer border rounded-3 overflow-hidden transition mx-2"
+  class="blog-cart  cPointer border rounded-3 overflow-hidden transition p-2"
 >
-  <div class="col-lg-5 col-md-12 col-sm-5 px-0 h-100">
-    <figure class="img-Hover rounded-2 overflow-hidden position-relative mb-0">
-      <img
-        class="w-100 h-100 object-fit-cover transition"
-        [src]="blog?.featured_image"
-        loading="lazy"
-        [title]="blog?.title"
-        [alt]="blog?.title"
-      />
-    </figure>
-  </div>
-  <div class="col-lg-7 col-md-12 col-sm-7">
-    <figcaption class="p-2 text-capitalize">
-      <p><i class="fas fa-location-dot me-2 textSecondColor"></i> {{ blog?.status }}</p>
-      <h3 [routerLink]="['/blog', blog?.slug]" class="text-capitalize transition fs-5 mt-2">
-        {{ blog?.title }}
-      </h3>
-      @if (blog?.created_at) {
-      <h5 class="text-muted fs-6">
-        <i class="fas fa-calendar-days me-2"></i> {{ blog?.created_at | date : 'dd MMM, yyyy' }}
-      </h5>
-      }
+<figure class="img-Hover rounded-2 overflow-hidden position-relative mb-2">
+  <img
+    class="w-100 h-100 object-fit-cover transition"
+    [src]="blog?.featured_image"
+    loading="lazy"
+    [title]="blog?.title"
+    [alt]="blog?.title"
+  />
 
-      <hr />
+  <!-- <span class="position-absolute top-0 end-0 m-2">
+    <i class="fas fa-location-dot textSecondColor me-2"></i> 
+  </span> -->
+</figure>
+<figcaption class="p-2 text-capitalize">
+  <!-- <p><i class="fas fa-location-dot me-2 textSecondColor"></i> {{ blog?.status }}</p> -->
+  @if (blog?.created_at) {
+  <span class="text-muted border rounded-pill px-2 py-1">
+    <i class="fas fa-calendar-days me-2"></i> {{ blog?.created_at | date : 'dd MMM, yyyy' }}
+  </span>
+  }
 
-      <p
-        class="description fontsm"
-        [innerHTML]="sanitizeHtml(blog?.description || 'No description available')"
-      ></p>
-    </figcaption>
-  </div>
+  <h3 [routerLink]="['/blog', blog?.slug]" class="text-capitalize transition fs-5 mt-3">
+    {{ blog?.title }}
+  </h3>
+
+  <p
+    class="description fontsm"
+    [innerHTML]="sanitizeHtml(blog?.description || 'No description available')"
+  ></p>
+</figcaption>
+  
 </div>

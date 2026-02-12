@@ -1,6 +1,6 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { MakeTripFormComponent } from '../../shared/components/make-trip-form/make-trip-form.component';
-import { Parteners } from '../../shared/components/parteners/parteners';
+import { Parteners } from '../../shared/components/parteners/parteners.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BannerComponent } from '../../shared/components/banner/banner.component';
@@ -62,9 +62,9 @@ export class ContactComponent {
   ngOnInit(): void {
     this._SeoService.updateSeoData(
       {},
-      'Majestic - Contact',
-      "Get in touch with Majestic. Contact us for bookings, inquiries, or travel assistance. We're here to help you plan your perfect trip.",
-      '/assets/image/majestic-logo.svg'
+      'scrappe voyager - Contact',
+      "Get in touch with scrappe voyager. Contact us for bookings, inquiries, or travel assistance. We're here to help you plan your perfect trip.",
+      '/assets/image/scrappe-voyager-logo.webp'
     );
     this.getCountries();
     this.getSettings();

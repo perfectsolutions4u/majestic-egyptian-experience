@@ -14,7 +14,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('majestic');
+  protected readonly title = signal('scrappe voyager');
   protected readonly isBrowserValue: boolean;
 
   constructor(

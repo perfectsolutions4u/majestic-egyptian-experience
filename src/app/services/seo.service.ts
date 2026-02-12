@@ -35,11 +35,11 @@ export interface LanguageSeoData {
   providedIn: 'root',
 })
 export class SeoService {
-  private defaultTitle = 'Golden Oceans - Premium Travel Experiences';
+  private defaultTitle = 'Scrappe Voyager'; 
   private defaultDescription =
-    'Discover amazing tours and travel experiences with Golden Oceans. Book your dream vacation today.';
-  private defaultImage = '/assets/image/golden ocean/Artboard 2.png';
-  private siteUrl = 'https://backend-goldenoceans.perfectsolutions4u.com';
+    'Discover amazing tours and travel experiences with Scrappe Voyager. Book your dream vacation today.'; 
+  private defaultImage = '/assets/image/banner.webp'; 
+  private siteUrl = 'https://tourism-api.perfectsolutions4u.com/api'; 
 
   constructor(
     private meta: Meta,

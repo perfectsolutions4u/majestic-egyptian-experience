@@ -7,7 +7,7 @@ main {
   .video-box {
     position: relative;
     width: 100%;
-    min-height: 80vh;
+    min-height: 88vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -95,7 +95,7 @@ main {
   }
 
   .formBox {
-    transform: translateY(15px);
+    transform: translateY(-80px);
     position: relative;
     z-index: 10;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
@@ -104,7 +104,7 @@ main {
     border: 1px solid rgba(255, 255, 255, 0.3);
     transition: all 0.3s ease;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1100px;
     margin: -80px auto 0 auto;
     opacity: 1 !important;
     visibility: visible !important;
@@ -137,11 +137,7 @@ main {
 
     &:hover {
       box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
-      transform: translateY(8px);
-      -webkit-transform: translateY(8px);
-      -moz-transform: translateY(8px);
-      -ms-transform: translateY(8px);
-      -o-transform: translateY(8px);
+      transform: translateY(-90px);
     }
 
     // Modern gradient border effect
@@ -606,6 +602,68 @@ main {
     }
   }
 
+
+}
+
+.new-about-section {
+  background-image: url('../../../assets/image/home4-about-bg.png'), linear-gradient(180deg, #FFF2E2 0%, #FFF2E2 100%);
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    .worldWideImages {
+      li {
+        width: 40px;
+        height: 40px;
+        margin-left: -20px;
+        &:first-child {
+          margin-left: 0;
+        }
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+    figure{
+      height: 200px;
+      margin-bottom: 0;
+    }
+
+    .link:hover {
+      color: $primary-color !important;
+      i {
+        transform: rotate(-30deg);
+      }
+    }
+
+    
+    .col-6:first-child >div {
+      border-bottom-right-radius: 0 !important;
+    }
+    .col-6:nth-child(2) figure {
+      border-bottom-left-radius: 0 !important;
+    }
+    .col-6:nth-child(3) figure {
+      border-top-right-radius: 0 !important;
+    }
+    .col-6:last-child figure {
+      border-top-left-radius: 0 !important;
+    }
+}
+
+
+.video-section {
+  background-image: url('../../../assets/image/hom4-why-choose-bg.webp'), linear-gradient(180deg, #F2F2FF 0%, #F2F2FF 100%);
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  .contactInfo {
+    border: 8px solid #F2F2FF;
+    transform: translateY(40px);
+    position: relative;
+    z-index: 10;
+  }
 
 }
 

@@ -8,7 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { Itour } from '../../core/interfaces/itour';
 import { TourCartComponent } from '../../shared/components/tour-cart/tour-cart.component';
-import { WhyChooseUs } from '../../shared/components/why-choose-us/why-choose-us';
+import { WhyChooseUs } from '../../shared/components/why-choose-us/why-choose-us.component';
 import { IBlog } from '../../core/interfaces/iblog';
 import { BlogCartComponent } from '../../shared/components/blog-cart/blog-cart.component';
 
@@ -42,6 +42,12 @@ export class DestinationDetailsComponent implements OnInit {
           setTimeout(() => {
             this.destination = res.data;
             console.log('destination details', this.destination);
+            this.seoService.updateSeoData(
+              res.data.seo,
+              'scrappe voyager - Destination Details',
+              'Explore the destination information',
+              '../../../assets/image/scrappe-voyager-logo.webp'
+            );
             this.cdr.markForCheck();
           }, 0);
         }

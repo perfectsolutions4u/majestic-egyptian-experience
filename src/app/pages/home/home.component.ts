@@ -1,4 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -7,6 +7,7 @@ import {
   PLATFORM_ID,
   ChangeDetectorRef,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Subject, takeUntil, tap } from 'rxjs';
@@ -34,11 +35,12 @@ import { IDuration } from '../../core/interfaces/iduration';
 import { DestinationCartComponent } from '../../shared/components/destination-cart/destination-cart.component';
 import { IBlog } from '../../core/interfaces/iblog';
 import { BlogCartComponent } from '../../shared/components/blog-cart/blog-cart.component';
-import { BestServices } from '../../shared/components/best-services/best-services';
+import { BestServices } from '../../shared/components/best-services/best-services.component';
 import { OwlOptions, CarouselModule } from 'ngx-owl-carousel-o';
 import { MakeTripFormComponent } from '../../shared/components/make-trip-form/make-trip-form.component';
-import { Parteners } from '../../shared/components/parteners/parteners';
-import { FaqContent } from '../../shared/components/faq-content/faq-content';
+import { Parteners } from '../../shared/components/parteners/parteners.component';
+import { FaqContent } from '../../shared/components/faq-content/faq-content.component';
+import { VideoComponent } from '../../shared/components/video/video.component';
 
 @Component({
   selector: 'app-home',
@@ -63,6 +65,8 @@ import { FaqContent } from '../../shared/components/faq-content/faq-content';
     MakeTripFormComponent,
     Parteners,
     FaqContent,
+    VideoComponent,
+    CommonModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -94,19 +98,6 @@ export class HomeComponent implements OnInit {
     this.initMakeTripForm();
   }
 
-  // // Helper method to get data from localStorage
-  // getFromLocalStorage(key: string): any | null {
-  //   if (!this.isBrowser) {
-  //     return null;
-  //   }
-  //   try {
-  //     const item = localStorage.getItem(key);
-  //     return item ? JSON.parse(item) : null;
-  //   } catch (error) {
-  //     console.warn(`Error reading from localStorage for key ${key}:`, error);
-  //     return null;
-  //   }
-  // }
 
   MarkTime: string = 'exact';
   monthList: string[] = [];
@@ -185,7 +176,7 @@ export class HomeComponent implements OnInit {
           const seoData = this.seoService.extractSeoFromSettings(res.data, currentLang);
 
           // Always add "test" to title in home page
-          const baseTitle = seoData.meta_title || seoData.og_title || 'Majestic Travel - Home';
+          const baseTitle = seoData.meta_title || seoData.og_title || 'Scrappe Voyager Travel - Home';
           const titleWithTest = ` ${baseTitle}`;
 
           // Update SEO with test in title
@@ -194,18 +185,18 @@ export class HomeComponent implements OnInit {
             titleWithTest,
             seoData.meta_description ||
               seoData.og_description ||
-              'Discover amazing tours and travel experiences with Majestic Travel. Book your dream vacation today.',
+              'Discover amazing tours and travel experiences with Scrappe Voyager. Book your dream vacation today.',
             seoData.og_image || '../../../assets/image/banner.webp'
           );
         } else {
           // If settings API fails, use defaults with test
           this.seoService.updateSeoData(
             {
-              meta_title: 'Majestic Travel - Home',
-              og_title: 'Majestic Travel - Home',
+              meta_title: 'Scrappe Voyager Travel - Home',
+              og_title: 'Scrappe Voyager Travel - Home',
             },
-            'Majestic Travel - Home',
-            'Discover amazing tours and travel experiences with Majestic Travel. Book your dream vacation today.',
+            'Scrappe Voyager Travel - Home',
+            'Discover amazing tours and travel experiences with Scrappe Voyager Travel. Book your dream vacation today.',
             '../../../assets/image/banner.webp'
           );
         }
@@ -214,11 +205,11 @@ export class HomeComponent implements OnInit {
         // If settings API fails, use defaults with test
         this.seoService.updateSeoData(
           {
-            meta_title: 'Majestic Travel - Home',
-            og_title: 'Majestic Travel - Home',
+            meta_title: 'Scrappe Voyager Travel - Home',
+            og_title: 'Scrappe Voyager Travel - Home',
           },
-          'Majestic Travel - Home',
-          'Discover amazing tours and travel experiences with Majestic Travel. Book your dream vacation today.',
+          'Scrappe Voyager Travel - Home',
+          'Discover amazing tours and travel experiences with Scrappe Voyager Travel. Book your dream vacation today.',
           '../../../assets/image/banner.webp'
         );
       },

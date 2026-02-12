@@ -14,7 +14,13 @@
     <div class="row g-3 my-4">
       @for (cart of tourCart; track $index) {
       <div class="col-md-6 col-lg-4">
-        <app-tour-cart [tour]="cart.tour"></app-tour-cart>
+        <div class="position-relative">
+          <app-tour-cart
+            [tour]="cart.tour"
+            [cartItemId]="cart.tour.id"
+            (removeFromCart)="deleteTourCart($event)"
+          ></app-tour-cart>
+        </div>
       </div>
       }
     </div>

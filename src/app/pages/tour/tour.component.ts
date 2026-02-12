@@ -99,9 +99,9 @@ export class TourComponent implements OnInit {
   ngOnInit(): void {
     this.seoService.updateSeoData(
       {},
-      'Majestic Egyption Experience - Tours',
-      'Search and discover amazing tours with Majestic Egyption Experience. Your trusted travel partner for premium tours and exceptional travel experiences.',
-      '../../../assets/image/majestic-logo.svg'
+      'scrappe voyager - Tours',
+      'Search and discover amazing tours with scrappe voyager. Your trusted travel partner for premium tours and exceptional travel experiences.',
+      '../../../assets/image/scrappe-voyager-logo.webp'
     );
 
     // Load destinations, categories, and durations

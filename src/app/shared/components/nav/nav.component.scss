@@ -159,11 +159,26 @@
 
 }
 
+// Header spacer - prevents layout shift when header becomes fixed
+.header-spacer {
+  height: 82px; // matches top-header height (padding + logo)
+  flex-shrink: 0;
+}
+
 // Top Header
 .top-header {
   background-color: white;
   padding: 1rem 0;
-  border-bottom: $border;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .logo-link {
@@ -172,9 +187,9 @@
 }
 
 .logo-img {
-  height: 50px;
-  width: auto;
-  object-fit: contain;
+  height: 80px;
+  width: 80px;
+  // object-fit: contain;
 }
 
 .search-container {
@@ -287,7 +302,7 @@
   background: none;
   border: none;
   color: $primary-color;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   padding: 0.5rem;
   cursor: pointer;
   transition: $transition;
@@ -346,7 +361,7 @@
 .main-navbar {
   background-color: #fff;
   padding: 0;
-  border-bottom: $border;
+  // border-bottom: $border;
 }
 
 .navbar-nav {
@@ -356,6 +371,7 @@
   margin: 0;
   padding: 0;
   align-items: center;
+
 }
 
 .nav-item {
@@ -363,16 +379,16 @@
 
   .nav-link {
     display: block;
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 1rem;
     color: $second-color;
     text-decoration: none;
     font-family: $bady-font;
-    font-weight: 500;
     transition: $transition;
     border-bottom: 3px solid transparent;
-
+    
     &:hover,
     &.active {
+      font-weight: 500;
       color: $primary-color;
       border-bottom-color: $primary-color;
     }
