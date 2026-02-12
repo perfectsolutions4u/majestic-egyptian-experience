@@ -25,9 +25,9 @@ export class FaqComponent implements OnInit {
   ngOnInit(): void {
     this.seoService.updateSeoData(
       {},
-      'scrappe voyager - FAQ',
+      'majestic - FAQ',
       'Frequently asked questions',
-      '../../../assets/image/scrappe-voyager-logo.webp'
+      '../../../assets/image/majestic-logo.svg'
     );
   }
 }

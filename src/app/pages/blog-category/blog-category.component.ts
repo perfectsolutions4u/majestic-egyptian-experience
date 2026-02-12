@@ -40,9 +40,9 @@ export class BlogCategory implements OnInit {
   ngOnInit(): void {
     this.seoService.updateSeoData(
       {},
-      'scrappe voyager - Blog Category',
+      'majestic - Blog Category',
       'Explore blogs by category.',
-      '../../../assets/image/scrappe-voyager-logo.webp'
+      '../../../assets/image/majestic-logo.svg'
     );
 
     this._ActivatedRoute.params.subscribe((params) => {

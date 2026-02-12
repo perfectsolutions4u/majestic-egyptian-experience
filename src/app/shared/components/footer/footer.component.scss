@@ -1,13 +1,13 @@
 @use '../../../styles/variables.scss' as *;
 footer{
 
- background: url('../../../../assets/image/footer-bg.webp') no-repeat center center , linear-gradient(to right, $primary-color, #110f0f);
+ background: url('../../../../assets/image/footer-bg.webp') no-repeat center center , #110f0f;
  background-size: cover;
  color: #fff;
 
  h5,h4,h3,h2,h1{
   font-weight: 600;
-  color: #fff;
+  color: #fff; 
   text-transform: capitalize;
   font-size: 1.25rem;
   margin-bottom: 0.5rem;

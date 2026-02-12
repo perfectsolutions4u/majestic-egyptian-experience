@@ -46,9 +46,9 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
     this.seoService.updateSeoData(
       {},
-      'scrappe voyager - Sign Up',
-      'Create your scrappe voyager Tours account to access exclusive travel deals, manage bookings, and enjoy premium travel experiences.',
-      '../../../assets/image/scrappe-voyager-logo.webp'
+      'Majestic Tours - Sign Up',
+      'Create your Majestic Tours account to access exclusive travel deals, manage bookings, and enjoy premium travel experiences.',
+      '../../../assets/goFly logo.svg'
     );
 
     // Only make API calls in browser to avoid SSR timeout issues

@@ -578,32 +578,117 @@
             </div>
           </div>
 
-          <!-- Tour Add-ons Selection (options = array of option_id; price uses form adults/children/infants) -->
+          <!-- Tour Add-ons Selection -->
           @if (tourOptions.length > 0) {
           <div class="tour-types-section mb-4">
             <div class="flexBetween mb-2">
               <h6 class="mb-1">Tour Add-ons</h6>
+              <!-- total price of all selected options -->
               <h6 class="mb-1 textMainColor">Total: {{ totalAddOnsPrice | currency }}</h6>
             </div>
             @for (option of tour.options; track option.id) {
-            <div class="option-dropdown-wrapper mb-2">
-              <div class="option-header d-flex align-items-center justify-content-between gap-2 border rounded p-2">
-                <label class="d-flex align-items-center gap-2 mb-0 flex-grow-1 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    [checked]="isOptionSelected(option.id)"
-                    (change)="toggleOption(option.id)"
-                  />
+            <div class="option-dropdown-wrapper mb-1">
+              <div class="option-header border rounded-3 p-3">
+                <div class="flexBetween mb-2">
                   <div>
                     <h6 class="mb-0 text-capitalize">{{ option.name }}</h6>
                     @if (option.description && option.description !== '.') {
                     <p class="text-muted mb-0 fontsm">{{ option.description }}</p>
                     }
                   </div>
-                </label>
-                @if (isOptionSelected(option.id)) {
-                <span class="textMainColor fw-bold">{{ getOptionPrice(option.id) | currency }}</span>
-                }
+                  <div class="text-end">
+                    @if (getOptionState(option.id).isSelected && getOptionState(option.id).price >
+                    0) {
+                    <span class="textMainColor fw-bold">{{
+                      getOptionState(option.id).price | currency
+                    }}</span>
+                    } @else {
+                    <span class="text-muted fontsm">Select travelers</span>
+                    }
+                  </div>
+                </div>
+                <div class="booking-input-wrapper position-relative mb-0">
+                  <div class="booking-input" (click)="toggleOptionDropdown(option.id)">
+                    <i class="fa fa-user input-icon"></i>
+                    <div class="input-content">
+                      <div class="input-value">
+                        @if (getOptionState(option.id).adults > 0 ||
+                        getOptionState(option.id).children > 0) { @if
+                        (getOptionState(option.id).adults > 0) {
+                        {{ getOptionState(option.id).adults }} Adult{{
+                          getOptionState(option.id).adults !== 1 ? 's' : ''
+                        }}
+                        } @if (getOptionState(option.id).children > 0) {
+                        {{ getOptionState(option.id).adults > 0 ? ', ' : ''
+                        }}{{ getOptionState(option.id).children }} Child{{
+                          getOptionState(option.id).children !== 1 ? 'ren' : ''
+                        }}
+                        } } @else { Select Travelers }
+                      </div>
+                      <div class="input-label">Select Travelers</div>
+                    </div>
+                    <span
+                      class="input-indicator"
+                      [class.active]="isOptionDropdownOpen(option.id)"
+                    ></span>
+                  </div>
+                  @if (isOptionDropdownOpen(option.id)) {
+                  <div class="travelers-dropdown">
+                    <div class="travelers-header">
+                      <h6 class="mb-1">Travelers for {{ option.name }}</h6>
+                      <p class="fontsm mb-0 text-color-secondary">
+                        Select number of adults and children
+                      </p>
+                    </div>
+                    <div class="travelers-counter">
+                      <div class="counter-item">
+                        <label class="counter-label">Adult</label>
+                        <div class="counter-controls">
+                          <button
+                            type="button"
+                            class="counter-btn"
+                            (click)="decrementOption(option.id, 'adults')"
+                            [disabled]="getOptionState(option.id).adults <= 0"
+                          >
+                            <i class="fa fa-minus"></i>
+                          </button>
+                          <span class="counter-value">{{ getOptionState(option.id).adults }}</span>
+                          <button
+                            type="button"
+                            class="counter-btn"
+                            (click)="incrementOption(option.id, 'adults')"
+                          >
+                            <i class="fa fa-plus"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="counter-item">
+                        <label class="counter-label">Children</label>
+                        <div class="counter-controls">
+                          <button
+                            type="button"
+                            class="counter-btn"
+                            (click)="decrementOption(option.id, 'children')"
+                            [disabled]="getOptionState(option.id).children <= 0"
+                          >
+                            <i class="fa fa-minus"></i>
+                          </button>
+                          <span class="counter-value">{{
+                            getOptionState(option.id).children
+                          }}</span>
+                          <button
+                            type="button"
+                            class="counter-btn"
+                            (click)="incrementOption(option.id, 'children')"
+                          >
+                            <i class="fa fa-plus"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  }
+                </div>
               </div>
             </div>
             }
@@ -717,15 +802,15 @@
             <!-- Full Name -->
             <div class="col-md-6">
               <div class="form-group mb-3">
-                <label for="name" class="form-label">Full Name</label>
+                <label for="full_name" class="form-label">Full Name</label>
                 <input
                   type="text"
-                  id="name"
-                  formControlName="name"
+                  id="full_name"
+                  formControlName="full_name"
                   class="form-control enquiry-input"
                   placeholder="Your Name"
                 />
-                @if (enquiryForm.get('name')?.invalid && enquiryForm.get('name')?.touched)
+                @if (enquiryForm.get('full_name')?.invalid && enquiryForm.get('full_name')?.touched)
                 {
                 <small class="text-danger">Full name is required</small>
                 }
@@ -750,36 +835,6 @@
                   address } }
                 </small>
                 }
-              </div>
-            </div>
-
-            <!-- phone number -->
-            <div class="col-md-6">
-              <div class="form-group mb-3">
-                <label for="phone" class="form-label">Phone Number</label>
-                <input type="tel" id="phone" formControlName="phone" class="form-control enquiry-input" placeholder="Phone Number" [pattern]="phonePattern" [class.is-invalid]="enquiryForm.get('phone')?.invalid && enquiryForm.get('phone')?.touched" />
-                @if (enquiryForm.get('phone')?.invalid && enquiryForm.get('phone')?.touched) {
-                <small class="text-danger">Phone number is required</small>
-                } @else {
-                @if (enquiryForm.get('phone')?.errors?.['pattern']) { Please enter a valid phone number
-                }
-                }
-              </div>
-            </div>
-
-            <!-- country -->
-            <div class="col-md-6">
-              <div class="form-group mb-3">
-                <label for="country" class="form-label">Country</label>
-                <input type="text" id="country" formControlName="country" class="form-control enquiry-input" placeholder="Country" />
-              </div>
-            </div>
-
-            <!-- subject -->
-            <div class="col-md-6">
-              <div class="form-group mb-3">
-                <label for="subject" class="form-label">Subject</label>
-                <input type="text" id="subject" formControlName="subject" class="form-control enquiry-input" placeholder="Subject" />
               </div>
             </div>
 
@@ -834,10 +889,10 @@
             <!-- Tour Details -->
             <div class="col-md-12">
               <div class="form-group mb-3">
-                <label for="message" class="form-label">Tour Details</label>
+                <label for="tour_details" class="form-label">Tour Details</label>
                 <textarea
-                  id="message"
-                  formControlName="message"
+                  id="tour_details"
+                  formControlName="tour_details"
                   class="form-control enquiry-textarea"
                   rows="4"
                   placeholder="Write about tour info"

@@ -22,7 +22,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DatepickerService } from '../../services/datepicker.service';
-import { SeoService } from '../../services/seo.service';
 
 declare var bootstrap: any;
 
@@ -55,8 +54,7 @@ export class TourDetailsComponent implements OnInit {
     private _cdr: ChangeDetectorRef,
     private _ToastrService: ToastrService,
     private _Router: Router,
-    private datepickerService: DatepickerService,
-    private seoService: SeoService
+    private datepickerService: DatepickerService
   ) {}
   slug: string = '';
   tour: Itour | null = null;
@@ -87,14 +85,17 @@ export class TourDetailsComponent implements OnInit {
   totalPrice: number = 0;
   totalAddOnsPrice: number = 0;
 
-  // Selected option IDs (options form value) – pricing uses form adults/children/infants
+  // Options state management
+  optionStates: Map<
+    number,
+    { adults: number; children: number; isSelected: boolean; price: number }
+  > = new Map();
 
   // booking form UI state
   isTravelersDropdownOpen: boolean = false;
   selectedTourType: string = '';
   isDatePickerOpen: boolean = false;
   openOptionDropdowns: Map<number, boolean> = new Map();
-  phonePattern: string = '^01[0-2|5]\\d{8}$';
 
   ngOnInit(): void {
 
@@ -113,18 +114,14 @@ export class TourDetailsComponent implements OnInit {
       infants: new FormControl('0'),
       tour_id: new FormControl<number | null>(null),
       tour_type: new FormControl(''),
-      options: new FormControl<number[]>([], { nonNullable: true }),
     });
 
     this.enquiryForm = new FormGroup({
-      name: new FormControl('', [Validators.required]),
+      full_name: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
-      phone: new FormControl('', [Validators.required, Validators.pattern(this.phonePattern)]),
-      country: new FormControl(''),
-      subject: new FormControl(''),
-      number_of_people: new FormControl(''),
-      travel_date: new FormControl(''),
-      message: new FormControl(''),
+      number_of_people: new FormControl('', [Validators.required]),
+      travel_date: new FormControl('', [Validators.required]),
+      tour_details: new FormControl(''),
       save_info: new FormControl(false),
       tour_id: new FormControl<number | null>(null),
     });
@@ -201,14 +198,12 @@ export class TourDetailsComponent implements OnInit {
           }
           // Sanitize HTML descriptions for itinerary days
           if (this.tour && this.tour.days && Array.isArray(this.tour.days)) {
-            this.tour.days = this.tour.days.reverse().map((day: any) => ({
+            this.tour.days = this.tour.days.map((day: any) => ({
               ...day,
               safeDescription: day.description
                 ? this.sanitizer.bypassSecurityTrustHtml(day.description)
                 : this.sanitizer.bypassSecurityTrustHtml(''),
             }));
-            // console.log(this.tour.days);
-            
           }
           // Convert included and excluded strings to arrays
           if (this.tour && this.tour.included) {
@@ -224,18 +219,20 @@ export class TourDetailsComponent implements OnInit {
               .filter((item: string) => item.length > 0);
           }
 
-          // get tour options (selection stored in bookingForm.options as array of option_id)
+          // get tour options and initialize their state
           if (this.tour && this.tour.options) {
             this.tourOptions = this.tour.options.map((option: any) => option.name);
-            this.bookingForm.get('options')?.setValue([]);
+            // Initialize option states
+            this.tour.options.forEach((option: any) => {
+              this.optionStates.set(option.id, {
+                adults: 0,
+                children: 0,
+                isSelected: false,
+                price: 0,
+              });
+            });
           }
           console.log('tour', this.tour);
-          this.seoService.updateSeoData(
-            res.data.seo,
-            'scrappe voyager - Tour Details',
-            'Explore the tour details',
-            '../../../assets/image/scrappe-voyager-logo.webp'
-          );
           this._cdr.markForCheck();
         }
       });
@@ -397,17 +394,16 @@ export class TourDetailsComponent implements OnInit {
     this.calculateTotalAddOnsPrice();
   }
 
-  // Calculate option price using form's adults, children, infants
-  getOptionPricing(option: any, adults: number, children: number, infants: number = 0): number {
+  // Calculate option price based on adults and children count
+  getOptionPricing(option: any, adults: number, children: number): number {
     if (!option) return 0;
 
     let adultPrice = option.adult_price || 0;
     let childPrice = option.child_price || 0;
-    const infantPrice = option.infant_price ?? 0;
 
     // Check if option has pricing_groups
     if (option.pricing_groups && option.pricing_groups.length > 0) {
-      const totalPeople = adults + children + infants;
+      const totalPeople = adults + children;
       const matchedGroup = option.pricing_groups.find(
         (group: { from: number; to: number }) =>
           totalPeople >= group.from && totalPeople <= group.to
@@ -415,61 +411,89 @@ export class TourDetailsComponent implements OnInit {
 
       if (matchedGroup) {
         adultPrice = matchedGroup.price;
-        childPrice = matchedGroup.child_price ?? childPrice;
+        childPrice = matchedGroup.child_price;
       }
     }
 
-    return adults * adultPrice + children * childPrice + infants * infantPrice;
+    return adults * adultPrice + children * childPrice;
   }
 
-  // Calculate total add-ons price using form adults, children, infants for each selected option_id
+  // Calculate total add-ons price
   calculateTotalAddOnsPrice(): void {
     this.totalAddOnsPrice = 0;
-    const optionIds = this.bookingForm.get('options')?.value ?? [];
-    const adults = parseInt(this.bookingForm.get('adults')?.value || '0', 10);
-    const children = parseInt(this.bookingForm.get('children')?.value || '0', 10);
-    const infants = parseInt(this.bookingForm.get('infants')?.value || '0', 10);
-    optionIds.forEach((optionId: number) => {
-      const option = this.tour?.options?.find((opt: any) => opt.id === optionId);
-      if (option) {
-        this.totalAddOnsPrice += this.getOptionPricing(option, adults, children, infants);
+    this.optionStates.forEach((state, optionId) => {
+      if (state.isSelected && (state.adults > 0 || state.children > 0)) {
+        const option = this.tour?.options?.find((opt: any) => opt.id === optionId);
+        if (option) {
+          state.price = this.getOptionPricing(option, state.adults, state.children);
+          this.totalAddOnsPrice += state.price;
+        }
       }
     });
   }
 
-  // Toggle option dropdown (for UI)
+  // Toggle option dropdown
   toggleOptionDropdown(optionId: number): void {
     const currentState = this.openOptionDropdowns.get(optionId) || false;
     this.openOptionDropdowns.set(optionId, !currentState);
   }
 
+  // Check if option dropdown is open
   isOptionDropdownOpen(optionId: number): boolean {
     return this.openOptionDropdowns.get(optionId) || false;
   }
 
-  // Toggle option selection (add/remove option_id in form options array)
-  toggleOption(optionId: number): void {
-    const optionsControl = this.bookingForm.get('options');
-    const current: number[] = optionsControl?.value ?? [];
-    const next = current.includes(optionId)
-      ? current.filter((id) => id !== optionId)
-      : [...current, optionId];
-    optionsControl?.setValue(next);
+  // Increment option adults/children
+  incrementOption(optionId: number, type: 'adults' | 'children'): void {
+    const state = this.optionStates.get(optionId);
+    if (!state) return;
+
+    const currentOptionTotal = state.adults + state.children;
+    const mainTourTravelers = this.getTotalTravelers();
+
+    // Calculate total travelers across all options
+    let allOptionsTotal = 0;
+    this.optionStates.forEach((optState) => {
+      allOptionsTotal += optState.adults + optState.children;
+    });
+
+    // Check if adding one more would exceed limit (main tour + all options)
+    if (mainTourTravelers + allOptionsTotal < 20) {
+      if (type === 'adults') {
+        state.adults++;
+      } else {
+        state.children++;
+      }
+      state.isSelected = true;
+      this.calculateTotalAddOnsPrice();
+    }
+  }
+
+  // Decrement option adults/children
+  decrementOption(optionId: number, type: 'adults' | 'children'): void {
+    const state = this.optionStates.get(optionId);
+    if (!state) return;
+
+    if (type === 'adults' && state.adults > 0) {
+      state.adults--;
+    } else if (type === 'children' && state.children > 0) {
+      state.children--;
+    }
+
+    // If both are 0, deselect
+    if (state.adults === 0 && state.children === 0) {
+      state.isSelected = false;
+      state.price = 0;
+    }
+
     this.calculateTotalAddOnsPrice();
   }
 
-  isOptionSelected(optionId: number): boolean {
-    return (this.bookingForm.get('options')?.value ?? []).includes(optionId);
-  }
-
-  // Price for one option using form travelers (for display)
-  getOptionPrice(optionId: number): number {
-    const option = this.tour?.options?.find((opt: any) => opt.id === optionId);
-    if (!option || !this.isOptionSelected(optionId)) return 0;
-    const adults = parseInt(this.bookingForm.get('adults')?.value || '0', 10);
-    const children = parseInt(this.bookingForm.get('children')?.value || '0', 10);
-    const infants = parseInt(this.bookingForm.get('infants')?.value || '0', 10);
-    return this.getOptionPricing(option, adults, children, infants);
+  // Get option state
+  getOptionState(optionId: number) {
+    return (
+      this.optionStates.get(optionId) || { adults: 0, children: 0, isSelected: false, price: 0 }
+    );
   }
 
   submitBookingForm(): void {
@@ -483,16 +507,29 @@ export class TourDetailsComponent implements OnInit {
         formValue.start_date = `${year}-${month}-${day}`;
       }
 
-      // options is already array of option_id from form (e.g. [1, 2])
-      formValue.options = this.bookingForm.get('options')?.value ?? [];
+      // Add options data to form value
+      const selectedOptions: any[] = [];
+      this.optionStates.forEach((state, optionId) => {
+        if (state.isSelected && (state.adults > 0 || state.children > 0)) {
+          selectedOptions.push({
+            option_id: optionId,
+            adults: state.adults,
+            children: state.children,
+          });
+        }
+      });
+
+      if (selectedOptions.length > 0) {
+        formValue.options = selectedOptions;
+      }
 
       // Add total_price (base tour price + add-ons price)
       formValue.total_price = this.totalPrice + this.totalAddOnsPrice;
 
-      console.log(formValue);
+      // console.log(formValue);
       this._BookingService
         // ,localStorage.getItem('accessToken')
-        .appendBookingCartData(formValue)
+        .appendBookingData(formValue)
         .subscribe({
           next: (response: any) => {
             // console.log(response);
@@ -721,35 +758,19 @@ export class TourDetailsComponent implements OnInit {
         }
       }
 
-      console.log('enquiry form value', formValue);
-
-      this._DataService.sendContactData(formValue)
-      .subscribe({
-        next: (response) => {
-          console.log('enquiry data sent', response);
-          this._ToastrService.success(response.message);
-        },
-        error: (error) => {
-          console.log('error sending enquiry data', error);
-          this._ToastrService.error(error.error.message);
-        },
-      });
-
-
       // Format email body
       const tourTitle = this.tour?.title || 'Tour Enquiry';
       const emailBody = `
 New Tour Enquiry
 
 Tour: ${tourTitle}
-Full Name: ${formValue.name}
+Full Name: ${formValue.full_name}
 Email: ${formValue.email}
-Phone: ${formValue.phone}
-Country: ${formValue.country}
-Subject: ${formValue.subject}
-Tour Details: ${formValue.message || 'N/A'}, ${formValue.number_of_people ? `Number of People: ${formValue.number_of_people}` : ''}, ${formattedDate ? `Travel Date: ${formattedDate}` : ''}, ${formValue.subject ? `Subject: ${formValue.subject}` : ''}
+Number of People: ${formValue.number_of_people}
+Travel Date: ${formattedDate || 'Not specified'}
+Tour Details: ${formValue.tour_details || 'N/A'}
 Save Info: ${formValue.save_info ? 'Yes' : 'No'}
-      `;
+      `.trim();
 
       // Set email preview
       this.emailPreview = {

@@ -36,9 +36,9 @@ export class BlogComponent implements OnInit {
   ngOnInit(): void {
     this.seoService.updateSeoData(
       {},
-      'scrappe voyager - Blog',
+      'majestic - Blog',
       'Explore our latest travel insights and stories.',
-      '../../../assets/image/scrappe-voyager-logo.webp'
+      '../../../assets/image/majestic-logo.svg'
     );
     this.getListBlog();
   }

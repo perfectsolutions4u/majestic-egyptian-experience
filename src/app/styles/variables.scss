@@ -1,14 +1,13 @@
-
 // Global SCSS Variables for the entire project
 // $primary-color: #000080;
-$primary-color: #1B56FD;
-$second-color: #1781FE;
+$primary-color: rgb(27, 86, 253);
+$second-color: rgb(23, 129, 254);
 // $second-color:#110f0f ;
-$primary-white-color: rgba(23, 131, 254, 0.455) ;
+$primary-white-color: rgba(23, 131, 254, 0.455);
 // $primary-black-color: #08446A;
-$text-color: #110f0f;
-$text-color-secondary: #525252;
-$border-color: #EEEFEF;
+$text-color: rgb(17, 15, 15);
+$text-color-secondary: rgb(82, 82, 82);
+$border-color: rgb(238, 239, 239);
 $bady-font: "Poppins", sans-serif;
 $paragraph-font: "Roboto", sans-serif;
 $transition: all 1s ease-in-out;

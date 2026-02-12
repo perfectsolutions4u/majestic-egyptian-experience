@@ -62,9 +62,9 @@ export class ContactComponent {
   ngOnInit(): void {
     this._SeoService.updateSeoData(
       {},
-      'scrappe voyager - Contact',
-      "Get in touch with scrappe voyager. Contact us for bookings, inquiries, or travel assistance. We're here to help you plan your perfect trip.",
-      '/assets/image/scrappe-voyager-logo.webp'
+      'Majestic - Contact',
+      "Get in touch with Majestic. Contact us for bookings, inquiries, or travel assistance. We're here to help you plan your perfect trip.",
+      '/assets/image/majestic-logo.svg'
     );
     this.getCountries();
     this.getSettings();

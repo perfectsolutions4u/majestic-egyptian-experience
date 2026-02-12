@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -23,9 +23,6 @@ export class TourCartComponent implements OnInit {
 
   @Input() layoutType: 'grid' | 'list' = 'grid';
   @Input() tour?: Itour;
-  /** When set, show "Remove from cart" instead of "Add to cart" and emit on click */
-  @Input() cartItemId?: number;
-  @Output() removeFromCart = new EventEmitter<number>();
 
   favs: any[] = [];
   favouriteIds: number[] = [];
@@ -121,13 +118,5 @@ export class TourCartComponent implements OnInit {
         this.toaster.error(err.error.message);
       },
     });
-  }
-
-  onRemoveFromCart(cartItemId: number, event: Event): void {
-    event.preventDefault();
-    event.stopPropagation();
-    if (cartItemId != null) {
-      this.removeFromCart.emit(cartItemId);
-    }
   }
 }

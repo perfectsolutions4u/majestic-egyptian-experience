@@ -42,12 +42,6 @@ export class DestinationDetailsComponent implements OnInit {
           setTimeout(() => {
             this.destination = res.data;
             console.log('destination details', this.destination);
-            this.seoService.updateSeoData(
-              res.data.seo,
-              'scrappe voyager - Destination Details',
-              'Explore the destination information',
-              '../../../assets/image/scrappe-voyager-logo.webp'
-            );
             this.cdr.markForCheck();
           }, 0);
         }

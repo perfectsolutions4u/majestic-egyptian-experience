@@ -34,11 +34,11 @@ import { IDuration } from '../../core/interfaces/iduration';
 import { DestinationCartComponent } from '../../shared/components/destination-cart/destination-cart.component';
 import { IBlog } from '../../core/interfaces/iblog';
 import { BlogCartComponent } from '../../shared/components/blog-cart/blog-cart.component';
-import { BestServices } from '../../shared/components/best-services/best-services';
+import { BestServices } from '../../shared/components/best-services/best-services.component';
 import { OwlOptions, CarouselModule } from 'ngx-owl-carousel-o';
 import { MakeTripFormComponent } from '../../shared/components/make-trip-form/make-trip-form.component';
-import { Parteners } from '../../shared/components/parteners/parteners';
-import { FaqContent } from '../../shared/components/faq-content/faq-content';
+import { Parteners } from '../../shared/components/parteners/parteners.component';
+import { FaqContent } from '../../shared/components/faq-content/faq-content.component';
 
 @Component({
   selector: 'app-home',

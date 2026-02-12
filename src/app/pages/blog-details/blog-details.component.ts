@@ -66,9 +66,9 @@ export class BlogDetailsComponent implements OnInit {
     });
     this.seoService.updateSeoData(
       {},
-      'scrappe voyager - Blog Details',
+      'majestic - Blog Details',
       'Read the full blog post',
-      '../../../assets/image/scrappe-voyager-logo.webp'
+      '../../../assets/image/majestic-logo.svg'
     );
     this.getSettings();
     this.getBlogCategories();
@@ -102,7 +102,7 @@ export class BlogDetailsComponent implements OnInit {
 
   // get settings from local storage
   getSettings(): void {
-    this.settings = localStorage.getItem('scrappe_voyager_settings');
+    this.settings = localStorage.getItem('majestic_settings');
     if (this.settings) {
       let settingsData = JSON.parse(this.settings).data.data;
       // loop through settings and get the social_links

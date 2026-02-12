@@ -12,23 +12,9 @@
     -webkit-box-orient: vertical;
 
   }
-  figcaption{
-    height: 100px;
-  }
 
   &:hover{
     h3{color: $primary-color;}
-    figcaption{
-      height: auto;
-    }
-    .mainBtn{
-      transform: translateY(10%);
-    }
 
-  }
-
-  .mainBtn{
-    transform: translateY(140%);
-    transition: $transition;
   }
 }
