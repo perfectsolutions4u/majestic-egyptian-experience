@@ -15,16 +15,20 @@ export class BookingService extends BaseService {
     return this.HttpClient.post(`${this.baseUrl}/bookings`, bookingData);
   }
 
+  appendBookingCartData(bookingData: object): Observable<any> {
+    return this.HttpClient.post(`${this.baseUrl}/cart/tours/append`, bookingData);
+  }
+
   getCartList(): Observable<any> {
-    return this.HttpClient.get(`${this.baseUrl}/cart`);
+    return this.HttpClient.get(`${this.baseUrl}/cart/list`);
   }
 
   deleteTourCart(tourCartId: number): Observable<any> {
-    return this.HttpClient.delete(`${this.baseUrl}/cart/${tourCartId}`);
+    return this.HttpClient.delete(`${this.baseUrl}/cart/remove/${tourCartId}`);
   }
 
   clearTourCart(): Observable<any> {
-    return this.HttpClient.delete(`${this.baseUrl}/cart`);
+    return this.HttpClient.delete(`${this.baseUrl}/cart/clear`);
   }
 
   sendCheckoutData(checkoutData: object): Observable<any> {

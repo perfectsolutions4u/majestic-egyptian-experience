@@ -23,13 +23,14 @@ export class CartComponent implements OnInit {
   tourCart: any[] = [];
   haveData: boolean = false;
   backgroundImage: string = '../../../assets/image/cart-banner.jpg';
+  
 
   ngOnInit(): void {
     this.seoService.updateSeoData(
       {},
-      'majestic - Cart',
-      'Manage your cart, bookings, and preferences with majestic egyptian experience. Access your account dashboard.',
-      '../../../assets/image/majestic-logo.svg'
+      'scrappe voyager - Cart',
+      'Manage your cart, bookings, and preferences with scrappe voyager. Access your account dashboard.',
+      '../../../assets/image/scrappe-voyager-logo.webp'
     );
     this.getListCart();
   }

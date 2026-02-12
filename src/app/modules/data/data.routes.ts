@@ -45,12 +45,12 @@ export const dataRoutes: Routes = [
   {
     path: 'blog-category/:id',
     loadComponent: () =>
-      import('../../pages/blog-category/blog-category').then((m) => m.BlogCategory),
+      import('../../pages/blog-category/blog-category.component').then((m) => m.BlogCategory),
     title: 'Blog Category',
   },
   {
     path: 'category/:slug',
-    loadComponent: () => import('../../pages/category/category').then((m) => m.Category),
+    loadComponent: () => import('../../pages/category/category.component').then((m) => m.Category),
     title: 'Category',
   },
   {

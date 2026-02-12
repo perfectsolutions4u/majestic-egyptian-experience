@@ -38,9 +38,9 @@ export class ForgetPasswordComponent {
   ngOnInit(): void {
     this.seoService.updateSeoData(
       {},
-      'Majestic Tours - Forget Password',
-      'Reset your Alfa Omega Tours account password. Recover access to your travel account securely.',
-      '../../../assets/goFly logo.svg'
+      'scrappe voyager - Forget Password',
+      'Reset your scrappe voyager account password. Recover access to your travel account securely.',
+      '../../../assets/image/scrappe-voyager-logo.webp'
     );
     // this.getSettings();
     // this.getCountries();

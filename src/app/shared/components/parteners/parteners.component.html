@@ -1,34 +1,15 @@
-<!-- <section class="partners">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <h2 class="section-title">Our Partners</h2>
-      </div>
-    </div>
-    <div class="row align-items-center">
-      <div class="col-md-3 col-sm-6" *ngFor="let partner of partners">
-        <div class="partner-item">
-          <img [src]="partner.logo" [alt]="partner.name" class="partner-logo" />
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->
-<section class="my-5 pt-5">
-  <div class="container">
-    <owl-carousel-o [options]="partenersOptions">
-      @for (partner of partners; track partner.id) {
-      <ng-template carouselSlide>
-        <figure class="img-Hover mb-0 overflow-hidden rounded-3">
-          <img
-            loading="lazy"
-            [src]="partner.image"
-            [alt]="partner.name"
-            class="w-100 h-100 transition"
-          />
-        </figure>
-      </ng-template>
-      }
-    </owl-carousel-o>
-  </div>
-</section>
+
+<owl-carousel-o [options]="partenersOptions">
+  @for (partner of partners; track partner.id) {
+  <ng-template carouselSlide>
+    <figure class="img-Hover mb-0 overflow-hidden rounded-3">
+      <img
+        loading="lazy"
+        [src]="partner.image"
+        [alt]="partner.name"
+        class="w-100 h-100 transition"
+      />
+    </figure>
+  </ng-template>
+  }
+</owl-carousel-o>

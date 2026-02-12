@@ -37,9 +37,9 @@ export class DestinationComponent implements OnInit {
   ngOnInit(): void {
     this.seoService.updateSeoData(
       {},
-      'majestic - Destination',
+      'scrappe voyager - Destination',
       'Explore our destinations',
-      '../../../assets/image/majestic-logo.svg'
+      '../../../assets/image/scrappe-voyager-logo.webp'
     );
     this.getDestination();
   }

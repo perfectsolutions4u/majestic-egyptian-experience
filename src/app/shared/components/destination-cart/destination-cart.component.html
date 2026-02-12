@@ -14,10 +14,12 @@
   </figure>
   <figcaption class="p-2 text-center text-capitalize fw-bold">
     <h3 [routerLink]="['/destination', destination?.slug]" class="transition fs-5 mt-2">
-      <i class="fa fa-location-dot me-2"></i> {{ destination?.title }}
+      <!-- <i class="fa fa-location-dot me-2"></i>  -->
+      {{ destination?.title }}
     </h3>
     <h4 class="transition fs-6">
-      <b class="textMainColor">{{ destination?.tours_count }}</b> tours
+      tours
+      <b class="textMainColor">({{ destination?.tours_count }})</b>
     </h4>
   </figcaption>
 </div>

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SeoService } from '../../services/seo.service';
 import { DataService } from '../../services/data.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { FaqContent } from '../../shared/components/faq-content/faq-content';
+import { FaqContent } from '../../shared/components/faq-content/faq-content.component';
 
 @Component({
   selector: 'app-faq',
@@ -25,9 +25,9 @@ export class FaqComponent implements OnInit {
   ngOnInit(): void {
     this.seoService.updateSeoData(
       {},
-      'majestic - FAQ',
+      'scrappe voyager - FAQ',
       'Frequently asked questions',
-      '../../../assets/image/majestic-logo.svg'
+      '../../../assets/image/scrappe-voyager-logo.webp'
     );
   }
 }

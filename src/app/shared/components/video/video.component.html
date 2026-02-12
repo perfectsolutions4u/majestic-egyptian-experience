@@ -1,0 +1,67 @@
+<div class="videoBox rounded-3 overflow-hidden">
+  <img
+    [src]="posterImage"
+    class="w-100 h-100 object-fit-cover"
+    [alt]="posterAlt"
+  />
+
+  <button
+    type="button"
+    class="play-button position-absolute top-50 start-50 translate-middle"
+    (click)="openVideoModal()"
+    aria-label="Play video"
+  >
+    <div class="ripple-container">
+      <span class="ripple ripple-1"></span>
+      <span class="ripple ripple-2"></span>
+      <span class="ripple ripple-3"></span>
+    </div>
+    <svg
+      width="80"
+      height="80"
+      viewBox="0 0 80 80"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      class="play-icon"
+    >
+      <circle cx="40" cy="40" r="40" fill="#0066FF" class="play-circle" />
+      <path d="M32 24L32 56L56 40L32 24Z" fill="white" class="play-triangle" />
+    </svg>
+  </button>
+</div>
+
+<!-- video Modal -->
+<div
+  class="modal fade"
+  id="videoModal"
+  #videoModal
+  tabindex="-1"
+  aria-labelledby="videoModalLabel"
+  aria-hidden="true"
+  (hidden.bs.modal)="closeVideoModal()"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content video-modal-content">
+      <div class="modal-header border-0">
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="video-wrapper">
+          <iframe
+            #videoIframe
+            [src]="safeVideoUrl"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="video-iframe"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

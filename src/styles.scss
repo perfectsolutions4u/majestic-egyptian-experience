@@ -193,7 +193,8 @@ figure.img-Hover{
     &.active{
       span{
         width: 30px !important;
-        background-color: $primary-color;
+        // background-color: $primary-color;
+        background-color: black;
       }
     }
   }

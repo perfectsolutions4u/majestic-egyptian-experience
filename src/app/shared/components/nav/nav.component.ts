@@ -7,6 +7,7 @@ import {
   OnDestroy,
   computed,
   ChangeDetectorRef,
+  HostListener,
 } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
@@ -56,6 +57,7 @@ export class NavComponent implements OnInit, OnDestroy {
   searchInput = signal('');
   searchResults: any[] = [];
   isSearching = signal(false);
+  isScrolled = signal(false);
 
   constructor(
     private translate: TranslateService,
@@ -75,6 +77,7 @@ export class NavComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         const logo = res.data.find((item: any) => item.option_key === 'logo');
         this.logo = logo?.option_value[0] || '';
+        this.logo= '../../../../assets/main_logo.jpg'
         const title = res.data.find((item: any) => item.option_key === 'site_title');
         this.title = title?.option_value[0] || '';
         console.log('nav page -- logo -- ', this.logo);
@@ -82,6 +85,13 @@ export class NavComponent implements OnInit, OnDestroy {
         this.cdr.markForCheck();
       }, 0);
     });
+  }
+
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isScrolled.set(window.scrollY > 0);
+    }
   }
 
   ngOnInit(): void {
@@ -103,6 +113,11 @@ export class NavComponent implements OnInit, OnDestroy {
       document.addEventListener('keydown', this.escKeyListener);
     } else {
       this.translate.use('en');
+    }
+
+    // Set initial scroll state (e.g. on refresh while scrolled)
+    if (isPlatformBrowser(this.platformId)) {
+      this.isScrolled.set(window.scrollY > 0);
     }
 
     // Setup search debounce
