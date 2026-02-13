@@ -1,5 +1,5 @@
 {
-  "name": "scrappe_voyager",
+  "name": "majestic",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -8,7 +8,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:scrappe_voyager": "node dist/scrappe_voyager/server/server.mjs"
+    "serve:ssr:majestic": "node dist/majestic/server/server.mjs"
   },
   "prettier": {
     "printWidth": 100,

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/scrappe_voyager/browser",
+  "outputDirectory": "dist/majestic/browser",
   "framework": null,
   "rewrites": [
     {
