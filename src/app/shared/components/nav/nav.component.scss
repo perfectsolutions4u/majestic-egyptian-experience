@@ -159,11 +159,110 @@
 
 }
 
+// Spacer when nav is fixed (prevents content jumping under fixed bar)
+.nav-fixed-spacer {
+  height: 0;
+  transition: height 0.2s ease;
+  &.visible {
+    height: 60px;
+  }
+}
+
 // Top Header
 .top-header {
   background-color: white;
   padding: 1rem 0;
   border-bottom: $border;
+  transition: box-shadow 0.2s ease;
+
+  &.nav-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  &.nav-compact {
+    padding: 0.5rem 0;
+
+    .compact-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .compact-logo {
+      flex-shrink: 0;
+    }
+
+    .compact-logo-img {
+      height: 40px;
+      width: auto;
+    }
+
+    .compact-nav {
+      display: flex;
+      flex-wrap: wrap;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+      gap: 0;
+
+      .nav-item {
+        .nav-link {
+          padding: 0.5rem 1rem;
+          font-size: 0.95rem;
+        }
+        &.dropdown {
+          .nav-link.dropdown-toggle::after {
+            display: none;
+          }
+          .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 200px;
+            background-color: #fff;
+            border: $border;
+            border-radius: $border-radius;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 0.5rem 0;
+            margin-top: 0;
+            list-style: none;
+            &.show {
+              display: block;
+            }
+            li {
+              list-style: none;
+            }
+            .dropdown-item {
+              display: block;
+              padding: 0.5rem 0.75rem;
+              color: $second-color;
+              text-decoration: none;
+              transition: $transition;
+              font-family: $bady-font;
+              &:hover {
+                background-color: $primary-white-color;
+                color: #fff;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .compact-mobile-icons {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
 }
 
 .logo-link {
@@ -347,6 +446,10 @@
   background-color: #fff;
   padding: 0;
   border-bottom: $border;
+
+  &.nav-hidden-when-scrolled {
+    display: none !important;
+  }
 }
 
 .navbar-nav {

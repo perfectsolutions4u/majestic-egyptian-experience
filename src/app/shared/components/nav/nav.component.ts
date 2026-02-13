@@ -52,6 +52,14 @@ export class NavComponent implements OnInit, OnDestroy {
     tours: false,
   });
 
+  // Scroll-based sticky nav: >50px = compact fixed nav; 0 = original layout
+  private readonly SCROLL_THRESHOLD = 50;
+  private readonly DESKTOP_BREAKPOINT = 992;
+  scrolledPast50 = signal(false);
+  isDesktop = signal(true);
+  private scrollListener?: () => void;
+  private resizeListener?: () => void;
+
   // Search functionality
   searchInput = signal('');
   searchResults: any[] = [];
@@ -101,6 +109,20 @@ export class NavComponent implements OnInit, OnDestroy {
         }
       };
       document.addEventListener('keydown', this.escKeyListener);
+
+      // Scroll: show compact fixed nav when scroll > 50px; original when <= 50px
+      this.scrollListener = () => {
+        const scrolled = window.scrollY > this.SCROLL_THRESHOLD;
+        this.scrolledPast50.set(scrolled);
+      };
+      window.addEventListener('scroll', this.scrollListener, { passive: true });
+      this.scrollListener(); // initial check
+
+      // Resize: desktop >= 992px, small < 992px
+      const checkDesktop = () => this.isDesktop.set(window.innerWidth >= this.DESKTOP_BREAKPOINT);
+      this.resizeListener = checkDesktop;
+      window.addEventListener('resize', this.resizeListener);
+      checkDesktop();
     } else {
       this.translate.use('en');
     }
@@ -204,6 +226,14 @@ export class NavComponent implements OnInit, OnDestroy {
     // Remove ESC key listener
     if (isPlatformBrowser(this.platformId) && this.escKeyListener) {
       document.removeEventListener('keydown', this.escKeyListener);
+    }
+    if (isPlatformBrowser(this.platformId)) {
+      if (this.scrollListener) {
+        window.removeEventListener('scroll', this.scrollListener);
+      }
+      if (this.resizeListener) {
+        window.removeEventListener('resize', this.resizeListener);
+      }
     }
   }
 

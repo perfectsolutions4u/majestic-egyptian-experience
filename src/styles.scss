@@ -39,9 +39,9 @@ body{
 }
 .mainBtn{
   @extend .Btn;
-  background: linear-gradient(to right, $primary-color, $primary-white-color);
+  background-color: $second-color;
   &::after{
-    background-color: $second-color;
+    background: linear-gradient(to right, $primary-white-color, $primary-color);
   }
 
 }

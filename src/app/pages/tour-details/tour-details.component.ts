@@ -143,7 +143,7 @@ export class TourDetailsComponent implements OnInit {
       this._DataService.getTourBySlug(this.slug).subscribe((res) => {
         if (res && res.data) {
           this.tour = res.data;
-          // console.log('tour', this.tour);
+          console.log('tour', this.tour);
 
           // Set tour_id in all forms - ensure tour.id exists
           if (this.tour && this.tour.id) {
@@ -161,10 +161,10 @@ export class TourDetailsComponent implements OnInit {
               enquiryIdControl.setValue(this.tour.id);
             }
 
-            console.log('Tour ID set:', this.tour.id);
-            console.log('write review tour id', this.writeReview.get('tour_id')?.value);
-            console.log('booking form tour id', this.bookingForm.get('tour_id')?.value);
-            console.log('enquiry form tour id', this.enquiryForm.get('tour_id')?.value);
+            // console.log('Tour ID set:', this.tour.id);
+            // console.log('write review tour id', this.writeReview.get('tour_id')?.value);
+            // console.log('booking form tour id', this.bookingForm.get('tour_id')?.value);
+            // console.log('enquiry form tour id', this.enquiryForm.get('tour_id')?.value);
           } else {
             console.warn('Tour ID is missing:', this.tour);
           }

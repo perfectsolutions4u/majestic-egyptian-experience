@@ -664,3 +664,77 @@ main {
     }
   }
 }
+
+.weather-section {
+  background-color: $primary-white-color;
+  .weather-card {
+    border-top: 3px solid $primary-color;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    li::marker {
+      color: $primary-color;
+    }
+    .watch-video {
+      transition: $transition;
+      &:hover {
+        text-decoration: underline;
+        text-decoration-color: $primary-color;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 2px;
+      }
+    }
+  }
+
+  .egypt-climate-carousel-wrap {
+    min-height: 120px;
+
+    .climate-loading {
+      font-size: 0.9rem;
+    }
+
+    .climate-slide {
+      .climate-slide-table {
+        font-size: 0.8rem;
+      }
+    }
+
+    ::ng-deep .owl-carousel .owl-nav button.owl-prev,
+    ::ng-deep .owl-carousel .owl-nav button.owl-next {
+      font-size: 1.2rem;
+      padding: 0.25rem 0.5rem;
+    }
+    ::ng-deep .owl-dots {
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+// Egypt tourism video modal
+.video-modal-content {
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+
+  .modal-header {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px 15px;
+  }
+
+  .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .video-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -1,0 +1,89 @@
+@use '../../../styles/variables.scss' as *;
+
+.climate-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: $border-radius;
+  border: 1px solid $border-color;
+  background: #fff;
+}
+
+.climate-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  
+
+  thead {
+    background: darken($primary-color, 8%);
+    color: #fff;
+
+    th {
+      padding: 0.6rem 0.5rem;
+      text-align: center;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .climate-table__dest {
+      text-align: left;
+      padding-left: 1rem;
+      position: sticky;
+      left: 0;
+      background: darken($primary-color, 8%);
+      z-index: 1;
+    }
+  }
+
+  tbody tr {
+    &:nth-child(even) {
+      background: rgba($border-color, 0.3);
+    }
+  }
+
+  td {
+    padding: 0.5rem;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .climate-table__dest {
+    text-align: left;
+    padding-left: 1rem;
+    position: sticky;
+    left: 0;
+    background: #fff;
+    z-index: 3;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.04);
+  }
+
+  .climate-table__cell {
+    min-width: 5rem;
+  }
+
+  .cell-temp,
+  .cell-rain {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+
+  .cell-temp__value {
+    color: #c0392b;
+    font-weight: 500;
+    text-wrap: nowrap;
+  }
+
+  .cell-rain__value {
+    color: $second-color;
+    font-size: 0.75rem;
+  }
+
+  .cell-temp__icon,
+  .cell-rain__icon {
+    font-size: 0.75rem;
+    opacity: 0.9;
+  }
+}

@@ -5,4 +5,6 @@
 export const environment = {
   production: false,
   apiUrl: 'https://tourism-api.perfectsolutions4u.com/api',
+  /** Open-Meteo archive API: use proxy in dev to avoid CORS */
+  openMeteoArchiveUrl: '/api/open-meteo-archive',
 };

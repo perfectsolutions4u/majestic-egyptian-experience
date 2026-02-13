@@ -1,7 +1,7 @@
 <footer class="pt-4">
   <div class="container">
     <div class="row g-3 align-items-center py-5">
-      <div class="col-lg-3">
+      <div class="col-lg-4 col-md-6">
         <div class="d-flex align-items-center gap-3">
           <div>
             <svg
@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-4 col-md-6">
         <div class="d-flex align-items-center gap-3">
           <div>
             <svg
@@ -63,7 +63,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-4 col-md-6">
         <div class="d-flex align-items-center gap-3">
           <div>
             <svg
@@ -98,7 +98,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3">
+      <!-- <div class="col-lg-3">
         <div class="d-flex align-items-center gap-3">
           <div>
             <svg
@@ -127,11 +127,11 @@
             <a href="tel:{{ phone }}" target="_blank"> +{{ phone }} </a>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 
-    <div class="row g-3 my-5">
-      <div class="col-lg-5">
+    <div class="row g-3 my-3 text-capitalize">
+      <div class="col-lg-4">
         <div>
           <figure class="">
             <img
@@ -143,51 +143,34 @@
           </figure>
           <figcaption>
             <p class="fw-bold text-capitalize">{{ title }}</p>
-            <p>address: {{ address }}</p>
+            <p class="mb-4">address: {{ address }}</p>
             <!-- [socialLinks]="socialLinks" -->
-            <app-social class="mt-4" [socialLinks]="socialLinks"></app-social>
+            <app-social [socialLinks]="socialLinks"></app-social>
           </figcaption>
         </div>
       </div>
-      <div class="col-lg-2">
+      <div class="col-lg-4 col-md-6">
         <h3>Quick Links</h3>
         <ul class="list-unstyled">
           <li><a routerLink="/">Home</a></li>
           <li><a routerLink="/about">About</a></li>
           <li><a routerLink="/blog">Blog</a></li>
           <li><a routerLink="/contact">Contact</a></li>
-          <li><a routerLink="/faq">FAQ</a></li>
-          <li><a routerLink="/profile">Profile</a></li>
-          <li><a routerLink="/makeTrip">Make Trip</a></li>
           <li><a routerLink="/destinations">Destinations</a></li>
         </ul>
       </div>
-      <div class="col-lg-2">
-        <h3>Quick Links</h3>
+      <div class="col-lg-4 col-md-6">
+        <h3>help & support</h3>
         <ul class="list-unstyled">
-          <li><a routerLink="/">Home</a></li>
-          <li><a routerLink="/about">About</a></li>
-          <li><a routerLink="/blog">Blog</a></li>
-          <li><a routerLink="/contact">Contact</a></li>
+          <li><a routerLink="/makeTrip">Plan Your Trip</a></li>
+          <li><a routerLink="/tour">Find Your Trip</a></li>
+          <li><a routerLink="/destination">Find Your Destination</a></li>
           <li><a routerLink="/faq">FAQ</a></li>
-          <li><a routerLink="/profile">Profile</a></li>
-          <li><a routerLink="/makeTrip">Make Trip</a></li>
-          <li><a routerLink="/destinations">Destinations</a></li>
+          <li><a routerLink="/profile">my Profile</a></li>
+
         </ul>
       </div>
-      <div class="col-lg-2">
-        <h3>Quick Links</h3>
-        <ul class="list-unstyled">
-          <li><a routerLink="/">Home</a></li>
-          <li><a routerLink="/about">About</a></li>
-          <li><a routerLink="/blog">Blog</a></li>
-          <li><a routerLink="/contact">Contact</a></li>
-          <li><a routerLink="/faq">FAQ</a></li>
-          <li><a routerLink="/profile">Profile</a></li>
-          <li><a routerLink="/makeTrip">Make Trip</a></li>
-          <li><a routerLink="/destinations">Destinations</a></li>
-        </ul>
-      </div>
+     
     </div>
   </div>
   <div class="footer-bottom pb-4">

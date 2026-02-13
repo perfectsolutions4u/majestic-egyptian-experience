@@ -7,6 +7,11 @@ export const dataRoutes: Routes = [
     title: 'About',
   },
   {
+    path: 'best-time-to-visit',
+    loadComponent: () => import('../../pages/best-time-to-visit/best-time-to-visit.component').then((m) => m.BestTimeToVisit),
+    title: 'Best Time to Visit',
+  },
+  {
     path: 'destination',
     loadComponent: () =>
       import('../../pages/destination/destination.component').then((m) => m.DestinationComponent),

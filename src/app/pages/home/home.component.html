@@ -339,6 +339,138 @@
   </div>
 </section>
 
+<section class="weather-section my-5 py-5">
+  <div class="container">
+    <div class="row g-3 align-items-center">
+      <div class="col-md-6 col-lg-4">
+        <div class="weather-card text-center py-3  rounded-3 bg-white shadow-sm">
+          <div class="d-flex flex-column flex-grow-1 flex-shrink-1 flex-basis-auto">
+            <span class="fs-5 ">
+              <svg width="32" height="32" class="promo__icon" viewBox="0 0 40 40"><path fill="#343434" d="M32.122 7.891c-1.343-1.342-2.821-2.153-4.274-2.346-1.686-.222-3.295.375-4.662 1.75L7.39 23.082l-.188.188L5.5 34.5l11.237-1.702 15.98-15.972c2.575-2.57 2.347-5.994-.595-8.935zM30.93 9.083c1.225 1.225 2.885 3.536 1.147 5.912l-7.061-7.057c2.376-1.737 4.69-.079 5.914 1.145zM8.57 25.455l5.984 5.99-3.623.549-2.91-2.923.549-3.616zm.608-1.775l12.217-12.21 7.151 7.147L16.33 30.824 9.18 23.68zm13.409-13.402l1.193-1.19 7.15 7.146-1.19 1.192-7.153-7.148zM7.707 31.14l1.155 1.155L7.5 32.5l.206-1.361z"></path></svg>
+            </span>
+            <h2 class="h5 text-capitalize my-2">Why travel with Audley?</h2>
+            <ul class="text-start fontsm text-muted">
+              <li> 100% tailor-made tours</li>
+              <li> Fully protected travel</li>
+              <li> Established for over 25 years</li>
+              <li> 98% of our clients would recommend us</li>
+            </ul>
+          </div>
+
+          <div>
+            <figure class="overflow-hidden w-75 mx-auto bg-secondary mb-0">
+              <img src="../../../assets/image/default-weather.webp" alt="default-weather" class="w-100 h-100 object-fit-cover">
+            </figure>
+          </div>
+
+          <div (click)="openVideoModal()" class="text-capitalize watch-video text-center pt-2 border-top border-secondary textMainColor cPointer">
+            watch our video 
+          </div>
+
+
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="weather-card text-center py-3  rounded-3 bg-white shadow-sm">
+          <div class="d-flex flex-column flex-grow-1 flex-shrink-1 flex-basis-auto">
+            <span class="fs-5 ">
+              <svg width="32" height="32" class="promo__icon" viewBox="0 0 40 40"><path fill="#343434" d="M28.421 2.5a2.526 2.526 0 012.526 2.526v.842h2.527A2.53 2.53 0 0136 8.395v23.579a2.53 2.53 0 01-2.526 2.526H6.526A2.53 2.53 0 014 31.974V8.394a2.53 2.53 0 012.526-2.526h2.527v-.842a2.526 2.526 0 015.052 0v.842h3.369v-.842a2.526 2.526 0 015.052 0v.842h3.369v-.842A2.526 2.526 0 0128.42 2.5zm5.895 13.474H5.684v16a.844.844 0 00.842.842h26.948a.844.844 0 00.842-.842v-16zm-3.525 3.77v10.047H9.023V19.744h21.768zm-1.675 1.675H10.698v6.697h18.418V21.42zM9.053 7.553H6.526a.844.844 0 00-.842.842v5.894h28.632V8.395a.844.844 0 00-.842-.842h-2.527v2.526a2.526 2.526 0 11-5.052 0V7.553h-3.369v2.526a2.526 2.526 0 11-5.052 0V7.553h-3.369v2.526a2.526 2.526 0 01-5.052 0V7.553zM28.42 4.184a.842.842 0 00-.842.842v5.053a.842.842 0 101.684 0V5.026a.842.842 0 00-.842-.842zm-8.421 0a.842.842 0 00-.842.842v5.053a.842.842 0 001.684 0V5.026A.842.842 0 0020 4.184zm-8.421 0a.842.842 0 00-.842.842v5.053a.842.842 0 001.684 0V5.026a.842.842 0 00-.842-.842z"></path></svg>
+            </span>
+            <h2 class="h5 text-capitalize my-2">Best time to visit</h2>
+
+            <p class="text-muted fontsm px-3">Our specialists advise on the best months to visit Egypt, including information about climate, events and festivals.</p>
+          </div>
+
+          <div class="egypt-climate-carousel-wrap">
+            @if (weatherCarouselLoading) {
+              <div class="climate-loading text-center py-3">
+                <span class="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+                <span class="ms-2 small text-muted">Loading climate…</span>
+              </div>
+            } @else if (governorateClimateSlides.length) {
+              <owl-carousel-o [options]="weatherCarouselOptions">
+                @for (slide of governorateClimateSlides; track slide.name) {
+                  <ng-template carouselSlide>
+                    <div class="climate-slide px-1">
+                      <app-egypt-climate-chart [monthlyData]="slide.monthly" [locationName]="slide.name"></app-egypt-climate-chart>
+                      <!-- <div class="climate-slide-table mt-2">
+                        <app-egypt-climate-table [rows]="[{ name: slide.name, monthly: slide.monthly }]"></app-egypt-climate-table>
+                      </div> -->
+                    </div>
+                  </ng-template>
+                }
+              </owl-carousel-o>
+            }
+          </div>
+
+          <div routerLink="/best-time-to-visit" class="text-capitalize watch-video text-center pt-2 border-top border-secondary textMainColor cPointer">
+            best time to visit egypt
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="weather-card text-center py-3  rounded-3 bg-white shadow-sm">
+          <div class="d-flex flex-column flex-grow-1 flex-shrink-1 flex-basis-auto">
+            <span class="fs-5 ">
+              <svg width="32" height="32" class="promo__icon" viewBox="0 0 40 40"><path fill="#343434" d="M38.957 6.47L27.355 5.181c-3.678-.588-5.782-.684-7.07.4-.109.094-.21.195-.305.304a2.654 2.654 0 00-.253-.245c-1.28-1.097-3.39-1.019-7.078-.47L.9 6.468 0 32.3l1.157 2.951h37.509L40 32.32 38.957 6.47zm-26.093.498h.035c2.94-.437 4.91-.581 5.65.053.213.182.49.55.553 1.65v18.458h1.808V9.986h.022V8.667c.055-1.145.332-1.518.545-1.7.741-.63 2.787-.456 5.626 0l10.122 1.122.934 23.083-10.867-.734h-.173c-2.785-.145-5.425-.277-6.914 1.127a2.741 2.741 0 00-.328-.36c-1.29-1.182-3.564-1.058-7.16-.76l-10.85.737.804-23.085 10.193-1.129zM2.2 32.96l10.65-.72c2.944-.246 5.084-.369 5.798.287.142.13.32.365.402.918H2.39l-.19-.485zm18.861.485a1.44 1.44 0 01.36-.565c.934-.886 3.301-.764 5.592-.648l10.712.722-.223.491H21.061z"></path></svg>
+            </span>
+            <h2 class="h5 text-capitalize my-2">Request our brochure</h2>
+
+            <p class="text-muted fontsm px-3">
+              Covering all seven continents, The World Your Way shows you how you can see the world with us. It features trip ideas from our specialists alongside hand-picked stays and experiences, and introduces our approach to creating meaningful travel experiences.
+            </p>
+
+            <div>
+              <figure class="overflow-hidden rounded-3 w-75 mx-auto mb-0">
+                <img src="../../../assets/image/banner.webp" alt="" class="w-100 h-100 object-fit-cover">
+              </figure>
+            </div>
+
+          </div>
+          <div routerLink="/makeTrip" class="text-capitalize watch-video text-center pt-2 border-top border-secondary textMainColor cPointer">
+            customise your trip
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Egypt tourism video modal -->
+<div
+  class="modal fade"
+  id="egyptVideoModal"
+  #egyptVideoModal
+  tabindex="-1"
+  aria-labelledby="egyptVideoModalLabel"
+  aria-hidden="true"
+  (hidden.bs.modal)="closeVideoModal()"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content video-modal-content">
+      <div class="modal-header border-0">
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="video-wrapper">
+          <iframe
+            [src]="egyptVideoSafeUrl"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="video-iframe"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Last Minute Deals! 'tours' slider carousel  -->
 <section class="my-5 pt-5">
   <div class="container">

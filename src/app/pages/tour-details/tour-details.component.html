@@ -26,9 +26,9 @@
         <div class="info">
           <span> {{ tour.duration }} </span>
           @if (tour.destinations && tour.destinations.length > 0) {
-          <span> | {{ tour.destinations[0].tours_count }} destinations </span>
+          <span> | <b class="textMainColor">{{ tour.destinations.length }}</b>  destinations </span>
           } @if (tour.categories && tour.categories.length > 0) {
-          <span> | {{ tour.categories[0].tours_count }} categories </span>
+          <span> | <b class="textMainColor">{{ tour.categories.length }}</b> categories </span>
           }
         </div>
       </div>

@@ -1,0 +1,230 @@
+
+<app-banner
+  [title]="'Best Time to Visit'"
+  [backgroundImage]="backgroundImage"
+></app-banner>
+
+<section class="my-5">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div>
+            <p class="text-muted">The best time to visit Egypt is between October and April, when temperatures are cooler, but still pleasantly warm across the country. This makes exploring the busy streets of Cairo, visiting the Pyramids in the desert, and exploring ancient Pharaonic tombs more comfortable and enjoyable.</p>
+
+            <p class="text-muted">The summer season (May to September) is hot, although the high temperatures are alleviated by very dry air, air conditioning, far fewer visitors and lower prices. This means summer is still a viable season for your trip. There also tends to be a bit of a breeze on the Nile, making a river cruise a good choice during this period.</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <!-- customize your tour -->
+        <div class="customizeTour border pt-4 pb-3 px-3 rounded-3 mb-4">
+            <p class="text-capitalize mb-1">Customize</p>
+            <h5 class="text-capitalize">travel package!</h5>
+
+            <ul class="list-unstyled my-4">
+              <li class="d-flex gap-2 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                  <path
+                    fill="#1781FE"
+                    d="M15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15V16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16V15C11.866 15 15 11.866 15 8Z"
+                  />
+                  <path
+                    fill="#1781FE"
+                    d="M11.6947 6.45795L7.24644 10.9086C7.17556 10.9771 7.08572 11.0126 6.99596 11.0126C6.9494 11.0127 6.90328 11.0035 6.86027 10.9857C6.81727 10.9678 6.77822 10.9416 6.7454 10.9086L4.3038 8.46699C4.16436 8.32987 4.16436 8.10539 4.3038 7.96595L5.16652 7.10083C5.29892 6.96851 5.53524 6.96851 5.66764 7.10083L6.99596 8.42915L10.3309 5.09179C10.3638 5.05887 10.4028 5.03274 10.4457 5.01489C10.4887 4.99705 10.5347 4.98784 10.5812 4.98779C10.6757 4.98779 10.7656 5.02563 10.8317 5.09179L11.6944 5.95699C11.8341 6.09643 11.8341 6.32091 11.6947 6.45795Z"
+                  />
+                </svg>
+                <span class="fontsm">Mony Back Guarentee.</span>
+              </li>
+              <li class="d-flex gap-2 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                  <path
+                    fill="#1781FE"
+                    d="M15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15V16C3.58172 16 0 12.4183 0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16V15C11.866 15 15 11.866 15 8Z"
+                  />
+                  <path
+                    fill="#1781FE"
+                    d="M11.6947 6.45795L7.24644 10.9086C7.17556 10.9771 7.08572 11.0126 6.99596 11.0126C6.9494 11.0127 6.90328 11.0035 6.86027 10.9857C6.81727 10.9678 6.77822 10.9416 6.7454 10.9086L4.3038 8.46699C4.16436 8.32987 4.16436 8.10539 4.3038 7.96595L5.16652 7.10083C5.29892 6.96851 5.53524 6.96851 5.66764 7.10083L6.99596 8.42915L10.3309 5.09179C10.3638 5.05887 10.4028 5.03274 10.4457 5.01489C10.4887 4.99705 10.5347 4.98784 10.5812 4.98779C10.6757 4.98779 10.7656 5.02563 10.8317 5.09179L11.6944 5.95699C11.8341 6.09643 11.8341 6.32091 11.6947 6.45795Z"
+                  />
+                </svg>
+                <span class="fontsm">Your Safety is Our Top Priority. </span>
+              </li>
+            </ul>
+
+            <button type="button" class="secBtn w-100 mb-3 fontsm" routerLink="/makeTrip">
+              Customize Package
+            </button>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="my-5 py-5 montly-weather ">
+    <div class="container">
+        <div class="mainTitle">
+            <h2>Month-by-month guide for traveling in Egypt</h2>
+        </div>
+        <!-- control buttons -->
+        <div class="flexCenter flex-wrap gap-2 text-uppercase my-3">
+            <button type="button" class="period-btn m-1" [class.period-btn--active]="selectedPeriod === 'jan-mar'" (click)="selectPeriod('jan-mar')">jan - mar</button>
+            <button type="button" class="period-btn m-1" [class.period-btn--active]="selectedPeriod === 'apr-may'" (click)="selectPeriod('apr-may')">apr - may</button>
+            <button type="button" class="period-btn m-1" [class.period-btn--active]="selectedPeriod === 'jun'" (click)="selectPeriod('jun')">jun</button>
+            <button type="button" class="period-btn m-1" [class.period-btn--active]="selectedPeriod === 'jul-aug'" (click)="selectPeriod('jul-aug')">jul - aug</button>
+            <button type="button" class="period-btn m-1" [class.period-btn--active]="selectedPeriod === 'sep'" (click)="selectPeriod('sep')">sep</button>
+            <button type="button" class="period-btn m-1" [class.period-btn--active]="selectedPeriod === 'oct-dec'" (click)="selectPeriod('oct-dec')">oct - dec</button>
+        </div>
+        <!-- content -->
+         <div class="content">
+             <!-- jan - mar -->
+             @if (selectedPeriod === 'jan-mar') {
+             <div class="bg-white rounded-3 p-3">
+                 <h5 class="text-capitalize fw-bold mb-3 h6">Visiting Egypt in January - March</h5>
+                 <div class="row g-3">
+                     <div class="col-lg-8 col-md-7 order-md-1 order-2">
+                         <div>
+                             <p>January through to March is usually sunny and warm, with occasional rain. This is within the peak traveling season as temperatures are cooler and more comfortable than in the summer months, which means that hotels, cruises and sites can get very busy; particularly around the new year period.</p>
+                             <h6 class=" text-capitalize fw-bold mb-3">Events & Festivals</h6>
+                             <ul>
+                                 <li>
+                                     The West Bank Marathon (late January or early February): This 22 km (14 mile) marathon is held on the banks of the Nile.
+                                 </li>
+                             </ul>
+                         </div>
+                     </div>
+                     <div class="col-lg-4 col-md-5 order-md-2 order-1">
+                         <figure class="img-Hover position-relative overflow-hidden rounded-3 h-100">
+                             <img src="../../../assets/image/best_time/1.webp" alt="best-time-to-visit" class="w-100 h-100 object-fit-cover ">
+                         </figure>
+                     </div>
+                 </div>
+             </div>
+             }
+             <!-- apr - may -->
+             @if (selectedPeriod === 'apr-may') {
+             <div class="bg-white rounded-3 p-3">
+                 <h5 class="text-capitalize fw-bold mb-3 h6">Visiting Egypt in April - May</h5>
+                 <div class="row g-3">
+                     <div class="col-lg-8 col-md-7 order-md-1 order-2">
+                         <div>
+                             <p>April through to May is usually sunny and warm, with occasional rain. This is within the peak traveling season as temperatures are cooler and more comfortable than in the summer months, which means that hotels, cruises and sites can get very busy; particularly around the new year period.</p>
+                             <h6 class=" text-capitalize fw-bold mb-3">Events & Festivals</h6>
+                             <ul>
+                                 <li>
+                                     Sham el-Nessim: A Coptic festival of Pharaonic origin which celebrates the coming of spring. This is held on Easter Monday according to the Coptic calendar, and is celebrated with picnics in parks and on riverbanks throughout the country  
+                                 </li>
+                             </ul>
+                         </div>
+                     </div>
+                     <div class="col-lg-4 col-md-5 order-md-2 order-1">
+                         <figure class="img-Hover position-relative overflow-hidden rounded-3 h-100">
+                             <img src="../../../assets/image/best_time/2.webp" alt="best-time-to-visit" class="w-100 h-100 object-fit-cover ">
+                         </figure>
+                     </div>
+                 </div>
+             </div>
+             }
+             <!-- jun -->
+             @if (selectedPeriod === 'jun') {
+             <div class="bg-white rounded-3 p-3">
+                 <h5 class="text-capitalize fw-bold mb-3 h6">Visiting Egypt in June</h5>
+                 <div class="row g-3">
+                     <div class="col-lg-8 col-md-7 order-md-1 order-2">
+                         <div>
+                             <p>
+                                 June is the start of the scorching heat of the summer, but temperatures are not yet at their peak. This can therefore be a great time to visit if you don't mind the heat as prices are much lower than they are during the milder months of the year.
+                             </p>
+                         </div>
+                     </div>
+                     <div class="col-lg-4 col-md-5 order-md-2 order-1">
+                         <figure class="img-Hover position-relative overflow-hidden rounded-3 h-100">
+                             <img src="../../../assets/image/best_time/3.webp" alt="best-time-to-visit" class="w-100 h-100 object-fit-cover ">
+                         </figure>
+                     </div>
+                 </div>
+             </div>
+             }
+             <!-- jul - aug -->
+             @if (selectedPeriod === 'jul-aug') {
+             <div class="bg-white rounded-3 p-3">
+                 <h5 class="text-capitalize fw-bold mb-3 h6">Visiting Egypt in July - August</h5>
+                 <div class="row g-3">
+                     <div class="col-lg-8 col-md-7 order-md-1 order-2">
+                         <div>
+                             <p>
+                                 This is the peak of the summer and temperatures are very high. However, if your hotel has air conditioning and a swimming pool, or if you simply want to relax on a Nile cruise, this can be a great time to visit. Far fewer people travel to Egypt during the summer months, which means that you can escape the crowds at most tourist sites and make the most of some fantastic photographic opportunities.
+                             </p>
+                         </div>
+                     </div>
+                     <div class="col-lg-4 col-md-5 order-md-2 order-1">
+                         <figure class="img-Hover position-relative overflow-hidden rounded-3 h-100">
+                             <img src="../../../assets/image/best_time/4.webp" alt="best-time-to-visit" class="w-100 h-100 object-fit-cover ">
+                         </figure>
+                     </div>
+                 </div>
+             </div>
+             }
+             <!-- sep -->
+             @if (selectedPeriod === 'sep') {
+             <div class="bg-white rounded-3 p-3">
+                 <h5 class="text-capitalize fw-bold mb-3 h6">Visiting Egypt in September</h5>
+                 <div class="row g-3">
+                     <div class="col-lg-8 col-md-7 order-md-1 order-2">
+                         <div>
+                             <p>
+                                 The weather in September is quite similar to that in June; temperatures are still high but sea breezes make the heat more bearable and prices are usually lower than they are between October and May. This can be the best time to visit places such as the Red Sea as you'll escape both school vacations and the crowds of the autumn/winter peak season. 
+                             </p>
+                         </div>
+                     </div>
+                     <div class="col-lg-4 col-md-5 order-md-2 order-1">
+                         <figure class="img-Hover position-relative overflow-hidden rounded-3 h-100">
+                             <img src="../../../assets/image/best_time/5.webp" alt="best-time-to-visit" class="w-100 h-100 object-fit-cover ">
+                         </figure>
+                     </div>
+                 </div>
+             </div>
+             }
+             <!-- oct - dec -->
+             @if (selectedPeriod === 'oct-dec') {
+             <div class="bg-white rounded-3 p-3">
+                 <h5 class="text-capitalize fw-bold mb-3 h6">Visiting Egypt in October - December</h5>
+                 <div class="row g-3">
+                     <div class="col-lg-8 col-md-7 order-md-1 order-2">
+                         <div>
+                             <p>
+                                 The weather is much cooler during the winter months, though still warm, making it an ideal time to visit the cultural sites of Egypt in comfort. However, this is also the busiest time of year for Egypt. Over Christmas and New Year, hotels and cruises raise their rates significantly and rooms/cabins get booked far in advance, so it is advisable to plan your trip early.
+                             </p>
+                         </div>
+                     </div>
+                     <div class="col-lg-4 col-md-5 order-md-2 order-1">
+                         <figure class="img-Hover position-relative overflow-hidden rounded-3 h-100">
+                             <img src="../../../assets/image/best_time/6.webp" alt="best-time-to-visit" class="w-100 h-100 object-fit-cover ">
+                         </figure>
+                     </div>
+                 </div>
+             </div>
+             }
+
+         </div>
+
+    </div>
+</section>
+
+<section class="my-5 py-5 egypt-climate-section">
+    <div class="container">
+        <div class="mainTitle">
+            <h2>Egypt Climate Guide</h2>
+        </div>
+
+        @if (climateLoading) {
+            <div class="climate-loading text-center py-5">
+                <span class="spinner-border text-primary" role="status" aria-hidden="true"></span>
+                <p class="mt-2 text-muted">Loading climate data…</p>
+            </div>
+        } @else if (climateError) {
+            <div class="climate-error text-center py-5 text-muted">
+                <p>Unable to load climate data. Please try again later.</p>
+            </div>
+        } @else {
+            <app-egypt-climate-table [rows]="climateTableRows"></app-egypt-climate-table>
+        }
+    </div>
+</section>

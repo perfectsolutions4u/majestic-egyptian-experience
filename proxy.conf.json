@@ -1,0 +1,10 @@
+{
+  "/api/open-meteo-archive": {
+    "target": "https://archive-api.open-meteo.com",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api/open-meteo-archive": "/v1/archive"
+    }
+  }
+}

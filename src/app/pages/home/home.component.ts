@@ -8,6 +8,7 @@ import {
   ChangeDetectorRef,
   ViewChild,
 } from '@angular/core';
+declare var bootstrap: any;
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { DataService } from '../../services/data.service';
@@ -39,6 +40,10 @@ import { OwlOptions, CarouselModule } from 'ngx-owl-carousel-o';
 import { MakeTripFormComponent } from '../../shared/components/make-trip-form/make-trip-form.component';
 import { Parteners } from '../../shared/components/parteners/parteners.component';
 import { FaqContent } from '../../shared/components/faq-content/faq-content.component';
+import { EgyptWeatherService } from '../../services/egypt-weather.service';
+import { EgyptClimateTableComponent } from '../../shared/components/egypt-climate-table/egypt-climate-table.component';
+import { EgyptClimateChartComponent } from '../../shared/components/egypt-climate-chart/egypt-climate-chart.component';
+import type { EgyptMonthlyClimate } from '../../core/interfaces/egypt-climate';
 
 @Component({
   selector: 'app-home',
@@ -63,6 +68,7 @@ import { FaqContent } from '../../shared/components/faq-content/faq-content.comp
     MakeTripFormComponent,
     Parteners,
     FaqContent,
+    EgyptClimateChartComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -70,11 +76,20 @@ import { FaqContent } from '../../shared/components/faq-content/faq-content.comp
 export class HomeComponent implements OnInit {
   @ViewChild('StartDatepicker') startDatepicker!: MatDatepicker<Date>;
   @ViewChild('EndDatepicker') endDatepicker!: MatDatepicker<Date>;
+  @ViewChild('egyptVideoModal') egyptVideoModal!: ElementRef;
 
   private $destory = new Subject<void>();
   isBrowser: boolean;
   sanitizedVideoUrl: SafeResourceUrl;
   rawVideoUrl = 'https://gofly-wp.egenstheme.com/wp-content/uploads/2025/09/home1-banner-video.mp4';
+
+  // Egypt tourism video (YouTube embed) - use cached SafeResourceUrl to avoid iframe reload on change detection
+  private readonly egyptVideoBaseUrl = "https://www.youtube.com/embed/G9wCg8NK0RE?si=psU3rgqMj-5QrLwL";
+  egyptVideoSafeUrl: SafeResourceUrl;
+
+  /** Egypt climate carousel: one slide per governorate (table + chart) */
+  governorateClimateSlides: { name: string; monthly: EgyptMonthlyClimate[] }[] = [];
+  weatherCarouselLoading = true;
 
   constructor(
     private _DataService: DataService,
@@ -87,26 +102,15 @@ export class HomeComponent implements OnInit {
     private fb: FormBuilder,
     private translate: TranslateService,
     private cdr: ChangeDetectorRef,
-    private datepickerService: DatepickerService
+    private datepickerService: DatepickerService,
+    private egyptWeather: EgyptWeatherService
   ) {
     this.sanitizedVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.rawVideoUrl);
     this.isBrowser = isPlatformBrowser(platformId);
+    this.egyptVideoSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl('about:blank');
     this.initMakeTripForm();
   }
 
-  // // Helper method to get data from localStorage
-  // getFromLocalStorage(key: string): any | null {
-  //   if (!this.isBrowser) {
-  //     return null;
-  //   }
-  //   try {
-  //     const item = localStorage.getItem(key);
-  //     return item ? JSON.parse(item) : null;
-  //   } catch (error) {
-  //     console.warn(`Error reading from localStorage for key ${key}:`, error);
-  //     return null;
-  //   }
-  // }
 
   MarkTime: string = 'exact';
   monthList: string[] = [];
@@ -159,6 +163,22 @@ export class HomeComponent implements OnInit {
 
     // Load translated months
     this.loadMonths();
+
+    // Egypt climate carousel (best time to visit card)
+    this.egyptWeather.getAllGovernoratesClimate().pipe(takeUntil(this.$destory)).subscribe({
+      next: (map) => {
+        this.governorateClimateSlides = this.egyptWeather.governorates.map((g) => ({
+          name: g.name,
+          monthly: map.get(g.id) ?? [],
+        }));
+        this.weatherCarouselLoading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.weatherCarouselLoading = false;
+        this.cdr.markForCheck();
+      },
+    });
 
     // Reload months when language changes
     this.translate.onLangChange.subscribe(() => {
@@ -274,6 +294,38 @@ export class HomeComponent implements OnInit {
 
   openEndDatePicker() {
     this.datepickerService.openDatePicker(this.endDatepicker);
+  }
+
+  private setEgyptVideoSrc(url: string): void {
+    this.egyptVideoSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  openVideoModal(): void {
+    if (isPlatformBrowser(this.platformId) && this.egyptVideoModal) {
+      const sep = this.egyptVideoBaseUrl.includes('?') ? '&' : '?';
+      this.setEgyptVideoSrc(`${this.egyptVideoBaseUrl}${sep}autoplay=1`);
+      const modalElement = this.egyptVideoModal.nativeElement;
+      if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+      }
+    }
+  }
+
+  closeVideoModal(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.setEgyptVideoSrc('about:blank');
+      if (this.egyptVideoModal) {
+        const modalElement = this.egyptVideoModal.nativeElement;
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+          const modal = bootstrap.Modal.getInstance(modalElement);
+          if (modal) modal.hide();
+        }
+      }
+      setTimeout(() => {
+        this.setEgyptVideoSrc(this.egyptVideoBaseUrl);
+      }, 300);
+    }
   }
 
   // Helper methods to get display values
@@ -596,5 +648,23 @@ export class HomeComponent implements OnInit {
     margin: 20,
     autoplay: true,
     smartSpeed: 2500,
+  };
+
+  /** Carousel: one slide per governorate (table + chart), arrows + dots */
+  weatherCarouselOptions: OwlOptions = {
+    loop: true,
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: true,
+    dots: false,
+    nav: false,
+    navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
+    responsive: { 0: { items: 1 } },
+    items: 1,
+    margin: 16,
+    autoplay: true,
+    smartSpeed: 2500,
+    animateIn: 'fadeIn',
+    animateOut: 'fadeOut',
   };
 }

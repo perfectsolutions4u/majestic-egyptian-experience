@@ -1,0 +1,27 @@
+@use '../../../styles/variables.scss' as *;
+
+.climate-chart-wrap {
+  background: #fff;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  padding: 1rem;
+  min-height: 220px;
+  max-height: 240px;
+
+  canvas {
+    max-height: 200px;
+  }
+
+  .chart-location {
+    margin: 0.5rem 0 0;
+    font-size: 0.9rem;
+    color: $text-color-secondary;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+
+    .chart-location-icon {
+      font-size: 1rem;
+    }
+  }
+}
